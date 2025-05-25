@@ -1,36 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Shop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitchGear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            --color-background: #FFFFFF;
+            --color-background-highlight: #ececec;
+            --color-text: #000000;
+            --color-text-highlight: #5c5c5c;
+            transition: color 0.3s, background-color 0.3s;
+            background-color: var(--color-background);
+            margin: 0.6rem;
+            font-family: Roboto;
+            position: absolute;
+            color: var(--color-text);
+        }
+        body.dark {
+            --color-background: #3b3b3b;
+            --color-text: #dfdfdf;
+        }
+        h1 {
+            font-size: 2.2rem;
+        }
+        #navbar {
+            display: flex;
+            top: 0.6rem;
+            left: 0.6rem;
+            position: fixed;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            box-shadow: 0 1rem 2rem #00000030;
+            border-radius: 1.6rem;
+            width: calc(100% - 1.2rem);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            z-index: 99;
+            transition: border-radius 0.3s;
+        }
+        #navbar-account {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1.2rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-right: 1rem;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: font-size 0.3s;
+        }
+        #navbar-panel {
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        #navbar-panel:hover {
+            color: var(--color-text-highlight);
+        }
+        #navbar-login {
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        #navbar-login:hover {
+            color: var(--color-text-highlight);
+        }
+        #navbar-signup {
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        #navbar-signup:hover {
+            color: var(--color-text-highlight);
+        }
+        #navbar-username {
+            transition: color 0.3s, padding 0.3s;
+            cursor: pointer;
+            background-color: var(--color-background-highlight);
+            padding-block: 0.8rem;
+            padding-inline: 1.2rem;
+            border-radius: 0.6rem;
+            box-shadow: 0 0.2rem 0.4rem #00000040;
+        }
+        #navbar-logout {
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        #navbar-logout:hover {
+            color: var(--color-text-highlight);
+        }
+        #navbar-logo {
+            width: 10rem;
+            transition: opacity 0.3s, width 0.3s;
+            opacity: 1;
+            filter: brightness(0.87);
+        }
+    </style>
 </head>
 <body>
-    <h1>My Shop</h1>
 
-    <div id="auth-section">
-        <div id="user-info" style="display: none;">
-            Logged in as <span id="user-email"></span>
-            <button id="logout">Logout</button>
-        </div>
+    <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
-        <div id="login-form">
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <button id="login">Login</button>
-            <button id="signup">Sign Up</button>
+    <h1>Teams</h1>
+
+    <div id="team-list"></div>
+    <div id="navbar">
+        <img src="resources/logo-light.png" alt="" id="navbar-logo">
+        <div id="navbar-account">
+            <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-login" onclick="goToPage('login')">Log In</div>
+            <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navbar-username" style="display: none;"></div>
+            <div id="navbar-logout" style="display: none;">Logout</div>
         </div>
     </div>
-
-    <hr>
-
-    <div id="product-list"></div>
-
+    <script>
+        const mainPage = window.location.href;
+        const navbarItems = ["login", "signup", "panel", "username", "logout"];
+        const permanentlySmall = false;
+    </script>
+    <script src="main.js"></script>
     <script type="module">
-        // Firebase imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // 🔧 Your Firebase config
+
         const firebaseConfig = {
             apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
             authDomain: "csongors-shop.firebaseapp.com",
@@ -40,59 +140,93 @@
             messagingSenderId: "216505981379",
             appId: "1:216505981379:web:570fbaac58a5e564994576"
         };
-        // 🔥 Init Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // 💻 Login / Signup
-        document.getElementById('login').onclick = () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, password)
-                .catch(err => alert("Login failed: " + err.message));
-        };
-
-        document.getElementById('signup').onclick = () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            createUserWithEmailAndPassword(auth, email, password)
-                .catch(err => alert("Signup failed: " + err.message));
-        };
-
-        document.getElementById('logout').onclick = () => {
+        document.getElementById('navbar-logout').addEventListener("click", async (event) => {
             signOut(auth);
-        };
+        });
 
-        // 👤 Auth State Listener
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById("login-form").style.display = "none";
-                document.getElementById("user-info").style.display = "block";
-                document.getElementById("user-email").textContent = user.email;
+                (async () => {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    const userData = userDoc.data();
+                    if (userData) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
+                            document.getElementById("navbar-panel").style.display = "block";
+                        } else {
+                            document.getElementById("navbar-panel").style.display = "none";
+                        }
+                        document.getElementById("navbar-username").style.display = "block";
+                        document.getElementById("navbar-username").textContent = userData.username || user.email;
+                    } else {
+                        document.getElementById("navbar-panel").style.display = "none";
+                        document.getElementById("navbar-username").style.display = "block";
+                        document.getElementById("navbar-username").textContent = user.email;
+                    }
+                    document.getElementById("navbar-login").style.display = "none";
+                    document.getElementById("navbar-signup").style.display = "none";
+                    document.getElementById("navbar-logout").style.display = "block";
+                })();
             } else {
-                document.getElementById("login-form").style.display = "block";
-                document.getElementById("user-info").style.display = "none";
+                document.getElementById("navbar-panel").style.display = "none";
+                document.getElementById("navbar-login").style.display = "block";
+                document.getElementById("navbar-signup").style.display = "block";
+                document.getElementById("navbar-logout").style.display = "none";
+                document.getElementById("navbar-username").style.display = "none";
             }
         });
 
-        // 🛍 Load Products
         async function loadProducts() {
-            const container = document.getElementById("product-list");
-            const querySnapshot = await getDocs(collection(db, "products"));
+            const container = document.getElementById("team-list");
+            const querySnapshot = await getDocs(collection(db, "teams"));
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
                 const div = document.createElement("div");
                 div.innerHTML = `
-                    <h3>${data.title}</h3>
-                    <p>${data.description}</p>
-                    <p>${(data.price / 100).toFixed(2)} ${data.currency}</p>
+                    <img src="${data.logo}" alt="${data.name+" Logo"}" width=160rem">
+                    <p>${data.name}</p>
                 `;
+                div.onclick = () => {
+                    alert("Going to: 'team?id="+doc.id+"/'")
+                    goToPage("team?id="+doc.id+"/")
+                }
                 container.appendChild(div);
             });
         }
 
         loadProducts();
+
+        // async function buyProduct(productId) {
+        //     const user = auth.currentUser;
+        //     if (!user) {
+        //         alert("You must be logged in to buy a product.");
+        //         return;
+        //     }
+
+        //     try {
+        //         const token = await user.getIdToken();
+        //         const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/createCheckoutSession", {
+        //             method: "POST",
+        //             headers: {
+        //                 "Content-Type": "application/json",
+        //                 "Authorization": `Bearer ${token}`
+        //             },
+        //             body: JSON.stringify({ productId })
+        //         });
+
+        //         const data = await res.json();
+        //         if (data.url) {
+        //             window.location.href = data.url;
+        //         } else {
+        //             alert(data.error || "Something went wrong.");
+        //         }
+        //     } catch (err) {
+        //         alert("Failed to start checkout: " + err.message);
+        //     }
+        // }
     </script>
 </body>
 </html>

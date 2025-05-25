@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Successful!</title>
+    <title>Document</title>
 </head>
 <body>
     <div id="post-id"></div>
@@ -12,10 +12,11 @@
 
         const urlParams = new URLSearchParams(queryString);
 
-        if (!urlParams.has('session_id')) {
-            document.getElementById("post-id").innerText = "No Session-ID found.";
+        if (!urlParams.has('id')) {
+            const postID = "fc_bayern_muenchen";
+            document.getElementById("post-id").innerText = postID;
         } else {
-            const postID = urlParams.get('session_id');
+            const postID = urlParams.get('id');
             document.getElementById("post-id").innerText = postID;
         }
     </script>

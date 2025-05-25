@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            --color-background: #FFFFFF;
+            --color-background-highlight: #ececec;
+            --color-text: #000000;
+            --color-text-highlight: #5c5c5c;
+            transition: color 0.3s, background-color 0.3s;
+            background-color: var(--color-background);
+            margin: 0.6rem;
+            font-family: Roboto;
+            position: absolute;
+            color: var(--color-text);
+        }
+        body.dark {
+            --color-background: #3b3b3b;
+            --color-text: #dfdfdf;
+        }
+        h1 {
+            font-size: 2.2rem;
+        }
+        #navbar {
+            display: flex;
+            top: 0.6rem;
+            left: 0.6rem;
+            position: fixed;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            box-shadow: 0 1rem 2rem #00000030;
+            border-radius: 1rem;
+            width: calc(100% - 1.2rem);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            z-index: 99;
+        }
+        #navbar-account {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1.2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        #navbar-login {
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        #navbar-login:hover {
+            color: var(--color-text-highlight);
+        }
+        #navbar-login {
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        #navbar-login:hover {
+            color: var(--color-text-highlight);
+        }
+        #navbar-logo {
+            width: 5.6rem;
+        }
+        #navbar-start {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 1.2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-left: 0.6rem;
+        }
+        #navbar-back {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--color-background-highlight);
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.4rem;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        #navbar-back:hover {
+            color: var(--color-text-highlight);
+        }
+        #login-container {
+            top: 0.6rem;
+            left: 0.6rem;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: calc(100vw - 1.2rem);
+            height: calc(100vh - 1.2rem);
+            pointer-events: none;
+        }
+        #login-panel {
+            display: flex;
+            flex-direction: column;
+            pointer-events: all;
+            width: 30rem;
+            height: 50rem;
+            background-color: var(--color-background-highlight);
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <div id="navbar-start">
+            <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
+            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+        </div>
+        <div id="navbar-account">
+            <div id="navbar-username" style="opacity: 0; display: none;"></div>
+            <div id="navbar-login">Log In</div>
+            <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
+        </div>
+    </div>
+    <div id="login-container">
+        <div id="login-panel">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button id="login">Log In</button>
+            <div style="color: red;" id="error"></div>
+        </div>
+    </div>
+    <script>
+        const mainPage = window.location.href.replace("login/", "");
+        const navbarItems = ["login", "signup"];
+        const permanentlySmall = true;
+    </script>
+    <script src="../main.js"></script>
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // 🔧 Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
+            authDomain: "csongors-shop.firebaseapp.com",
+            databaseURL: "https://csongors-shop-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "csongors-shop",
+            storageBucket: "csongors-shop.firebasestorage.app",
+            messagingSenderId: "216505981379",
+            appId: "1:216505981379:web:570fbaac58a5e564994576"
+        };
+        // 🔥 Init Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById('login').addEventListener("click", async (event) => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    window.location.href = window.location.href.replace("login/", "");
+                })
+                .catch(err => {
+                    console.log(err.code);
+                    switch (err.code) {
+                        case "auth/invalid-login-credentials":
+                            document.getElementById('error').innerHTML = "Password or Email is wrong!";
+                            break;
+                        case "auth/missing-email":
+                            document.getElementById('error').innerHTML = "Please add an Email!";
+                            break;
+                        case "auth/invalid-email":
+                            document.getElementById('error').innerHTML = "This is not an Email!";
+                            break;
+                        case "auth/missing-password":
+                            document.getElementById('error').innerHTML = "Please give your Password!";
+                            break;
+                        default:
+                            document.getElementById('error').innerHTML = "An unknown error occurred: " + err.code;
+                    }
+                });
+        });
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = window.location.href.replace("login/", "")
+            }
+        });
+    </script>
+</body>
+</html>

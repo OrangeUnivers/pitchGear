@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Shop</title>
+</head>
+<body>
+    <h1>My Shop</h1>
+
+    <div id="auth-section">
+        <div id="user-info" style="display: none;">
+            Logged in as <span id="user-email"></span>
+            <button id="logout">Logout</button>
+        </div>
+
+        <div id="login-form">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button id="login">Login</button>
+            <button id="signup">Sign Up</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="product-list"></div>
+
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // 🔧 Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
+            authDomain: "csongors-shop.firebaseapp.com",
+            databaseURL: "https://csongors-shop-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "csongors-shop",
+            storageBucket: "csongors-shop.firebasestorage.app",
+            messagingSenderId: "216505981379",
+            appId: "1:216505981379:web:570fbaac58a5e564994576"
+        };
+        // 🔥 Init Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 💻 Login / Signup
+        document.getElementById('login').onclick = () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .catch(err => alert("Login failed: " + err.message));
+        };
+
+        document.getElementById('signup').onclick = () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .catch(err => alert("Signup failed: " + err.message));
+        };
+
+        document.getElementById('logout').onclick = () => {
+            signOut(auth);
+        };
+
+        // 👤 Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("user-info").style.display = "block";
+                document.getElementById("user-email").textContent = user.email;
+            } else {
+                document.getElementById("login-form").style.display = "block";
+                document.getElementById("user-info").style.display = "none";
+            }
+        });
+
+        // 🛍 Load Products
+        async function loadProducts() {
+            const container = document.getElementById("product-list");
+            const querySnapshot = await getDocs(collection(db, "products"));
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <h3>${data.title}</h3>
+                    <p>${data.description}</p>
+                    <p>${(data.price / 100).toFixed(2)} ${data.currency}</p>
+                    <p>${data.toString()}</p>
+                    <p>${doc.id}</p>
+                `;
+                const button = document.createElement("button");
+
+                button.textContent = "Buy";
+                button.onclick = () => buyProduct(doc.id);
+                div.appendChild(button);
+                container.appendChild(div);
+            });
+        }
+
+        loadProducts();
+
+        async function buyProduct(productId) {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("You must be logged in to buy a product.");
+                return;
+            }
+
+            try {
+                const token = await user.getIdToken();
+                const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/createCheckoutSession", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ productId })
+                });
+
+                const data = await res.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert(data.error || "Something went wrong.");
+                }
+            } catch (err) {
+                alert("Failed to start checkout: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
