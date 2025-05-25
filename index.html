@@ -8,97 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <link href="main.css" rel="stylesheet">
     <style>
-        body {
-            --color-background: #FFFFFF;
-            --color-background-highlight: #ececec;
-            --color-text: #000000;
-            --color-text-highlight: #5c5c5c;
-            transition: color 0.3s, background-color 0.3s;
-            background-color: var(--color-background);
-            margin: 0.6rem;
-            font-family: Roboto;
-            position: absolute;
-            color: var(--color-text);
-        }
-        body.dark {
-            --color-background: #3b3b3b;
-            --color-text: #dfdfdf;
-        }
         h1 {
             font-size: 2.2rem;
-        }
-        #navbar {
-            display: flex;
-            top: 0.6rem;
-            left: 0.6rem;
-            position: fixed;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem;
-            box-shadow: 0 1rem 2rem #00000030;
-            border-radius: 1.6rem;
-            width: calc(100% - 1.2rem);
-            box-sizing: border-box;
-            backdrop-filter: blur(10px);
-            z-index: 99;
-            transition: border-radius 0.3s;
-        }
-        #navbar-account {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 1.2rem;
-            font-weight: 700;
-            font-size: 1.3rem;
-            margin-right: 1rem;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            transition: font-size 0.3s;
-        }
-        #navbar-panel {
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        #navbar-panel:hover {
-            color: var(--color-text-highlight);
-        }
-        #navbar-login {
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        #navbar-login:hover {
-            color: var(--color-text-highlight);
-        }
-        #navbar-signup {
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        #navbar-signup:hover {
-            color: var(--color-text-highlight);
-        }
-        #navbar-username {
-            transition: color 0.3s, padding 0.3s;
-            cursor: pointer;
-            background-color: var(--color-background-highlight);
-            padding-block: 0.8rem;
-            padding-inline: 1.2rem;
-            border-radius: 0.6rem;
-            box-shadow: 0 0.2rem 0.4rem #00000040;
-        }
-        #navbar-logout {
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-        #navbar-logout:hover {
-            color: var(--color-text-highlight);
-        }
-        #navbar-logo {
-            width: 10rem;
-            transition: opacity 0.3s, width 0.3s;
-            opacity: 1;
-            filter: brightness(0.87);
         }
     </style>
 </head>
@@ -119,9 +32,12 @@
             <div id="navbar-logout" style="display: none;">Logout</div>
         </div>
     </div>
+    <div id="navbar-gradient"></div>
+    <div id="navbar-block"></div>
     <script>
         const mainPage = window.location.href;
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
+        const relativeBacktracking = "";
         const permanentlySmall = false;
     </script>
     <script src="main.js"></script>
@@ -190,8 +106,7 @@
                     <p>${data.name}</p>
                 `;
                 div.onclick = () => {
-                    alert("Going to: 'team?id="+doc.id+"/'")
-                    goToPage("team?id="+doc.id+"/")
+                    goToPage("team?id="+doc.id)
                 }
                 container.appendChild(div);
             });
