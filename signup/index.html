@@ -12,6 +12,7 @@
     <style>
         h1 {
             font-size: 2.2rem;
+            margin-top: 0;
         }
         #signup-container {
             top: 5.6rem;
@@ -20,6 +21,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 80vw;
+            height: 350vw;
             width: calc(100vw - 1.2rem);
             height: calc(100vh - 6.2rem);
             pointer-events: none;
@@ -29,15 +32,18 @@
             padding: 2rem;
             background-color: var(--color-background-highlight);
             pointer-events: all;
-            width: 26rem;
-            height: 46rem;
+            width: 80vw;
+            height: 350vw;
+            max-width: 26rem;
+            max-height: 46rem;
+            border-radius: 1rem;
         }
         #signup-content {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.2rem;
         }
-        #signup-content input[type=text], input[type=email], input[type=password] {
+        #signup-content input {
             width: 100%;
             padding: 0.8rem 1rem;
             margin: 1rem, 0;
@@ -46,9 +52,10 @@
             border-radius: 0.5rem;
             box-sizing: border-box;
             font-weight: 590;
+            transition: border-color 0.3s;
         }
-        #signup-content input[type=text], input[type=email], input[type=password].error {
-            border: 2px solid #ff0000;
+        #signup-content input.error {
+            border: 2px solid #ff5b5b;
         }
         #signup {
             width: 100%;
@@ -58,10 +65,20 @@
             border: 2px solid #ccc;
             border-radius: 0.5rem;
             box-sizing: border-box;
+            font-weight: 700;
+            font-size: 1rem;
         }
-        #error-username, #error-email, #error-password {
+        .signup-error {
+            font-size: 0.6rem;
+            font-family: Monaco;
+            color: #ff000000;
+            padding-bottom: 0.4rem;
+            font-weight: 700;
+            color: #ff5b5b;
+        }
+        .signup-title {
             font-size: 1.2rem;
-            color: red;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -80,15 +97,17 @@
     <div id="signup-container">
         <div id="signup-panel">
             <div id="signup-content">
+                <h1>Sign Up</h1>
                 <input type="text" id="username" placeholder="Username">
-                <div id="error-username">fff</div>
+                <div class="signup-error" id="error-username">​</div>
                 <input type="email" id="email" placeholder="Email">
-                <div id="error-email">sss</div>
+                <div class="signup-error" id="error-email">​</div>
                 <input type="password" id="password" placeholder="Password">
+                <div style="height: 0.2rem;"></div>
                 <input type="password" id="second-password" placeholder="Retype Password">
-                <div id="error-password">fff</div>
+                <div class="signup-error" id="error-password">​</div>
                 <button id="signup">Sign Up</button>
-                <div style="color: red;" id="error"></div>
+                <div class="signup-error" id="error">​</div>
             </div>
         </div>
     </div>
@@ -104,7 +123,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
         // 🔧 Your Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
@@ -121,26 +139,58 @@
         const db = getFirestore(app);
 
         document.getElementById('signup').addEventListener("click", async (event) => {
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const secondPassword = document.getElementById('second-password').value;
-            if (secondPassword != password) {
-                document.getElementById('error').innerHTML = "The Passwords don't match up!";
-                return
-            }
-            if (username == "") {
-                document.getElementById('error').innerHTML = "Please add a username";
+            const username = document.getElementById('username');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const secondPassword = document.getElementById('second-password');
+
+            const usernameValue = username.value;
+            const emailValue = email.value;
+            const passwordValue = password.value;
+            const secondPasswordValue = secondPassword.value;
+
+            const usernameError = document.getElementById('error-username');
+            const emailError = document.getElementById('error-email');
+            const passwordError = document.getElementById('error-password');
+            const error = document.getElementById('error');
+
+            username.classList = "";
+            email.classList = "";
+            password.classList = "";
+            secondPassword.classList = "";
+
+            usernameError.innerText = "​";
+            emailError.innerText = "​";
+            passwordError.innerText = "​";
+            error.innerText = "​";
+
+            if (secondPasswordValue != passwordValue) {
+                password.classList = "error";
+                secondPassword.classList = "error";
+                passwordError.innerText = "The Passwords don't match up";
                 return;
             }
-            createUserWithEmailAndPassword(auth, email, password)
+
+            if (usernameValue == "") {
+                username.classList = "error";
+                usernameError.innerText = "Please add a username";
+                return;
+            }
+
+            if (emailValue == "") {
+                email.classList = "error";
+                emailError.innerText = "Please add an email";
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, emailValue, passwordValue)
                 .then((userCredential) => {
                     console.log("hello");
                     const user = userCredential.user;
                     (async () => {
                         try {
                             await setDoc(doc(db, "users", user.uid), {
-                                username: username
+                                username: usernameValue
                             });
                             window.location.href = window.location.href.replace("signup/", "");
                         } catch (e) {
@@ -152,19 +202,25 @@
                     console.log(err.code);
                     switch (err.code) {
                         case "auth/email-already-in-use":
-                            document.getElementById('error').innerHTML = "This Email is already in use!";
+                            email.classList = "error";
+                            emailError.innerText = "This Email is already in use";
                             break;
                         case "auth/missing-email":
-                            document.getElementById('error').innerHTML = "Please add an Email!";
+                            email.classList = "error";
+                            emailError.innerText = "Please add an email";
                             break;
                         case "auth/invalid-email":
-                            document.getElementById('error').innerHTML = "This is not an Email!";
+                            email.classList = "error";
+                            emailError.innerText = "This is not an email";
                             break;
                         case "auth/missing-password":
-                            document.getElementById('error').innerHTML = "Please give your Password!";
+                            password.classList = "error";
+                            secondPassword.classList = "error";
+                            passwordError.innerText = "Please add your password!";
+                            document.getElementById('error').innerText
                             break;
                         default:
-                            document.getElementById('error').innerHTML = "An unknown error occurred: " + err.code;
+                            error.innerText = "An unknown error occurred: " + err.code;
                     }
                 });
         });

@@ -12,25 +12,73 @@
     <style>
         h1 {
             font-size: 2.2rem;
+            margin-top: 0;
         }
         #login-container {
-            top: 0.6rem;
+            top: 5.6rem;
             left: 0.6rem;
             position: fixed;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 80vw;
+            height: 350vw;
             width: calc(100vw - 1.2rem);
-            height: calc(100vh - 1.2rem);
+            height: calc(100vh - 6.2rem);
             pointer-events: none;
+            box-sizing: content-box;
         }
         #login-panel {
+            padding: 2rem;
+            background-color: var(--color-background-highlight);
+            pointer-events: all;
+            width: 80vw;
+            height: 350vw;
+            max-width: 26rem;
+            max-height: 46rem;
+            border-radius: 1rem;
+        }
+        #login-content {
             display: flex;
             flex-direction: column;
-            pointer-events: all;
-            width: 30rem;
-            height: 50rem;
-            background-color: var(--color-background-highlight);
+            gap: 0.2rem;
+        }
+        #login-content input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin: 1rem, 0;
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            font-weight: 590;
+            transition: border-color 0.3s;
+        }
+        #login-content input.error {
+            border: 2px solid #ff5b5b;
+        }
+        #login {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin: 1rem, 0;
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .login-error {
+            font-size: 0.6rem;
+            font-family: Monaco;
+            color: #ff000000;
+            padding-bottom: 0.4rem;
+            font-weight: 700;
+            color: #ff5b5b;
+        }
+        .login-title {
+            font-size: 1.2rem;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -41,17 +89,21 @@
             <img src="../resources/logo-light.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
-            <div id="navbar-username" style="opacity: 0; display: none;"></div>
             <div id="navbar-login">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
         </div>
     </div>
     <div id="login-container">
         <div id="login-panel">
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <button id="login">Log In</button>
-            <div style="color: red;" id="error"></div>
+            <div id="login-content">
+                <h1>Log In</h1>
+                <input type="email" id="email" placeholder="Email">
+                <div class="login-error" id="error-email">​</div>
+                <input type="password" id="password" placeholder="Password">
+                <div class="login-error" id="error-password">​</div>
+                <button id="login">Log In</button>
+                <div class="login-error" id="error">​</div>
+            </div>
         </div>
     </div>
     <script>
@@ -83,9 +135,23 @@
         const db = getFirestore(app);
 
         document.getElementById('login').addEventListener("click", async (event) => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, password)
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+
+            const emailValue = email.value;
+            const passwordValue = password.value;
+
+            const emailError = document.getElementById('error-email');
+            const passwordError = document.getElementById('error-password');
+            const error = document.getElementById('error');
+
+            email.classList = "";
+            password.classList = "";
+
+            emailError.innerText = "​";
+            passwordError.innerText = "​";
+            error.innerText = "​";
+            signInWithEmailAndPassword(auth, emailValue, passwordValue)
                 .then((userCredential) => {
                     window.location.href = window.location.href.replace("login/", "");
                 })
@@ -93,19 +159,22 @@
                     console.log(err.code);
                     switch (err.code) {
                         case "auth/invalid-login-credentials":
-                            document.getElementById('error').innerHTML = "Password or Email is wrong!";
+                            error.innerText = "Password or email is wrong";
                             break;
                         case "auth/missing-email":
-                            document.getElementById('error').innerHTML = "Please add an Email!";
+                            email.classList = "error";
+                            emailError.innerText = "Please add an email";
                             break;
                         case "auth/invalid-email":
-                            document.getElementById('error').innerHTML = "This is not an Email!";
+                            email.classList = "error";
+                            emailError.innerText = "This is not an email";
                             break;
                         case "auth/missing-password":
-                            document.getElementById('error').innerHTML = "Please give your Password!";
+                            password.classList = "error";
+                            passwordError.innerText = "Please add an password";
                             break;
                         default:
-                            document.getElementById('error').innerHTML = "An unknown error occurred: " + err.code;
+                            error.innerText = "An unknown error occurred: " + err.code;
                     }
                 });
         });
