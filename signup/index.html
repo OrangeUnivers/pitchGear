@@ -21,8 +21,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 80vw;
-            height: 350vw;
             width: calc(100vw - 1.2rem);
             height: calc(100vh - 7.6rem);
             pointer-events: none;
@@ -116,8 +114,16 @@
         const navbarItems = ["login", "signup"];
         const relativeBacktracking = "../";
         const permanentlySmall = true;
+        const hasSpacer = false;
     </script>
     <script src="../main.js"></script>
+    <script>
+        if (isMobile) {
+            document.getElementById("signup-container").style.top = "6.5rem";
+            document.getElementById("signup-container").style.height = "calc(100vh - 7.2rem)";
+            document.getElementById("signup-panel").style.maxHeight = "calc(100vh - 11rem)";
+        }
+    </script>
     <script type="module">
         // Firebase imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";

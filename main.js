@@ -151,4 +151,7 @@ if (!permanentlySmall) {
 } else {
     runSizeChange(true, isMobile);
 }
+if (hasSpacer && isMobile) {
+    document.getElementById("navbar-spacer").style.height = "5.2rem"; 
+}
 addEventListener("DOMContentLoaded", (event) => { setTimeout(() => { enableAnimations(); }, 100); });

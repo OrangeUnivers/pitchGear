@@ -109,8 +109,16 @@
         const relativeBacktracking = "../";
         const navbarItems = ["login", "signup"];
         const permanentlySmall = true;
+        const hasSpacer = false;
     </script>
     <script src="../main.js"></script>
+    <script>
+        if (isMobile) {
+            document.getElementById("login-container").style.top = "6.5rem";
+            document.getElementById("login-container").style.height = "calc(100vh - 7.2rem)";
+            document.getElementById("login-panel").style.maxHeight = "calc(100vh - 11rem)";
+        }
+    </script>
     <script type="module">
         // Firebase imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
