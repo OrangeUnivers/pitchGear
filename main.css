@@ -1,6 +1,13 @@
 body {
     --color-background: #FFFFFF;
     --color-background-highlight: #ececec;
+    --color-background-border: #d6d6d6;
+    --color-accent: #b3ff57;
+    --color-accent-border: #8cff00;
+    --color-accent-text: #eeffd9;
+    --color-error: #ff5757;
+    --color-error-border: #ff0000;
+    --color-error-text: #ffd9d9;
     --color-text: #000000;
     --color-text-highlight: #5c5c5c;
     transition: color 0.3s, background-color 0.3s;
@@ -13,6 +20,7 @@ body {
 body.dark {
     --color-background: #3b3b3b;
     --color-background-highlight: #333333;
+    --color-background-border: #535353;
     --color-text: #dfdfdf;
     --color-text-highlight: #979797;
 }
@@ -127,7 +135,7 @@ body.dark {
     -ms-user-select: none;
     user-select: none;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: color 0.3s, background-color 0.3s;
 }
 #navbar-back:hover {
     color: var(--color-text-highlight);

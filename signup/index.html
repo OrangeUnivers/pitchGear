@@ -35,6 +35,7 @@
             max-width: calc(100vw - 1.2rem);
             max-height: calc(100vh - 11.6rem);
             border-radius: 1rem;
+            transition: color 0.3s, background-color 0.3s;
         }
         #signup-content {
             display: flex;
@@ -46,11 +47,15 @@
             padding: 0.8rem 1rem;
             margin: 1rem, 0;
             display: inline-block;
-            border: 2px solid #ccc;
+            border: 2px solid var(--color-background-border);
             border-radius: 0.5rem;
             box-sizing: border-box;
             font-weight: 590;
             transition: border-color 0.3s;
+            outline: none;
+        }
+        #signup-content input:focus {
+            border: 2px solid var(--color-accent-border);
         }
         #signup-content input.error {
             border: 2px solid #ff5b5b;
@@ -60,7 +65,9 @@
             padding: 0.8rem 1rem;
             margin: 1rem, 0;
             display: inline-block;
-            border: 2px solid #ccc;
+            border: 2px solid var(--color-accent-border);
+            background-color: var(--color-accent);
+            color: var(--color-accent-text);
             border-radius: 0.5rem;
             box-sizing: border-box;
             font-weight: 700;
@@ -144,31 +151,21 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        document.getElementById('signup').addEventListener("click", async (event) => {
-            const username = document.getElementById('username');
-            const email = document.getElementById('email');
-            const password = document.getElementById('password');
-            const secondPassword = document.getElementById('second-password');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const secondPassword = document.getElementById('second-password');
 
+        const usernameError = document.getElementById('error-username');
+        const emailError = document.getElementById('error-email');
+        const passwordError = document.getElementById('error-password');
+        const error = document.getElementById('error');
+
+        document.getElementById('signup').addEventListener("click", async (event) => {
             const usernameValue = username.value;
             const emailValue = email.value;
             const passwordValue = password.value;
             const secondPasswordValue = secondPassword.value;
-
-            const usernameError = document.getElementById('error-username');
-            const emailError = document.getElementById('error-email');
-            const passwordError = document.getElementById('error-password');
-            const error = document.getElementById('error');
-
-            username.classList = "";
-            email.classList = "";
-            password.classList = "";
-            secondPassword.classList = "";
-
-            usernameError.innerText = "​";
-            emailError.innerText = "​";
-            passwordError.innerText = "​";
-            error.innerText = "​";
 
             if (secondPasswordValue != passwordValue) {
                 password.classList = "error";
@@ -229,6 +226,32 @@
                             error.innerText = "An unknown error occurred: " + err.code;
                     }
                 });
+        });
+        username.addEventListener('input', (event) => {
+            username.classList = "";
+
+            usernameError.innerText = "​";
+            error.innerText = "​";
+        });
+        email.addEventListener('input', (event) => {
+            email.classList = "";
+
+            emailError.innerText = "​";
+            error.innerText = "​";
+        });
+        password.addEventListener('input', (event) => {
+            password.classList = "";
+            secondPassword.classList = "";
+
+            passwordError.innerText = "​";
+            error.innerText = "​";
+        });
+        secondPassword.addEventListener('input', (event) => {
+            password.classList = "";
+            secondPassword.classList = "";
+
+            passwordError.innerText = "​";
+            error.innerText = "​";
         });
         let initialLoad = true;
         onAuthStateChanged(auth, (user) => {

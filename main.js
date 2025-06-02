@@ -154,4 +154,9 @@ if (!permanentlySmall) {
 if (hasSpacer && isMobile) {
     document.getElementById("navbar-spacer").style.height = "5.2rem"; 
 }
+
+document.getElementById('navbar-logo').addEventListener("click", (event) => {
+    changeColorScheme()
+});
+
 addEventListener("DOMContentLoaded", (event) => { setTimeout(() => { enableAnimations(); }, 100); });

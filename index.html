@@ -13,6 +13,29 @@
         h1 {
             font-size: 2.2rem;
         }
+        #team-list {
+            padding: 25px;
+            display: grid;
+            gap: 10px;
+            overflow-y: auto;
+            max-height: calc(100% - 50px);
+            overflow-x: hidden;
+        }
+        #team-list div {
+            padding: 1rem;
+            text-align: center;
+            background-color: var(--color-background-highlight);
+            border-radius: 1rem;
+            box-shadow: 0rem 0.4rem 0.6rem #00000060;
+            height: 16rem;
+        }
+        #team-list div img {
+            height: 10rem;
+            /* height: auto; */
+        }
+        #team-list div p {
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +44,8 @@
 
     <h1>Teams</h1>
 
-    <div id="team-list"></div>
+    <div id="team-list">
+    </div>
     <div id="navbar">
         <img src="resources/logo-light.png" alt="" id="navbar-logo">
         <div id="navbar-account">
@@ -34,6 +58,39 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    <script>
+        function combineToString(str, amount, separator = "") {
+            let endStr = "";
+            for (let i = 0; i < amount; i++) {
+                if (i+1 == amount) {
+                    endStr += str
+                } else {
+                    endStr += str + separator
+                }
+            }
+            return endStr
+        }
+        function updateWidthGrid() {
+            const objectList = document.getElementById("team-list");
+            let objectAmount = 20;
+            const gapRem = 0.625; // 10px gap converted to rem (10 / 16)
+            while (true) {
+                if (window.innerWidth > 110 + (200 * objectAmount)) {
+                    // Calculate grid-template-columns using rem units
+                    const newValue = combineToString(
+                        `calc((100% - ${(objectAmount - 1) * gapRem}rem) / ${objectAmount})`,
+                        objectAmount,
+                        " "
+                    );
+                    objectList.style.gridTemplateColumns = newValue;
+                    break;
+                }
+                objectAmount--;
+            }
+        }
+        updateWidthGrid();
+        window.addEventListener('resize', updateWidthGrid);
+    </script>
     <script>
         const mainPage = window.location.href;
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -103,7 +160,7 @@
                 const data = doc.data();
                 const div = document.createElement("div");
                 div.innerHTML = `
-                    <img src="${data.logo}" alt="${data.name+" Logo"}" width=160rem">
+                    <img src="${data.logo}" alt="${data.name+" Logo"}" height="160rem">
                     <p>${data.name}</p>
                 `;
                 div.onclick = () => {
@@ -114,35 +171,6 @@
         }
 
         loadProducts();
-
-        // async function buyProduct(productId) {
-        //     const user = auth.currentUser;
-        //     if (!user) {
-        //         alert("You must be logged in to buy a product.");
-        //         return;
-        //     }
-
-        //     try {
-        //         const token = await user.getIdToken();
-        //         const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/createCheckoutSession", {
-        //             method: "POST",
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": `Bearer ${token}`
-        //             },
-        //             body: JSON.stringify({ productId })
-        //         });
-
-        //         const data = await res.json();
-        //         if (data.url) {
-        //             window.location.href = data.url;
-        //         } else {
-        //             alert(data.error || "Something went wrong.");
-        //         }
-        //     } catch (err) {
-        //         alert("Failed to start checkout: " + err.message);
-        //     }
-        // }
     </script>
 </body>
 </html>
