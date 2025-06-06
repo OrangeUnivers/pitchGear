@@ -9,83 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="../main.css" rel="stylesheet">
-    <style>
-        h1 {
-            font-size: 2.2rem;
-            margin-top: 0;
-        }
-        #login-container {
-            top: 7rem;
-            left: 0.6rem;
-            position: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: calc(100vw - 1.2rem);
-            height: calc(100vh - 7.6rem);
-            pointer-events: none;
-            box-sizing: content-box;
-        }
-        #login-panel {
-            padding: 2rem;
-            background-color: var(--color-background-highlight);
-            pointer-events: all;
-            width: 25rem;
-            height: 40rem;
-            max-width: calc(100vw - 1.2rem);
-            max-height: calc(100vh - 11.6rem);
-            border-radius: 1rem;
-            transition: color 0.3s, background-color 0.3s;
-        }
-        #login-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-        #login-content input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            margin: 1rem, 0;
-            display: inline-block;
-            border: 2px solid var(--color-background-border);
-            border-radius: 0.5rem;
-            box-sizing: border-box;
-            font-weight: 590;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-        #login-content input:focus {
-            border: 2px solid var(--color-accent-border);
-        }
-        #login-content input.error {
-            border: 2px solid #ff5b5b;
-        }
-        #login {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            margin: 1rem, 0;
-            display: inline-block;
-            border: 2px solid var(--color-accent-border);
-            background-color: var(--color-accent);
-            color: var(--color-accent-text);
-            border-radius: 0.5rem;
-            box-sizing: border-box;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        .login-error {
-            font-size: 0.6rem;
-            font-family: Monaco;
-            color: #ff000000;
-            padding-bottom: 0.4rem;
-            font-weight: 700;
-            color: #ff5b5b;
-        }
-        .login-title {
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-    </style>
+    <link href="../account-managment.css" rel="stylesheet">
 </head>
 <body>
     <div id="navbar">
@@ -98,16 +22,16 @@
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
         </div>
     </div>
-    <div id="login-container">
-        <div id="login-panel">
-            <div id="login-content">
+    <div id="account-container">
+        <div id="account-panel">
+            <div id="account-content">
                 <h1>Log In</h1>
                 <input type="email" id="email" placeholder="Email">
-                <div class="login-error" id="error-email">​</div>
+                <div class="account-error" id="error-email">​</div>
                 <input type="password" id="password" placeholder="Password">
-                <div class="login-error" id="error-password">​</div>
-                <button id="login">Log In</button>
-                <div class="login-error" id="error">​</div>
+                <div class="account-error" id="error-password">​</div>
+                <button id="account">Log In</button>
+                <div class="account-error" id="error">​</div>
             </div>
         </div>
     </div>
@@ -121,9 +45,9 @@
     <script src="../main.js"></script>
     <script>
         if (isMobile) {
-            document.getElementById("login-container").style.top = "6.5rem";
-            document.getElementById("login-container").style.height = "calc(100vh - 7.2rem)";
-            document.getElementById("login-panel").style.maxHeight = "calc(100vh - 11rem)";
+            document.getElementById("account-container").style.top = "6.5rem";
+            document.getElementById("account-container").style.height = "calc(100vh - 7.2rem)";
+            document.getElementById("account-panel").style.maxHeight = "calc(100vh - 11rem)";
         }
     </script>
     <script type="module">
@@ -147,7 +71,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        document.getElementById('login').addEventListener("click", async (event) => {
+        document.getElementById('account').addEventListener("click", async (event) => {
             const email = document.getElementById('email');
             const password = document.getElementById('password');
 
@@ -166,7 +90,7 @@
             error.innerText = "​";
             signInWithEmailAndPassword(auth, emailValue, passwordValue)
                 .then((userCredential) => {
-                    window.location.href = window.location.href.replace("login/", "");
+                    goBack();
                 })
                 .catch(err => {
                     console.log(err.code);
@@ -193,7 +117,7 @@
         });
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                window.location.href = window.location.href.replace("login/", "")
+                goBack();
             }
         });
     </script>

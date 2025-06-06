@@ -1,0 +1,76 @@
+
+h1 {
+    font-size: 2.2rem;
+    margin-top: 0;
+}
+#account-container {
+    top: 7rem;
+    left: 0.6rem;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100vw - 1.2rem);
+    height: calc(100vh - 7.6rem);
+    pointer-events: none;
+    box-sizing: content-box;
+}
+#account-panel {
+    padding: 2rem;
+    background-color: var(--color-background-highlight);
+    pointer-events: all;
+    width: 25rem;
+    height: 40rem;
+    max-width: calc(100vw - 1.2rem);
+    max-height: calc(100vh - 11.6rem);
+    border-radius: 1rem;
+    transition: color 0.3s, background-color 0.3s;
+}
+#account-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+#account-content input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin: 1rem, 0;
+    display: inline-block;
+    border: 2px solid var(--color-background-border);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-weight: 590;
+    transition: border-color 0.3s;
+    outline: none;
+}
+#account-content input:focus {
+    border: 2px solid var(--color-accent-border);
+}
+#account-content input.error {
+    border: 2px solid var(--color-error-border);
+}
+#account {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin: 1rem, 0;
+    display: inline-block;
+    border: 2px solid var(--color-accent-border);
+    background-color: var(--color-accent);
+    color: var(--color-accent-text);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-weight: 700;
+    font-size: 1rem;
+}
+.account-error {
+    font-size: 0.6rem;
+    font-family: Monaco;
+    color: #ff000000;
+    padding-bottom: 0.4rem;
+    font-weight: 700;
+    color: var(--color-error);
+}
+.account-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+}

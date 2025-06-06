@@ -2,14 +2,14 @@ body {
     --color-background: #FFFFFF;
     --color-background-highlight: #ececec;
     --color-background-border: #d6d6d6;
-    --color-accent: #b3ff57;
-    --color-accent-border: #8cff00;
-    --color-accent-text: #eeffd9;
-    --color-error: #ff5757;
-    --color-error-border: #ff0000;
-    --color-error-text: #ffd9d9;
+    --color-accent: #30d29f;
+    --color-accent-border: #28bd8e;
+    --color-accent-text: #d7fff2;
+    --color-error: #ff5b5b;
+    --color-error-border: #ff5b5b;
     --color-text: #000000;
     --color-text-highlight: #5c5c5c;
+    --color-input: #ffffff;
     transition: color 0.3s, background-color 0.3s;
     background-color: var(--color-background);
     margin: 0.6rem;
@@ -21,8 +21,15 @@ body.dark {
     --color-background: #3b3b3b;
     --color-background-highlight: #333333;
     --color-background-border: #535353;
+    --color-accent: #1d956f;
+    --color-accent-border: #15694e;
+    --color-accent-text: #c1e5da;
+    --color-error: #e33737;
+    --color-error-border: #c93939;
     --color-text: #dfdfdf;
     --color-text-highlight: #979797;
+    --color-input: #ffffff;
+    --color-input-text: #060000;
 }
 #navbar {
     display: flex;
