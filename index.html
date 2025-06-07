@@ -59,6 +59,10 @@
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
     <script>
+        function roundTo(value, digits) {
+            const factor = 10 ** digits;
+            return Math.round(value * factor) / factor;
+        }
         function combineToString(str, amount, separator = "") {
             let endStr = "";
             for (let i = 0; i < amount; i++) {
@@ -73,22 +77,25 @@
         function updateWidthGrid() {
             const objectList = document.getElementById("team-list");
             let objectAmount = 20;
-            const gapRem = 0.625; // 10px gap converted to rem (10 / 16)
+            const gapRem = 0.5; // 10px gap converted to rem (10 / 16)
             while (true) {
-                if (window.innerWidth > 110 + (200 * objectAmount)) {
+                if (window.innerWidth > 110 + (200 * objectAmount) || objectAmount == 1) {
                     // Calculate grid-template-columns using rem units
+                    let calculatedSubtraction = roundTo(5.2 + ((objectAmount - 1) * gapRem),1)
                     const newValue = combineToString(
-                        `calc((100% - ${(objectAmount - 1) * gapRem}rem) / ${objectAmount})`,
+                        `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount})`,
                         objectAmount,
                         " "
                     );
+                    console.log("Amount:     " + objectAmount.toString())
+                    console.log("Subtracted: " + calculatedSubtraction.toString())
                     objectList.style.gridTemplateColumns = newValue;
                     break;
                 }
                 objectAmount--;
             }
         }
-        updateWidthGrid();
+        updateWithGrid();
         window.addEventListener('resize', updateWidthGrid);
     </script>
     <script>
