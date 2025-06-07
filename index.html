@@ -14,9 +14,9 @@
             font-size: 2.2rem;
         }
         #team-list {
-            padding: 25px;
+            padding: 2rem;
             display: grid;
-            gap: 10px;
+            gap: 1rem;
             overflow-y: auto;
             max-height: calc(100% - 50px);
             overflow-x: hidden;
@@ -77,13 +77,18 @@
         function updateWidthGrid() {
             const objectList = document.getElementById("team-list");
             let objectAmount = 20;
-            const gapRem = 0.5; // 10px gap converted to rem (10 / 16)
+            const gapRem = 1; // 10px gap converted to rem (10 / 16)
             while (true) {
                 if (window.innerWidth > 110 + (200 * objectAmount) || objectAmount == 1) {
                     // Calculate grid-template-columns using rem units
-                    let calculatedSubtraction = roundTo(5.2 + ((objectAmount - 1) * gapRem),1)
+                    let calculatedSubtraction;
+                    if (objectAmount > 1) {
+                        calculatedSubtraction = roundTo(5.2 + ((objectAmount - 1) * gapRem), 1);
+                    } else {
+                        calculatedSubtraction = 5.2;
+                    }
                     const newValue = combineToString(
-                        `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount})`,
+                        `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount >= 1 ? objectAmount : 1})`,
                         objectAmount,
                         " "
                     );
@@ -95,7 +100,7 @@
                 objectAmount--;
             }
         }
-        updateWithGrid();
+        updateWidthGrid();
         window.addEventListener('resize', updateWidthGrid);
     </script>
     <script>

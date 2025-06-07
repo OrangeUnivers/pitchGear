@@ -16,6 +16,24 @@ body {
     font-family: Roboto;
     position: absolute;
     color: var(--color-text);
+    overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+    width: 0.8rem;
+    transform: translateY(10rem);
+}
+body::-webkit-scrollbar-track {
+    background-color: var(--color-background-border);
+    border-radius: 0.4rem 0 0 0.4rem;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: #888888;
+    border-radius: 0.4rem;
+    transition: background-color 0.3s;
+    border: 0.2rem var(--color-background-border) solid;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #aaaaaa;
 }
 body.dark {
     --color-background: #3b3b3b;
