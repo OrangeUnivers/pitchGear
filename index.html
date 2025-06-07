@@ -28,6 +28,7 @@
             border-radius: 1rem;
             box-shadow: 0rem 0.4rem 0.6rem #00000060;
             height: 16rem;
+            transition: background-color 0.3s;
         }
         #team-list div img {
             height: 10rem;
@@ -165,7 +166,7 @@
             }
         });
 
-        async function loadProducts() {
+        async function loadTeams() {
             const container = document.getElementById("team-list");
             const querySnapshot = await getDocs(collection(db, "teams"));
             querySnapshot.forEach((doc) => {
@@ -182,7 +183,7 @@
             });
         }
 
-        loadProducts();
+        loadTeams();
     </script>
 </body>
 </html>

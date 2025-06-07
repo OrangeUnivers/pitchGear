@@ -3,21 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>PitchGear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <link href="../main.css" rel="stylesheet">
+    <style>
+        h1 {
+            font-size: 2.2rem;
+        }
+        /* Style the buttons that are used to open and close the accordion panel */
+        #edition-holder {
+            display: flex;
+            flex-direction: column;
+            width: calc(100vw - 1.2rem);
+        }
+        .accordion {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #0000;
+            color: var(--color-text-highlight);
+            cursor: pointer;
+            padding: 0.8rem;
+            /* margin-top: 1.2rem; */
+            width: 100%;
+            border: none;
+            outline: none;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: monospace;
+            border-radius: 0.6rem;
+            box-shadow: 0 0.2rem 0.4rem #00000030;
+        }
+        .accordion h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .accordion i {
+            transition: transform 0.3s;
+        }
+        .accordion.active i {
+            transform: rotate(45deg) scale(1.2);
+        }
+        .accordion.active, .accordion:hover {
+            background-color: var(--color-background-highlight);
+            color: var(--color-text);
+        }
+        .panel {
+            padding-bottom: 0.8rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .panel-elements {
+            padding: 1.6rem 1rem 0.6rem 1rem;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            overflow-y: auto;
+        }
+        .panel-elements::-webkit-scrollbar {
+            height: 0.6rem;
+            transform: translateY(10rem);
+        }
+        .panel-elements::-webkit-scrollbar-track {
+            background-color: #0000;
+        }
+        .panel-elements::-webkit-scrollbar-thumb {
+            background-color: #888888;
+            border-radius: 0.3rem;
+            transition: background-color 0.3s;
+        }
+        .panel-elements::-webkit-scrollbar-thumb:hover {
+            background-color: #aaaaaa;
+        }
+        .panel-elements div {
+            background-color: var(--color-background);
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* justify-content: center; */
+            box-shadow: 0 0.2rem 0.4rem #00000030;
+            border-radius: 1rem;
+            color: var(--color-text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .panel-elements div img {
+            width: 6.8rem;
+            /* width: 5.6rem; */
+            background-color: var(--color-background-highlight);
+            margin-bottom: 0.4rem;
+            border-radius: 0.6rem;
+            /* padding: 0.6rem; */
+            transition: background-color 0.3s;
+        }
+        .panel-elements div h3 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        .panel-elements div button {
+            color: var(--color-accent-text);
+            cursor: pointer;
+            border-radius: 0.4rem;
+            padding: 0.6rem 1.6rem;
+            border: none;
+            outline: none;
+            font-family: Fira Code;
+            font-weight: 550;
+            font-size: 1rem;
+            margin-top: 0.4rem;
+            background-color: var(--color-accent);
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
 </head>
 <body>
-    <div id="post-id"></div>
+
+    <div style="height: 7.2rem;" id="navbar-spacer"></div>
+
+    <h1 id="team-name">Team</h1>
+    <div id="edition-holder">
+    </div>
+    <div id="navbar">
+        <div id="navbar-start">
+            <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
+            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+        </div>
+        <div id="navbar-account">
+            <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-login" onclick="goToPage('login')">Log In</div>
+            <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navbar-username" style="display: none;"></div>
+            <div id="navbar-logout" style="display: none;">Logout</div>
+        </div>
+    </div>
+    <div id="navbar-gradient"></div>
+    <div id="navbar-block"></div>
     <script>
+        const mainPage = window.location.href.replace("team/", "");
+        const navbarItems = ["login", "signup", "panel", "username", "logout"];
+        const relativeBacktracking = "../";
+        const permanentlySmall = false;
+        const hasSpacer = true;
+    </script>
+    <script src="../main.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
+            authDomain: "csongors-shop.firebaseapp.com",
+            databaseURL: "https://csongors-shop-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "csongors-shop",
+            storageBucket: "csongors-shop.firebasestorage.app",
+            messagingSenderId: "216505981379",
+            appId: "1:216505981379:web:570fbaac58a5e564994576"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
         const queryString = window.location.search;
 
         const urlParams = new URLSearchParams(queryString);
-
+        let teamIdParam;
         if (!urlParams.has('id')) {
-            const postID = "fc_bayern_muenchen";
-            document.getElementById("post-id").innerText = postID;
+            teamIdParam = "fc_bayern_muenchen";
         } else {
-            const postID = urlParams.get('id');
-            document.getElementById("post-id").innerText = postID;
+            teamIdParam = urlParams.get('id');
+        }
+        console.log(teamIdParam)
+        const teamDocSnap = await getDoc(doc(db, "teams", teamIdParam));
+        const teamData = teamDocSnap.data();
+        const teamName = teamData.name;
+        const teamResourcesSnap = await getDoc(doc(db, "resources", teamIdParam));
+        let teamResources;
+        if (teamResourcesSnap.exists()) {
+            teamResources = teamResourcesSnap.data();
+        } else {
+            teamResources = {};
+        }
+        const editionList = document.getElementById("edition-holder");
+        document.getElementById("team-name").innerText = teamName;
+        if (teamData.editions) {
+            teamData.editions.forEach((edition, index) => {
+                console.log(edition)
+                let allowedProducts = ["player_shirt", "goalie_shirt", "player_shorts", "goalie_shorts"]
+                console.log(Object.entries(teamData.restriced))
+                Object.entries(teamData.restriced).forEach((restricedElement, restricedIndex) => {
+                    if (restricedElement.split("-")[0] == edition) {
+                        allowedProducts = allowedProducts.filter(el => el !== restricedElement.split("-")[1]);
+                    }
+                });
+                let editionButton = document.createElement("button");
+                editionButton.classList = "accordion";
+                editionButton.innerHTML = `<h2>- ${edition} -</h2><i class="fa-solid fa-plus"></i>`
+                let editionElement = document.createElement("div");
+                editionElement.classList = "panel-elements";
+                let editionElementHolder = document.createElement("div");
+                editionElementHolder.classList = "panel";
+                editionElementHolder.append(editionElement);
+
+                allowedProducts.forEach((product, productIndex) => {
+                    let productImageURL;
+                    let productImageLink = [edition, product].join("-");
+                    if (productImageLink in teamResources) {
+                        productImageURL = teamResources[productImageLink];
+                    } else {
+                        productImageURL = "../resources/shirt-default-light.png";
+                    }
+                    let productShowname;
+                    switch (product) {
+                        case "player_shirt":
+                            productShowname = "Player Shirt";
+                            break;
+                        case "goalie_shirt":
+                            productShowname = "Goalie Shirt";
+                            break;
+                        case "player_shorts":
+                            productShowname = "Player Shorts";
+                            break;
+                        case "goalie_shorts":
+                            productShowname = "Goalie Shorts";
+                            break;
+                    }
+                    let productElement = document.createElement("div")
+                    productElement.innerHTML = `
+                        <img src="${productImageURL}" alt="${product.replace("_", " ")}">
+                        <h3>${productShowname}</h3>
+                        <button onclick="goToPage('product?team=${teamIdParam}&edition=${edition.replace(" ", "%20")}&product=${product}')">View</button>
+                    `;
+                    editionElement.append(productElement);
+                });
+                editionList.append(editionButton);
+                editionList.append(editionElementHolder);
+            });
+        } else {
+            let missingEditions = document.createElement("h2");
+            missingEditions.innerText = "There were no shirts found!";
+            missingEditions.style.textAlign = "center";
+            missingEditions.style.color = "var(--color-text-highlight)";
+            document.body.append(missingEditions);
+        }
+        document.getElementById('navbar-logout').addEventListener("click", async (event) => {
+            signOut(auth);
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                (async () => {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    const userData = userDoc.data();
+                    if (userData) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
+                            document.getElementById("navbar-panel").style.display = "block";
+                        } else {
+                            document.getElementById("navbar-panel").style.display = "none";
+                        }
+                        document.getElementById("navbar-username").style.display = "block";
+                        document.getElementById("navbar-username").textContent = userData.username || user.email;
+                    } else {
+                        document.getElementById("navbar-panel").style.display = "none";
+                        document.getElementById("navbar-username").style.display = "block";
+                        document.getElementById("navbar-username").textContent = user.email;
+                    }
+                    document.getElementById("navbar-login").style.display = "none";
+                    document.getElementById("navbar-signup").style.display = "none";
+                    document.getElementById("navbar-logout").style.display = "block";
+                })();
+            } else {
+                document.getElementById("navbar-panel").style.display = "none";
+                document.getElementById("navbar-login").style.display = "block";
+                document.getElementById("navbar-signup").style.display = "block";
+                document.getElementById("navbar-logout").style.display = "none";
+                document.getElementById("navbar-username").style.display = "none";
+            }
+        });
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
         }
     </script>
 </body>
