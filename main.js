@@ -1,6 +1,8 @@
 disableAnimations()
 let darkMode = false;
 let navbarSmall = false;
+const relativeBacktracking = "../".repeat(nestingAmount);
+const mainPage = window.location.protocol + "//" + window.location.host + window.location.pathname.replace(subPage, "");
 
 const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 function goToPage(page) {
