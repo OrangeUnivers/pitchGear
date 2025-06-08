@@ -44,6 +44,7 @@
         }
         .accordion i {
             transition: transform 0.3s;
+            font-size: 1rem;
         }
         .accordion.active i {
             transform: rotate(45deg) scale(1.2);
@@ -53,28 +54,29 @@
             color: var(--color-text);
         }
         .panel {
-            padding-bottom: 0.8rem;
+            padding-bottom: 0.6rem;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.2s ease-out;
         }
         .panel-elements {
-            padding: 1.6rem 1rem 0.6rem 1rem;
+            padding: 1.6rem 1rem 0.8rem 1rem;
             display: flex;
             flex-direction: row;
             gap: 1rem;
             overflow-y: auto;
         }
         .panel-elements::-webkit-scrollbar {
-            height: 0.6rem;
+            height: 0.4rem;
             transform: translateY(10rem);
         }
         .panel-elements::-webkit-scrollbar-track {
             background-color: #0000;
+            margin: 1rem;
         }
         .panel-elements::-webkit-scrollbar-thumb {
             background-color: #888888;
-            border-radius: 0.3rem;
+            border-radius: 0.2rem;
             transition: background-color 0.3s;
         }
         .panel-elements::-webkit-scrollbar-thumb:hover {
@@ -191,6 +193,12 @@
         }
         const editionList = document.getElementById("edition-holder");
         document.getElementById("team-name").innerText = teamName;
+        function parseFormattingData(data) {
+            return data.replace(/\$(.+?)\;/g, (match, p1) => {
+                return p1.replace("-", "/");
+            });
+        }
+
         if (teamData.editions) {
             teamData.editions.forEach((edition, index) => {
                 console.log(edition)
@@ -203,7 +211,7 @@
                 });
                 let editionButton = document.createElement("button");
                 editionButton.classList = "accordion";
-                editionButton.innerHTML = `<h2>- ${edition} -</h2><i class="fa-solid fa-plus"></i>`
+                editionButton.innerHTML = `<h2>- ${parseFormattingData(edition)} -</h2><i class="fa-solid fa-plus"></i>`
                 let editionElement = document.createElement("div");
                 editionElement.classList = "panel-elements";
                 let editionElementHolder = document.createElement("div");
