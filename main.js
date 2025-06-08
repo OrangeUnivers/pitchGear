@@ -155,7 +155,14 @@ if (!permanentlySmall) {
     runSizeChange(true, isMobile);
 }
 if (hasSpacer && isMobile) {
-    document.getElementById("navbar-spacer").style.height = "5.2rem"; 
+    if (!permanentlySmall) {
+        document.getElementById("navbar-spacer").style.height = "5.2rem";
+    } else {
+        document.getElementById("navbar-spacer").style.height = "4rem";
+    }
+}
+if (hasSpacer && !isMobile && permanentlySmall) {
+    document.getElementById("navbar-spacer").style.height = "4.6rem";
 }
 
 document.getElementById('navbar-logo').addEventListener("click", (event) => {

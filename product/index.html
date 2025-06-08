@@ -13,8 +13,69 @@
         h1 {
             font-size: 2.2rem;
         }
+        h2 {
+            margin: 0;
+        }
+        h3 {
+            margin: 0.4rem;
+            margin-top: 0.2rem;
+            margin-bottom: 1.4rem;
+            font-weight: 500;
+        }
+        #product-container {
+            width: calc(100vw - 3.2rem);
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: stretch;
+            /* gap: 0.4rem; */
+            box-shadow: 0 0.2rem 0.4rem #00000030;
+            border-radius: 1rem;
+            margin: 1rem;
+            background-color: var(--color-background-highlight);
+        }
+        #product-container.mobile {
+            flex-direction: column;
+        }
+        #product-container>div {
+            width: 100%;
+            padding: 1rem;
+        }
+        #product-container.mobile>div {
+            width: calc(100% - 2rem);
+            padding: 1rem;
+        }
+        #product-container #product-show {
+            width: min-content;
+        }
+        #product-details {
+            margin: 1.6rem;
+            margin-left: 0.4rem;
+            border-radius: 0.6rem;
+            box-shadow: 0 0.2rem 0.6rem #00000030;
+            background-color: var(--color-background);
+        }
         #product-image {
-            width: 20rem;
+            width: calc(100vw / 3.14159);
+            max-width: 20rem;
+            min-width: 10rem;
+            box-shadow: 0 0.2rem 0.6rem #00000030;
+            border-radius: 0.6rem;
+        }
+        #product-price {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .mobile #product-details {
+            margin: 1.6rem;
+            margin-top: 0.4rem;
+            width: calc(100vw - 8.4rem) !important;
+        }
+        .mobile #product-image {
+            max-width: max-content;
+            min-width: 0;
+            width: calc(100vw - 5.2rem);
         }
     </style>
 </head>
@@ -22,7 +83,7 @@
 
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
-    <h1 id="product-name">Product</h1>
+    <h1 id="product-title">Product</h1>
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back"><i class="fa-solid fa-arrow-left"></i></div>
@@ -38,6 +99,17 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    <!-- <div id="product-container" class="mobile"> -->
+    <div id="product-container">
+        <div id="product-show">
+            <img src="https://img.fantaskycdn.com/ddc7b5b693c74dba5292332317894560_1080x.jpg" alt="[object HTMLHeadingElement]" id="product-image">
+        </div>
+        <div id="product-details">
+            <h2 id="product-name"></h2>
+            <h3 id="product-description"></h3>
+            <div><span id="product-price">34.99</span> <span id="product-currency">CHF</span></div>
+        </div>
+    </div>
     <script>
         const subPage = "product/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -46,11 +118,21 @@
         const hasSpacer = true;
     </script>
     <script src="../main.js"></script>
+    <script>
+        if (isMobile) {
+            document.getElementById("product-container").classList = "mobile";
+        }
+    </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
+        
+        function parseFormattingData(data) {
+            return data.replace(/\$(.+?)\;/g, (match, p1) => {
+                return p1.replace("-", "/");
+            });
+        }
 
         const firebaseConfig = {
             apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
@@ -82,22 +164,48 @@
         document.getElementById("navbar-back").onclick = () => {
             goToPage(`team?team=${teamIdParam}`)
         }
+        const teamDocSnap = await getDoc(doc(db, "teams", teamIdParam));
+        const teamData = teamDocSnap.data();
+        const teamName = teamData.name;
+        const productsDocSnap = await getDocs(collection(db, "products"));
+        let productList = {};
+        let productFilter = new RegExp(String.raw`^${productIdParam.split("_")[1]}`, "");
+        productsDocSnap.forEach((productSnap, productIndex) => {
+            let product = productSnap.data();
+            let productId = productSnap.id;
+            console.log(product);
+            console.log(productFilter);
+            if (productFilter.test(productId)) {
+                productList[productId] = product;
+            }
+        });
+        console.log(productList);
 
-        let productNameElement = document.getElementById("product-name");
+        function updatePrice() {
+
+        }
+
+        let productName;
+        let productTitleElement = document.getElementById("product-title");
         switch (productIdParam) {
             case "player_shirt":
-                productNameElement.innerText = "Player Shirt";
+                productName = "Player Shirt";
                 break;
             case "goalie_shirt":
-                productNameElement.innerText = "Goalie Shirt";
+                productName = "Goalie Shirt";
                 break;
             case "player_shorts":
-                productNameElement.innerText = "Player Shorts";
+                productName = "Player Shorts";
                 break;
             case "goalie_shorts":
-                productNameElement.innerText = "Goalie Shorts";
+                productName = "Goalie Shorts";
                 break;
         }
+        productTitleElement.innerText = productName + " Info";
+        let productNameElement = document.getElementById("product-name");
+        productNameElement.innerText = teamName + " " + productName;
+        let productDescriptionElement = document.getElementById("product-description");
+        productDescriptionElement.innerText = parseFormattingData(editionIdParam) + " Edition";
 
         const teamResourcesSnap = await getDoc(doc(db, "resources", teamIdParam));
         let teamResources;
@@ -116,9 +224,9 @@
 
         const productImageElement = document.createElement("img");
         productImageElement.src = productImageURL;
-        productImageElement.alt = productNameElement;
+        productImageElement.alt = productName;
         productImageElement.id = "product-image";
-        document.body.append(productImageElement)
+        // document.body.append(productImageElement)
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
             signOut(auth);

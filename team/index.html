@@ -158,7 +158,12 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-
+        function parseFormattingData(data) {
+            return data.replace(/\$(.+?)\;/g, (match, p1) => {
+                return p1.replace("-", "/");
+            });
+        }
+        
         const firebaseConfig = {
             apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
             authDomain: "csongors-shop.firebaseapp.com",
@@ -193,11 +198,6 @@
         }
         const editionList = document.getElementById("edition-holder");
         document.getElementById("team-name").innerText = teamName;
-        function parseFormattingData(data) {
-            return data.replace(/\$(.+?)\;/g, (match, p1) => {
-                return p1.replace("-", "/");
-            });
-        }
 
         if (teamData.editions) {
             teamData.editions.forEach((edition, index) => {
