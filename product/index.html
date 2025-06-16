@@ -127,13 +127,16 @@
             background-color: var(--color-background-highlight);
             cursor: not-allowed;
         }
-        #field {
-            margin-top: 0.6rem;
-            width: 12rem;
-            height: 8rem;
+        #player-selection-container {
             position: relative;
-            border-radius: 1rem;
+            display: flex;
+            width: 16rem;
+            height: 2.6rem;
             background-color: var(--color-background-highlight);
+            margin-top: 0.6rem;
+            border-radius: 0.6rem;
+            align-items: center;
+            padding-left: 0.6rem;
         }
     </style>
 </head>
@@ -172,8 +175,9 @@
                 <div class="toggle-option active" data-value="default" id="toggle-default">Player</div>
                 <div class="toggle-option" data-value="modify" id="toggle-modify">Custom</div>
             </div>
-            <div id="player-selection-dropdown">
-                <div id="field-buy" class="unavailable">Login / Signin</div>
+            <div id="player-selection-container">
+                <div id="player-selection-text">Select a Player</div>
+                <div id="player-selection-dropdown"></div>
             </div>
             <div id="product-buy" class="unavailable">Login / Signin</div>
         </div>
@@ -314,7 +318,7 @@
         productImageElement.id = "product-image";
         document.getElementById("product-show").append(productImageElement);
 
-        function buyItem() {
+        function addToCart() {
         }
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
@@ -322,9 +326,10 @@
         });
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
+            // if (user) {
                 (async () => {
-                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    // const userDoc = await getDoc(doc(db, "users", user.uid));
+                    const userDoc = await getDoc(doc(db, "users", "OrangeUni"));
                     const userData = userDoc.data();
                     if (userData) {
                         if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
@@ -333,31 +338,32 @@
                             document.getElementById("navbar-panel").style.display = "none";
                         }
                         document.getElementById("navbar-username").style.display = "block";
-                        document.getElementById("navbar-username").textContent = userData.username || user.email;
+                        // document.getElementById("navbar-username").textContent = userData.username || user.email;
                     } else {
                         document.getElementById("navbar-panel").style.display = "none";
                         document.getElementById("navbar-username").style.display = "block";
-                        document.getElementById("navbar-username").textContent = user.email;
+                        // document.getElementById("navbar-username").textContent = user.email;
+                        document.getElementById("navbar-username").textContent = "Dev"
                     }
                     document.getElementById("navbar-cart").style.display = "block";
                     document.getElementById("navbar-login").style.display = "none";
                     document.getElementById("navbar-signup").style.display = "none";
                     document.getElementById("navbar-logout").style.display = "block";
-                    document.getElementById("product-buy").innerText = "Buy";
+                    document.getElementById("product-buy").innerText = "Add to Cart";
                     document.getElementById("product-buy").removeAttribute("class");
-                    document.getElementById("product-buy").onclick = buyItem;
+                    document.getElementById("product-buy").onclick = addToCart;
                 })();
-            } else {
-                document.getElementById("navbar-panel").style.display = "none";
-                document.getElementById("navbar-cart").style.display = "none";
-                document.getElementById("navbar-login").style.display = "block";
-                document.getElementById("navbar-signup").style.display = "block";
-                document.getElementById("navbar-logout").style.display = "none";
-                document.getElementById("navbar-username").style.display = "none";
-                document.getElementById("product-buy").innerText = "Login / Signin";
-                document.getElementById("product-buy").classList = "unavailable";
-                document.getElementById("product-buy").removeAttribute("onclick");
-            }
+            // } else {
+            //     document.getElementById("navbar-panel").style.display = "none";
+            //     document.getElementById("navbar-cart").style.display = "none";
+            //     document.getElementById("navbar-login").style.display = "block";
+            //     document.getElementById("navbar-signup").style.display = "block";
+            //     document.getElementById("navbar-logout").style.display = "none";
+            //     document.getElementById("navbar-username").style.display = "none";
+            //     document.getElementById("product-buy").innerText = "Login / Signin";
+            //     document.getElementById("product-buy").classList = "unavailable";
+            //     document.getElementById("product-buy").removeAttribute("onclick");
+            // }
         });
     </script>
 </body>
