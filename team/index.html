@@ -137,6 +137,7 @@
         </div>
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-cart" style="display: none;">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
             <div id="navbar-username" style="display: none;"></div>
@@ -281,12 +282,14 @@
                         document.getElementById("navbar-username").style.display = "block";
                         document.getElementById("navbar-username").textContent = user.email;
                     }
+                    document.getElementById("navbar-cart").style.display = "block";
                     document.getElementById("navbar-login").style.display = "none";
                     document.getElementById("navbar-signup").style.display = "none";
                     document.getElementById("navbar-logout").style.display = "block";
                 })();
             } else {
                 document.getElementById("navbar-panel").style.display = "none";
+                document.getElementById("navbar-cart").style.display = "none";
                 document.getElementById("navbar-login").style.display = "block";
                 document.getElementById("navbar-signup").style.display = "block";
                 document.getElementById("navbar-logout").style.display = "none";

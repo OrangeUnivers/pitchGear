@@ -64,7 +64,7 @@
         }
         #product-price {
             font-family: monospace;
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
         .mobile #product-details {
@@ -78,6 +78,62 @@
             width: calc(100vw - 7.2rem);
             margin: 1rem;
             margin-bottom: 0;
+        }
+        h4 {
+            margin: 0;
+            font-weight: 500;
+            margin-top: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+        #three-toggle {
+            display: flex;
+            border: 1px solid #aaa;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: max-content;
+            font-family: 'Nunito', sans-serif;
+        }
+        .mobile #three-toggle {
+            flex-wrap: wrap;
+        }
+        .toggle-option {
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            user-select: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .toggle-option:not(:last-child) {
+            border-right: 1px solid #ccc;
+        }
+        .toggle-option.active {
+            background-color: var(--color-background-highlight);
+        }
+        #product-buy {
+            border-radius: 0.8rem;
+            padding: 0.8rem 1.8rem;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-accent-text);
+            background-color: var(--color-accent);
+            /* width: min-content; */
+            text-align: center;
+            cursor: pointer;
+        }
+        #product-buy.unavailable {
+            color: var(--color-text);
+            background-color: var(--color-background-highlight);
+            cursor: not-allowed;
+        }
+        #field {
+            margin-top: 0.6rem;
+            width: 12rem;
+            height: 8rem;
+            position: relative;
+            border-radius: 1rem;
+            background-color: var(--color-background-highlight);
         }
     </style>
 </head>
@@ -93,6 +149,7 @@
         </div>
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-cart" style="display: none;">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
             <div id="navbar-username" style="display: none;"></div>
@@ -110,6 +167,16 @@
             <h2 id="product-name"></h2>
             <h3 id="product-description"></h3>
             <div><span id="product-price">34.99</span> <span id="product-currency">CHF</span></div>
+            <h4>Select Shirt Type: <i class="fa-regular fa-circle-question"></i></h4>
+            <div id="three-toggle">
+                <div class="toggle-option" data-value="blank" id="toggle-blank">Only Team</div>
+                <div class="toggle-option active" data-value="default" id="toggle-default">Player</div>
+                <div class="toggle-option" data-value="modify" id="toggle-modify">Custom</div>
+            </div>
+            <div id="player-selection-dropdown">
+                <div id="field-buy" class="unavailable">Login / Signin</div>
+            </div>
+            <div id="product-buy" class="unavailable">Login / Signin</div>
         </div>
     </div>
     <script>
@@ -170,6 +237,7 @@
         const teamData = teamDocSnap.data();
         const teamName = teamData.name;
         const productsDocSnap = await getDocs(collection(db, "products"));
+        let selectedProduct = productIdParam.split("_")[1] + "_default";
         let productList = {};
         let productFilter = new RegExp(String.raw`^${productIdParam.split("_")[1]}`, "");
         productsDocSnap.forEach((productSnap, productIndex) => {
@@ -184,8 +252,25 @@
         console.log(productList);
 
         function updatePrice() {
-
+            document.getElementById("product-price").innerText = (productList[selectedProduct].price) / 100;
+            [...document.getElementById("three-toggle").children].forEach((v, i) => {
+                v.classList = "toggle-option";
+            });
+            document.getElementById("toggle-" + selectedProduct.split("_")[1]).classList = "toggle-option active";
         }
+        updatePrice(selectedProduct);
+        document.getElementById("toggle-blank").addEventListener("click", async (event) => {
+            selectedProduct = productIdParam.split("_")[1] + "_blank";
+            updatePrice();
+        });
+        document.getElementById("toggle-default").addEventListener("click", async (event) => {
+            selectedProduct = productIdParam.split("_")[1] + "_default";
+            updatePrice();
+        });
+        document.getElementById("toggle-modify").addEventListener("click", async (event) => {
+            selectedProduct = productIdParam.split("_")[1] + "_modify";
+            updatePrice();
+        });
 
         let productName;
         let productTitleElement = document.getElementById("product-title");
@@ -230,6 +315,9 @@
         productImageElement.id = "product-image";
         // document.body.append(productImageElement)
 
+        function buyItem() {
+        }
+
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
             signOut(auth);
         });
@@ -252,16 +340,24 @@
                         document.getElementById("navbar-username").style.display = "block";
                         document.getElementById("navbar-username").textContent = user.email;
                     }
+                    document.getElementById("navbar-cart").style.display = "block";
                     document.getElementById("navbar-login").style.display = "none";
                     document.getElementById("navbar-signup").style.display = "none";
                     document.getElementById("navbar-logout").style.display = "block";
+                    document.getElementById("product-buy").innerText = "Buy";
+                    document.getElementById("product-buy").removeAttribute("class");
+                    document.getElementById("product-buy").onclick = buyItem;
                 })();
             } else {
                 document.getElementById("navbar-panel").style.display = "none";
+                document.getElementById("navbar-cart").style.display = "none";
                 document.getElementById("navbar-login").style.display = "block";
                 document.getElementById("navbar-signup").style.display = "block";
                 document.getElementById("navbar-logout").style.display = "none";
                 document.getElementById("navbar-username").style.display = "none";
+                document.getElementById("product-buy").innerText = "Login / Signin";
+                document.getElementById("product-buy").classList = "unavailable";
+                document.getElementById("product-buy").removeAttribute("onclick");
             }
         });
     </script>
