@@ -161,7 +161,6 @@
     <!-- <div id="product-container" class="mobile"> -->
     <div id="product-container">
         <div id="product-show">
-            <img src="https://img.fantaskycdn.com/ddc7b5b693c74dba5292332317894560_1080x.jpg" alt="[object HTMLHeadingElement]" id="product-image">
         </div>
         <div id="product-details">
             <h2 id="product-name"></h2>
@@ -313,7 +312,7 @@
         productImageElement.src = productImageURL;
         productImageElement.alt = productName;
         productImageElement.id = "product-image";
-        // document.body.append(productImageElement)
+        document.getElementById("product-show").append(productImageElement);
 
         function buyItem() {
         }
