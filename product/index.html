@@ -326,10 +326,9 @@
         });
 
         onAuthStateChanged(auth, (user) => {
-            // if (user) {
+            if (user) {
                 (async () => {
-                    // const userDoc = await getDoc(doc(db, "users", user.uid));
-                    const userDoc = await getDoc(doc(db, "users", "OrangeUni"));
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
                         if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
@@ -338,12 +337,11 @@
                             document.getElementById("navbar-panel").style.display = "none";
                         }
                         document.getElementById("navbar-username").style.display = "block";
-                        // document.getElementById("navbar-username").textContent = userData.username || user.email;
+                        document.getElementById("navbar-username").textContent = userData.username || user.email;
                     } else {
                         document.getElementById("navbar-panel").style.display = "none";
                         document.getElementById("navbar-username").style.display = "block";
-                        // document.getElementById("navbar-username").textContent = user.email;
-                        document.getElementById("navbar-username").textContent = "Dev"
+                        document.getElementById("navbar-username").textContent = user.email;
                     }
                     document.getElementById("navbar-cart").style.display = "block";
                     document.getElementById("navbar-login").style.display = "none";
@@ -353,17 +351,17 @@
                     document.getElementById("product-buy").removeAttribute("class");
                     document.getElementById("product-buy").onclick = addToCart;
                 })();
-            // } else {
-            //     document.getElementById("navbar-panel").style.display = "none";
-            //     document.getElementById("navbar-cart").style.display = "none";
-            //     document.getElementById("navbar-login").style.display = "block";
-            //     document.getElementById("navbar-signup").style.display = "block";
-            //     document.getElementById("navbar-logout").style.display = "none";
-            //     document.getElementById("navbar-username").style.display = "none";
-            //     document.getElementById("product-buy").innerText = "Login / Signin";
-            //     document.getElementById("product-buy").classList = "unavailable";
-            //     document.getElementById("product-buy").removeAttribute("onclick");
-            // }
+            } else {
+                document.getElementById("navbar-panel").style.display = "none";
+                document.getElementById("navbar-cart").style.display = "none";
+                document.getElementById("navbar-login").style.display = "block";
+                document.getElementById("navbar-signup").style.display = "block";
+                document.getElementById("navbar-logout").style.display = "none";
+                document.getElementById("navbar-username").style.display = "none";
+                document.getElementById("product-buy").innerText = "Login / Signin";
+                document.getElementById("product-buy").classList = "unavailable";
+                document.getElementById("product-buy").removeAttribute("onclick");
+            }
         });
     </script>
 </body>
