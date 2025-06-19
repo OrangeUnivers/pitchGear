@@ -13,7 +13,7 @@
         h1 {
             font-size: 2.2rem;
         }
-        .team-list {
+        #team-list {
             padding: 2rem;
             display: grid;
             gap: 1rem;
@@ -21,7 +21,7 @@
             max-height: calc(100% - 50px);
             overflow-x: hidden;
         }
-        .team-list div {
+        #team-list div {
             padding: 1rem;
             text-align: center;
             background-color: var(--color-background-highlight);
@@ -31,15 +31,15 @@
             transition: background-color 0.3s;
             cursor: pointer;
         }
-        .team-list div img {
+        #team-list div img {
             height: 10rem;
             /* height: auto; */
         }
-        .team-list div p {
+        #team-list div p {
             font-weight: 700;
             font-size: 1.3rem;
         }
-        .mobile.team-list {
+        .mobile#team-list {
             padding: 1rem;
             display: grid;
             gap: 1rem;
@@ -47,7 +47,7 @@
             max-height: calc(100% - 50px);
             overflow-x: hidden;
         }
-        .mobile.team-list div {
+        .mobile#team-list div {
             padding: 0.2rem;
             text-align: center;
             background-color: var(--color-background);
@@ -57,11 +57,11 @@
             transition: background-color 0.3s;
             cursor: pointer;
         }
-        .mobile.team-list div img {
+        .mobile#team-list div img {
             height: 6rem;
             /* height: auto; */
         }
-        .mobile.team-list div p {
+        .mobile#team-list div p {
             display: none;
         }
     </style>
@@ -73,10 +73,10 @@
     <h1>Teams</h1>
 
 
-    <div id="teams-view">
-        <div class="team-list" id="team-list">
-        </div>
+    
+    <div class="team-list" id="team-list">
     </div>
+
     <div id="navbar">
         <img src="resources/logo-light.png" alt="" id="navbar-logo">
         <div id="navbar-account">
