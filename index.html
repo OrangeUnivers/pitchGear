@@ -74,7 +74,7 @@
 
 
     <div id="teams-view">
-        <div class="team-list">
+        <div class="team-list" id="team-list">
         </div>
     </div>
     <div id="navbar">
@@ -224,10 +224,10 @@
             }
         });
 
-        async function loadCategories()
+        async function loadCategories() {}
 
         async function loadTeams() {
-            const container = document.getElementById("teams-view");
+            const container = document.getElementById("team-list");
             const teamsSnapshot = await getDocs(collection(db, "teams"));
             teamsSnapshot.forEach((doc) => {
                 const data = doc.data();
