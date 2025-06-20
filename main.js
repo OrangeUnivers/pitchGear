@@ -1,8 +1,43 @@
 disableAnimations()
-let darkMode = false;
+darkMode = false;
+
 let navbarSmall = false;
 const relativeBacktracking = "../".repeat(nestingAmount);
 const mainPage = window.location.protocol + "//" + window.location.host + window.location.pathname.replace(subPage, "");
+// Open (or create) the database
+// const request = indexedDB.open("PitchGearDB", 1);
+
+// request.onupgradeneeded = function(event) {
+//     const db = event.target.result;
+    
+//     // Create an object store called "settings" with a keyPath "id"
+//     if (!db.objectStoreNames.contains("settings")) {
+//         db.createObjectStore("settings", { keyPath: "id" });
+//     }
+// };
+
+// request.onsuccess = function(event) {
+//     const db = event.target.result;
+    
+//     // Example: add a setting
+//     const transaction = db.transaction(["settings"], "readwrite");
+//     const store = transaction.objectStore("settings");
+    
+//     store.put({ id: "darkMode", value: false }); // Add/update
+    
+//     transaction.oncomplete = () => console.log("Saved setting");
+//     transaction.onerror = () => console.error("Save failed");
+// };
+
+// request.onerror = function(event) {
+//     console.error("Database error:", event.target.error);
+// };
+
+// let darkMode = localStorage.getItem("pg-darkMode");
+// if (darkMode == "undefined" || darkMode == null || darkMode == undefined) {
+//     darkMode = false;
+//     localStorage.setItem("pg-darkMode", false);
+// }
 
 const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -14,16 +49,18 @@ function goBack() {
     const newURL = mainPage;
     window.location.href = newURL;
 }
-function changeColorScheme(mode) {
+function changeColorScheme(mode, forced) {
     let setModeTo;
     if (!mode) {
         setModeTo = !darkMode;
     } else {
         switch (mode) {
             case "dark":
+                console.log("changing to dark")
                 setModeTo = true;
                 break;
             case "light":
+                console.log("changing to light")
                 setModeTo = false;
                 break;
             default:
@@ -47,7 +84,11 @@ function changeColorScheme(mode) {
             document.getElementById("navbar-logo").style.opacity = 1;
         }, 300)
     }
-    darkMode = !darkMode
+    if (forced != true || !forced) {
+        darkMode = !darkMode
+        localStorage.setItem("pg-darkMode", darkMode);
+        console.log("DarkMode = " + darkMode);
+    }
 }
 function disableAnimations() {
     document.getElementById("navbar").style.transition = "none";
@@ -62,7 +103,7 @@ function enableAnimations() {
     document.getElementById("navbar-logo").style.transition = "opacity 0.3s, width 0.3s";
     if (navbarItems.includes("username")) {
         console.log("asdadh")
-        document.getElementById("navbar-username").style.transition = "color 0.3s, padding-block 0.3s, padding-inline 0.3s";
+        document.getElementById("navbar-username").style.transition = "color 0.3s, padding-block 0.3s, padding-inline 0.3s, background-color 0.3s";
     }
     document.getElementById("navbar-account").style.transition = "font-size 0.3s";
 }
@@ -168,5 +209,5 @@ if (hasSpacer && !isMobile && permanentlySmall) {
 document.getElementById('navbar-logo').addEventListener("click", (event) => {
     changeColorScheme()
 });
-
+// changeColorScheme((darkMode ? "dark" : "light"), true);
 addEventListener("DOMContentLoaded", (event) => { setTimeout(() => { enableAnimations(); }, 100); });

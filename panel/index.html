@@ -8,74 +8,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
-    <link href="main.css" rel="stylesheet">
+    <link href="../main.css" rel="stylesheet">
     <style>
         h1 {
             font-size: 2.2rem;
-        }
-        #team-list {
-            padding: 2rem;
-            display: grid;
-            gap: 1rem;
-            overflow-y: auto;
-            max-height: calc(100% - 50px);
-            overflow-x: hidden;
-        }
-        #team-list div {
-            padding: 1rem;
-            text-align: center;
-            background-color: var(--color-background-highlight);
-            border-radius: 1rem;
-            box-shadow: 0rem 0.4rem 0.6rem #00000060;
-            height: 16rem;
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
-        #team-list div img {
-            height: 10rem;
-            /* height: auto; */
-        }
-        #team-list div p {
-            font-weight: 700;
-            font-size: 1.3rem;
-        }
-        .mobile#team-list {
-            padding: 1rem;
-            display: grid;
-            gap: 1rem;
-            overflow-y: auto;
-            max-height: calc(100% - 50px);
-            overflow-x: hidden;
-        }
-        .mobile#team-list div {
-            padding: 0.2rem;
-            text-align: center;
-            background-color: var(--color-background);
-            border-radius: none;
-            box-shadow: none;
-            height: min-content;
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
-        .mobile#team-list div img {
-            height: 6rem;
-            /* height: auto; */
-        }
-        .mobile#team-list div p {
-            display: none;
+            /* font-family: monospace; */
         }
     </style>
 </head>
 <body>
 
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
+    <h1>Panel</h1>
 
-    <h1>Teams</h1>
-
-    <div id="team-list">
-    </div>
+    
     <div id="navbar">
-        <img src="resources/logo-light.png" alt="" id="navbar-logo">
+        <div id="navbar-start">
+            <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
+            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+        </div>
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;">Panel</div>
             <div id="navbar-cart" style="display: none;">Cart</div>
@@ -88,89 +39,24 @@
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
     <script>
-        const subPage = "";
+        const subPage = "panel/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
-        const nestingAmount = 0;
+        const nestingAmount = 1;
         const permanentlySmall = false;
         const hasSpacer = true;
     </script>
-    <script src="main.js"></script>
-    <script>
-        if (isMobile) {
-            document.getElementById("team-list").classList = "mobile";
-        }
-        function roundTo(value, digits) {
-            const factor = 10 ** digits;
-            return Math.round(value * factor) / factor;
-        }
-        function combineToString(str, amount, separator = "") {
-            let endStr = "";
-            for (let i = 0; i < amount; i++) {
-                if (i+1 == amount) {
-                    endStr += str
-                } else {
-                    endStr += str + separator
-                }
-            }
-            return endStr
-        }
-        function updateWidthGrid() {
-            const objectList = document.getElementById("team-list");
-            let objectAmount = 20;
-            const gapRem = 1; // 10px gap converted to rem (10 / 16)
-            while (true) {
-                if (isMobile) {
-                    if (window.innerWidth > 110 + (90 * objectAmount) || objectAmount == 1) {
-                        // Calculate grid-template-columns using rem units
-                        let calculatedSubtraction;
-                        if (objectAmount > 1) {
-                            calculatedSubtraction = roundTo(3.2 + ((objectAmount - 1) * gapRem), 1);
-                        } else {
-                            calculatedSubtraction = 3.2;
-                        }
-                        const newValue = combineToString(
-                            `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount >= 1 ? objectAmount : 1})`,
-                            objectAmount,
-                            " "
-                        );
-                        console.log("Amount:     " + objectAmount.toString())
-                        console.log("Subtracted: " + calculatedSubtraction.toString())
-                        objectList.style.gridTemplateColumns = newValue;
-                        break;
-                    }
-                    objectAmount--;
-                } else {
-                    if (window.innerWidth > 110 + (200 * objectAmount) || objectAmount == 1) {
-                        // Calculate grid-template-columns using rem units
-                        let calculatedSubtraction;
-                        if (objectAmount > 1) {
-                            calculatedSubtraction = roundTo(5.2 + ((objectAmount - 1) * gapRem), 1);
-                        } else {
-                            calculatedSubtraction = 5.2;
-                        }
-                        const newValue = combineToString(
-                            `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount >= 1 ? objectAmount : 1})`,
-                            objectAmount,
-                            " "
-                        );
-                        console.log("Amount:     " + objectAmount.toString())
-                        console.log("Subtracted: " + calculatedSubtraction.toString())
-                        objectList.style.gridTemplateColumns = newValue;
-                        break;
-                    }
-                    objectAmount--;
-                }
-            }
-        }
-        updateWidthGrid();
-        window.addEventListener('resize', updateWidthGrid);
-    </script>
+    <script src="../main.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-
+        // function parseFormattingData(data) {
+        //     return data.replace(/\$(.+?)\;/g, (match, p1) => {
+        //         return p1.replace("-", "/");
+        //     });
+        // }
+        
         const firebaseConfig = {
             apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
             authDomain: "csongors-shop.firebaseapp.com",
@@ -220,34 +106,6 @@
                 document.getElementById("navbar-username").style.display = "none";
             }
         });
-
-        async function loadTeams() {
-            const container = document.getElementById("team-list");
-            const querySnapshot = await getDocs(collection(db, "teams"));
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const div = document.createElement("div");
-                div.innerHTML = `
-                    <img src="${data.logo}" alt="${data.name+" Logo"}" height="160rem">
-                    <p>${data.name}</p>
-                `;
-                div.onclick = () => {
-                    goToPage("team?id="+doc.id)
-                }
-                container.appendChild(div);
-            });
-        }
-        // const footballData = await fetch("https://pitchgear.netlify.app/.netlify/functions/getTeams", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({ limit: 200, offset: 5050 })
-        // });
-        // let decodedData = await footballData.json();
-        // console.log(decodedData)
-
-        loadTeams();
     </script>
 </body>
 </html>

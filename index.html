@@ -13,33 +13,46 @@
         h1 {
             font-size: 2.2rem;
         }
-        #team-list {
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0rem;
+        }
+        .team-list {
             padding: 2rem;
+            padding-top: 1rem;
             display: grid;
             gap: 1rem;
             overflow-y: auto;
             max-height: calc(100% - 50px);
             overflow-x: hidden;
         }
-        #team-list div {
+        .team-list div {
             padding: 1rem;
-            text-align: center;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            flex-direction: column;
             background-color: var(--color-background-highlight);
             border-radius: 1rem;
             box-shadow: 0rem 0.4rem 0.6rem #00000060;
             height: 16rem;
             transition: background-color 0.3s;
             cursor: pointer;
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
-        #team-list div img {
+        .team-list div img {
             height: 10rem;
             /* height: auto; */
+            text-align: center;
         }
-        #team-list div p {
+        .team-list div p {
             font-weight: 700;
             font-size: 1.3rem;
+            text-align: center;
         }
-        .mobile#team-list {
+        .mobile.team-list {
             padding: 1rem;
             display: grid;
             gap: 1rem;
@@ -47,7 +60,7 @@
             max-height: calc(100% - 50px);
             overflow-x: hidden;
         }
-        .mobile#team-list div {
+        .mobile.team-list div {
             padding: 0.2rem;
             text-align: center;
             background-color: var(--color-background);
@@ -57,11 +70,11 @@
             transition: background-color 0.3s;
             cursor: pointer;
         }
-        .mobile#team-list div img {
+        .mobile.team-list div img {
             height: 6rem;
             /* height: auto; */
         }
-        .mobile#team-list div p {
+        .mobile.team-list div p {
             display: none;
         }
     </style>
@@ -70,17 +83,14 @@
 
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
-    <h1>Teams</h1>
+    <h1>Welcome to PitchGear!</h1>
 
-
-    
-    <div class="team-list" id="team-list">
+    <div id="teams-view">
     </div>
-
     <div id="navbar">
         <img src="resources/logo-light.png" alt="" id="navbar-logo">
         <div id="navbar-account">
-            <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
             <div id="navbar-cart" style="display: none;">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
@@ -118,9 +128,10 @@
             return endStr
         }
         function updateWidthGrid() {
-            const objectList = document.getElementById("team-list");
+            const objectList = document.getElementsByClassName("team-list");
             let objectAmount = 20;
             const gapRem = 1; // 10px gap converted to rem (10 / 16)
+            let newValue;
             while (true) {
                 if (isMobile) {
                     if (window.innerWidth > 110 + (90 * objectAmount) || objectAmount == 1) {
@@ -131,14 +142,13 @@
                         } else {
                             calculatedSubtraction = 3.2;
                         }
-                        const newValue = combineToString(
+                        newValue = combineToString(
                             `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount >= 1 ? objectAmount : 1})`,
                             objectAmount,
                             " "
                         );
                         console.log("Amount:     " + objectAmount.toString())
                         console.log("Subtracted: " + calculatedSubtraction.toString())
-                        objectList.style.gridTemplateColumns = newValue;
                         break;
                     }
                     objectAmount--;
@@ -151,22 +161,27 @@
                         } else {
                             calculatedSubtraction = 5.2;
                         }
-                        const newValue = combineToString(
+                        newValue = combineToString(
                             `calc((100vw - ${calculatedSubtraction}rem) / ${objectAmount >= 1 ? objectAmount : 1})`,
                             objectAmount,
                             " "
                         );
                         console.log("Amount:     " + objectAmount.toString())
                         console.log("Subtracted: " + calculatedSubtraction.toString())
-                        objectList.style.gridTemplateColumns = newValue;
                         break;
                     }
                     objectAmount--;
                 }
             }
+            console.log(objectList);
+            Array.from(objectList).forEach(obj => {
+                obj.style.gridTemplateColumns = newValue;
+            });
+            
         }
         updateWidthGrid();
         window.addEventListener('resize', updateWidthGrid);
+        window.updateWidthGrid = updateWidthGrid;
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -186,6 +201,13 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const teamSnapshot = await getDocs(collection(db, "teams"));
+        let teamList = {};
+        teamSnapshot.forEach((doc) => {
+            let teamID = doc.id;
+            teamList[teamID] = doc.data();
+        });
+        console.log(teamList)
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
             signOut(auth);
@@ -224,22 +246,40 @@
             }
         });
 
-        async function loadCategories() {}
+        async function loadCatergoies() {
+            const container = document.getElementById("teams-view");
+            const pageLayoutSnapshot = await getDoc(doc(db, "categories", "page_layout"));
+            const pageLayout = pageLayoutSnapshot.data();
+            const categorySnapshot = await getDocs(collection(db, "categories"));
+            let categoryList = {};
+            categorySnapshot.forEach((doc) => {
+                let categoryID = String(doc.id);
+                categoryList[categoryID] = doc.data();
+            });
+            pageLayout.categories.forEach((categoriesText) => {
+                let categoryTitle = document.createElement("h2");
+                categoryTitle.innerText = categoryList[categoriesText].name;
+                let categoryElement = document.createElement("div");
+                categoryElement.id = "category-" + categoriesText;
+                categoryElement.classList = "team-list";
+                container.appendChild(categoryTitle);
+                container.appendChild(categoryElement);
+                loadTeams(categoryElement, categoryList[categoriesText].teams)
+            });
+            window.updateWidthGrid();
+        }
 
-        async function loadTeams() {
-            const container = document.getElementById("team-list");
-            const teamsSnapshot = await getDocs(collection(db, "teams"));
-            teamsSnapshot.forEach((doc) => {
-                const data = doc.data();
+        async function loadTeams(categoryElement, categoryList) {
+            categoryList.forEach((team, i) => {
                 const div = document.createElement("div");
                 div.innerHTML = `
-                    <img src="${data.logo}" alt="${data.name+" Logo"}" height="160rem">
-                    <p>${data.name}</p>
+                    <img src="${teamList[team].logo}" alt="${teamList[team].name+" Logo"}" height="160rem">
+                    <p>${teamList[team].name}</p>
                 `;
                 div.onclick = () => {
-                    goToPage("team?id="+doc.id)
+                    goToPage("team?id="+team)
                 }
-                container.appendChild(div);
+                categoryElement.appendChild(div);
             });
         }
         // const footballData = await fetch("https://pitchgear.netlify.app/.netlify/functions/getTeams", {
@@ -252,7 +292,7 @@
         // let decodedData = await footballData.json();
         // console.log(decodedData)
 
-        loadTeams();
+        loadCatergoies();
     </script>
 </body>
 </html>
