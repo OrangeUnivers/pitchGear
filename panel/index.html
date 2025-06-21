@@ -12,16 +12,57 @@
     <style>
         h1 {
             font-size: 2.2rem;
+            margin-bottom: 0.6rem;
             /* font-family: monospace; */
+        }
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 0;
+        }
+        h3 {
+            margin: 0;
+        }
+        #action-holder div {
+            background-color: var(--color-background-highlight);
+            padding: 1rem;
+            margin-block: 2rem;
+            margin-inline: 1rem;
+            border-radius: 1rem;
+            width: calc(100vw - 5.2rem);
+            max-width: 40rem;
+        }
+        #access-type-container {
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            position: fixed;
+            bottom: -2rem;
+            width: 100%;
+            height: 4rem;
+            margin: 0;
+            transition: transform 0.3s;
+        }
+        #access-type-container:hover {
+            transform: translateY(-2rem);
+        }
+        #access-type {
+            margin-bottom: 0.5rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
     </style>
 </head>
 <body>
-
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
     <h1>Panel</h1>
+    <h2 id="welcome-text">Welcome to the Panel!</h2>
+    <p id="access-type-container">
+        <span id="access-type">Access Type:</span>
+    </p>
 
-    
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
@@ -38,6 +79,8 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    <div id="action-holder">
+    </div>
     <script>
         const subPage = "panel/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -72,6 +115,7 @@
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
             signOut(auth);
+            goBack();
         });
 
         onAuthStateChanged(auth, (user) => {
@@ -80,17 +124,60 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
                             document.getElementById("navbar-panel").style.display = "block";
+                            document.getElementById("access-type").textContent = "Access Type: " + userData.role.replace(/\b\w/g, c => c.toUpperCase());
                         } else {
-                            document.getElementById("navbar-panel").style.display = "none";
+                            goBack();
                         }
                         document.getElementById("navbar-username").style.display = "block";
                         document.getElementById("navbar-username").textContent = userData.username || user.email;
+                        document.getElementById("welcome-text").textContent = "Welcome to the Panel " + (userData.username || user.email) + "!";
+                        let actionHolder = document.getElementById("action-holder");
+                        let viewOrdersElement = document.createElement("div");
+                        viewOrdersElement.innerHTML = `
+                            <h3>View Orders</h3>
+                            View all shipments and orders and change order statuses.
+                        `;
+                        viewOrdersElement.onclick = () => goToPage("panel/orders");
+                        let viewUsersElement = document.createElement("div");
+                        viewUsersElement.innerHTML = `
+                            <h3>View Users</h3>
+                            Only for changing permissions.
+                        `;
+                        viewUsersElement.onclick = () => goToPage("panel/users");
+                        let editLayoutElement = document.createElement("div");
+                        editLayoutElement.innerHTML = `
+                            <h3>Add/Edit Teams and Categories</h3>
+                            Change the layout of the homepage. And add Teams.
+                        `;
+                        editLayoutElement.onclick = () => goToPage("panel/layout");
+                        let debugElement = document.createElement("div");
+                        debugElement.innerHTML = `
+                            <h3>Debug</h3>
+                            Alot of information.
+                        `;
+                        debugElement.onclick = () => goToPage("panel/debug");
+                        if (userData.role) {
+                            switch (userData.role) {
+                                case "admin":
+                                    actionHolder.append(editLayoutElement);
+                                    break;
+                                case "owner":
+                                    actionHolder.append(viewOrdersElement);
+                                    actionHolder.append(viewUsersElement);
+                                    actionHolder.append(editLayoutElement);
+                                    break;
+                                case "dev":
+                                    actionHolder.append(debugElement);
+                                    actionHolder.append(editLayoutElement);
+                                    actionHolder.append(viewUsersElement);
+                                    actionHolder.append(viewOrdersElement);
+                                    break;
+                            }
+                        }
                     } else {
-                        document.getElementById("navbar-panel").style.display = "none";
-                        document.getElementById("navbar-username").style.display = "block";
-                        document.getElementById("navbar-username").textContent = user.email;
+                        goBack();
                     }
                     document.getElementById("navbar-cart").style.display = "block";
                     document.getElementById("navbar-login").style.display = "none";
@@ -98,12 +185,7 @@
                     document.getElementById("navbar-logout").style.display = "block";
                 })();
             } else {
-                document.getElementById("navbar-panel").style.display = "none";
-                document.getElementById("navbar-cart").style.display = "none";
-                document.getElementById("navbar-login").style.display = "block";
-                document.getElementById("navbar-signup").style.display = "block";
-                document.getElementById("navbar-logout").style.display = "none";
-                document.getElementById("navbar-username").style.display = "none";
+                goBack();
             }
         });
     </script>

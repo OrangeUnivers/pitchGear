@@ -52,7 +52,7 @@
             font-size: 1.3rem;
             text-align: center;
         }
-        .mobile.team-list {
+        .mobile .team-list {
             padding: 1rem;
             display: grid;
             gap: 1rem;
@@ -60,7 +60,7 @@
             max-height: calc(100% - 50px);
             overflow-x: hidden;
         }
-        .mobile.team-list div {
+        .mobile .team-list div {
             padding: 0.2rem;
             text-align: center;
             background-color: var(--color-background);
@@ -70,11 +70,11 @@
             transition: background-color 0.3s;
             cursor: pointer;
         }
-        .mobile.team-list div img {
+        .mobile .team-list div img {
             height: 6rem;
             /* height: auto; */
         }
-        .mobile.team-list div p {
+        .mobile .team-list div p {
             display: none;
         }
     </style>
@@ -110,7 +110,7 @@
     <script src="main.js"></script>
     <script>
         if (isMobile) {
-            document.getElementById("team-list").classList = "mobile";
+            document.getElementById("teams-view").classList = "mobile";
         }
         function roundTo(value, digits) {
             const factor = 10 ** digits;
@@ -219,7 +219,7 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
                             document.getElementById("navbar-panel").style.display = "block";
                         } else {
                             document.getElementById("navbar-panel").style.display = "none";
@@ -246,7 +246,7 @@
             }
         });
 
-        async function loadCatergoies() {
+        async function loadCategories() {
             const container = document.getElementById("teams-view");
             const pageLayoutSnapshot = await getDoc(doc(db, "categories", "page_layout"));
             const pageLayout = pageLayoutSnapshot.data();
@@ -292,7 +292,7 @@
         // let decodedData = await footballData.json();
         // console.log(decodedData)
 
-        loadCatergoies();
+        loadCategories();
     </script>
 </body>
 </html>

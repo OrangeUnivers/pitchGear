@@ -331,7 +331,7 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "co-owner")) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
                             document.getElementById("navbar-panel").style.display = "block";
                         } else {
                             document.getElementById("navbar-panel").style.display = "none";
