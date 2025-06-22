@@ -70,14 +70,14 @@ function changeColorScheme(mode, forced) {
     }
     if (darkMode == setModeTo) { return; }
     if (setModeTo) {
-        document.body.classList = "dark";
+        document.body.classList.add("dark");
         document.getElementById("navbar-logo").style.opacity = 0;
         setTimeout(() => {
             document.getElementById("navbar-logo").src = relativeBacktracking + "resources/logo-dark.png";
             document.getElementById("navbar-logo").style.opacity = 1;
         }, 300)
     } else {
-        document.body.classList = "";
+        document.body.classList.remove("dark");
         document.getElementById("navbar-logo").style.opacity = 0;
         setTimeout(() => {
             document.getElementById("navbar-logo").src = relativeBacktracking + "resources/logo-light.png";

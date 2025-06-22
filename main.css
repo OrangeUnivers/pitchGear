@@ -6,6 +6,7 @@ body {
     --color-accent-text: #d7fff2;
     --color-error: #ff5b5b;
     --color-error-border: #ff5b5b;
+    --color-error-text: #ffe3e3;
     --color-text: #000000;
     --color-text-highlight: #5c5c5c;
     --color-input: #ffffff;
@@ -43,6 +44,7 @@ body.dark {
     --color-accent-text: #c1e5da;
     --color-error: #e33737;
     --color-error-border: #c93939;
+    --color-error-text: #ffc9c9;
     --color-text: #dfdfdf;
     --color-text-highlight: #979797;
     --color-input: #ffffff;

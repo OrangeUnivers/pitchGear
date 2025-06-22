@@ -21,23 +21,35 @@
             font-weight: 600;
             margin-top: 0;
         }
+        #categories-holder {
+            width: calc(100vw - 1.2rem);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        #categories-holder>div {
+            width: calc(100vw - 2rem);
+            max-width: 40rem;
+        }
         #category-list {
             padding: 0;
         }
         #category-list>div {
-            padding-inline: 1.4rem;
+            box-sizing: border-box;
             padding-block: 0.6rem;
+            padding-inline: 1.4rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 0.2rem;
+            margin-block: 0.3rem;
             background-color: var(--color-background);
             cursor: move;
             border-radius: 1rem;
-            width: calc(100vw - 5rem);
+            width: 100%;
             font-size: 2rem;
             font-weight: 600;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, border 0.3s;
             border: 0.3rem solid #0000;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -48,8 +60,10 @@
             font-size: 1.4rem;
             background-color: var(--color-background-highlight);
             margin-block: 1rem;
-            padding-bottom: 1.2rem;
             display: block;
+        }
+        .mobile #category-list.dev>div {
+            padding-bottom: 1.2rem;
         }
         #category-list>div span:not(.category-id) {
             display: flex;
@@ -99,26 +113,31 @@
             cursor: pointer;
         }
         #add-category {
+            overflow: hidden;
+            width: calc(100vw - 5rem) !important;
             padding-inline: 1.4rem;
             padding-block: 0.6rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 0.2rem;
             background-color: var(--color-background);
             cursor: pointer;
             border-radius: 1rem;
-            width: calc(100vw - 5rem);
             font-size: 2rem;
             font-weight: 600;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, border 0.3s;
             border: 0.3rem dashed var(--color-background-highlight);
             color: var(--color-text-highlight);
+            user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
-            user-select: none;
+        }
+        #add-category i {
+            color: var(--color-text-highlight);
+            transition: transform 0.3s, opacity 0.5s, color 0.3s;
+            opacity: 1;
         }
         .mobile #add-category {
             font-size: 1.6rem;
@@ -126,10 +145,133 @@
         .mobile #add-category i {
             font-size: 1.4rem;
         }
+        #add-category.adding  {
+            position: relative;
+            top: 0;
+        }
+        #add-category.adding>i {
+            position: absolute;
+            transform: scale(10.5);
+            opacity: 0.2;
+            z-index: 0;
+            pointer-events: none;
+        }
+        #addable-categories {
+            font-size: 1.4rem;
+            font-weight: 400;
+            flex-direction: column;
+            gap: 0.2rem;
+            display: none;
+            z-index: 2;
+            margin-top: 0.6rem;
+        }
+        #add-category.adding>#addable-categories {
+            display: flex;
+        }
+        #addable-categories>div {
+            border-radius: 0.6rem;
+            padding-block: 0.6rem;
+            padding-inline: 1rem;
+            color: var(--color-text);
+            box-shadow: 0rem 0.2rem 0.4rem #00000000;
+            transition: box-shadow 0.3s, backdrop-filter 0.3s, color 0.3s;
+        }
+        #addable-categories>div:hover {
+            backdrop-filter: blur(0.2rem);
+            box-shadow: 0rem 0.2rem 0.4rem #00000076;
+        }
+        .mobile #addable-categories>div {
+            backdrop-filter: blur(0.4rem);
+            box-shadow: 0rem 0.2rem 0.4rem #00000036;
+        }
+        #addable-categories>div#add-new-category {
+            text-align: center;
+            font-weight: 700;
+        }
         .ghost {
             background-color: var(--color-background) !important;
             border: 0.3rem dashed var(--color-background-highlight) !important;
             opacity: 0.4;
+        }
+        #category-actions {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+            gap: 0.4rem;
+            font-weight: 600;
+            margin-block: 1rem;
+        }
+        #category-save {
+            background-color: var(--color-background-highlight);
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: not-allowed;
+        }
+        #category-cancel {
+            background-color: var(--color-background-highlight);
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: not-allowed;
+        }
+        .changed #category-save {
+            background-color: var(--color-accent);
+            color: var(--color-accent-text);
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            cursor: pointer;
+        }
+        .changed #category-cancel {
+            background-color: var(--color-error);
+            color: var(--color-error-text);
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            cursor: pointer;
+        }
+        #layout-selection {
+            display: flex;
+            flex-direction: row;
+            gap: 0.4rem;
+            width: min-content;
+            padding: 0.3rem;
+            border-radius: 0.9rem;
+            box-shadow: 0 0.4rem 0.6rem #00000047;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        #layout-selection>div {
+            padding: 0.6rem;
+            border-radius: 0.6rem;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        #layout-selection>div:hover {
+            box-shadow: 0 0.2rem 0.4rem #00000037;
+        }
+        .mobile #layout-selection>div:hover {
+            box-shadow: 0 0rem 0rem #000000;
+        }
+        #layout-selection>div.active {
+            background-color: var(--color-background-highlight);
+        }
+        #categories-holder {
+            display: none;
+        }
+        #categories-holder.active {
+            display: block;
+        }
+        #teams-holder {
+            display: none;
+        }
+        #teams-holder.active {
+            display: block;
         }
     </style>
 </head>
@@ -137,7 +279,7 @@
 
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
     <h1>Layout Editor</h1>
-    <h2>Categories</h2>
+    <div id="layout-selection"><div id="select-category" class="active">Category</div><div id="select-team">Team</div></div>
     
     <div id="navbar">
         <div id="navbar-start">
@@ -155,11 +297,34 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
-    <div id="category-list">
+    <div id="categories-holder" class="active">
+        <div id="category-list">
+        </div>
+        <div id="add-category">
+            <span id="add-category-button">Add Category</span>
+            <i class="fa-solid fa-circle-plus"></i>
+            <div id="addable-categories">
+                <div id="add-new-category">New Category</div>
+            </div>
+        </div>
+        <div id="category-actions">
+            <div id="category-cancel">Reset</div>
+            <div id="category-save">Save Changes</div>
+        </div>
     </div>
-    <div id="add-category">
-        Add Category
-        <i class="fa-solid fa-circle-plus"></i>
+    <div id="teams-holder">
+        <div id="team-list">
+        </div>
+        <div id="add-team">
+            <span id="add-team-button">Add Category</span>
+            <i class="fa-solid fa-circle-plus" id="add-team-plus"></i>
+            <div id="addable-teams">
+            </div>
+        </div>
+        <div id="team-actions">
+            <div id="team-cancel">Reset</div>
+            <div id="team-save">Save Changes</div>
+        </div>
     </div>
     <script>
         const subPage = "panel/layout/";
@@ -177,6 +342,7 @@
                 document.body.classList.add('dragging');
             },
             onEnd: () => {
+                document.body.classList.add('changed');
                 document.body.classList.remove('dragging');
             },
         });
@@ -184,7 +350,8 @@
             document.body.classList.add('mobile');
         }
 
-        function deleteElement(elementId) {
+        function deleteCategory(elementId) {
+            document.body.classList.add('changed');
             document.getElementById(elementId).remove();
         }
     </script>
@@ -206,6 +373,79 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        document.getElementById("add-category").onclick = () => {
+            let addCategory = document.getElementById("add-category");
+            if (addCategory.classList == "") {
+                addCategory.classList.add("adding");
+            }
+        };
+
+        document.getElementById("add-category-button").onclick = (event) => {
+            event.stopPropagation();
+            let addCategory = document.getElementById("add-category");
+            if (addCategory.classList == "adding") {
+                addCategory.classList.remove("adding");
+            } else {
+                addCategory.classList.add("adding");
+            }
+        };
+
+        document.getElementById("category-save").onclick = () => {
+            if (document.body.classList.contains('changed')) {
+                const user = auth.currentUser;
+                const elements = document.querySelectorAll("#category-list > div");
+                const ids = Array.from(elements).map(el => el.dataset.id);
+                console.log(ids);
+                (async () => {
+                    const token = await user.getIdToken();
+                    const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/editPageLayout", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ newPageLayout: ids })
+                    });
+
+                    const data = await res.json();
+                    if (data.message) {
+                        console.log(data.message);
+                        document.body.classList.remove("changed");
+                    } else {
+                        alert(data.error || "Something went wrong.");
+                    }
+                })();
+            }
+        };
+
+        document.getElementById("select-category").onclick = () => {
+            let self = document.getElementById("select-category");
+            let selfContent = document.getElementById("categories-holder");
+            let contra = document.getElementById("select-team");
+            let contraContent = document.getElementById("teams-holder");
+            if (!self.classList.contains("active")) {
+                self.classList.add("active");
+                selfContent.classList.add("active");
+                contra.classList.remove("active");
+                contraContent.classList.remove("active");
+                resetCategories();
+            }
+        };
+
+        document.getElementById("select-team").onclick = () => {
+            let self = document.getElementById("select-team");
+            let selfContent = document.getElementById("teams-holder");
+            let contra = document.getElementById("select-category");
+            let contraContent = document.getElementById("categories-holder");
+            if (!self.classList.contains("active")) {
+                self.classList.add("active");
+                selfContent.classList.add("active");
+                contra.classList.remove("active");
+                contraContent.classList.remove("active");
+                resetCategories();
+            }
+        };
+
         const pageLayoutSnapshot = await getDoc(doc(db, "categories", "page_layout"));
         const pageLayout = pageLayoutSnapshot.data();
         const categorySnapshot = await getDocs(collection(db, "categories"));
@@ -215,10 +455,49 @@
             categoryList[categoryID] = doc.data();
         });
         pageLayout.categories.forEach((categoriesText) => {
+            let categoryUUID = crypto.randomUUID();
             let categoryElement = document.createElement("div");
-            categoryElement.id = "category-" + categoriesText;
-            categoryElement.innerHTML = `<span><i class="fa-solid fa-xmark" onclick="deleteElement('${"category-" + categoriesText}')"></i>${categoryList[categoriesText].name}<div class="edit">Edit</div></span><span><span class="category-id">${categoriesText}</span></span>`;
+            categoryElement.id = "category-" + categoryUUID;
+            categoryElement.dataset.id = categoriesText;
+            categoryElement.innerHTML = `<span><i class="fa-solid fa-xmark" onclick="deleteCategory('${"category-" + categoryUUID}')"></i>${categoryList[categoriesText].name}<div class="edit">Edit</div></span><span><span class="category-id">${categoriesText}</span></span>`;
             document.getElementById("category-list").appendChild(categoryElement);
+        });
+
+        function resetCategories() {
+            if (document.body.classList.contains('changed')) {
+                document.getElementById("category-list").innerHTML = "";
+                pageLayout.categories.forEach((categoriesText) => {
+                    let categoryUUID = crypto.randomUUID();
+                    let categoryElement = document.createElement("div");
+                    categoryElement.id = "category-" + categoryUUID;
+                    categoryElement.dataset.id = categoriesText;
+                    categoryElement.innerHTML = `<span><i class="fa-solid fa-xmark" onclick="deleteCategory('${"category-" + categoryUUID}')"></i>${categoryList[categoriesText].name}<div class="edit">Edit</div></span><span><span class="category-id">${categoriesText}</span></span>`;
+                    document.getElementById("category-list").appendChild(categoryElement);
+                });
+                document.body.classList.remove("changed");
+            }
+        }
+
+        document.getElementById("category-cancel").onclick = resetCategories;
+
+        function addElement(event, categoryId, categoryName) {
+            event.stopPropagation();
+            let categoryUUID = crypto.randomUUID();
+            let categoryElement = document.createElement("div");
+            categoryElement.id = "category-" + categoryUUID;
+            categoryElement.dataset.id = categoryId;
+            categoryElement.innerHTML = `<span><i class="fa-solid fa-xmark" onclick="deleteCategory('${"category-" + categoryUUID}')"></i>${categoryName}<div class="edit">Edit</div></span><span><span class="category-id">${categoryId}</span></span>`;
+            document.getElementById("category-list").appendChild(categoryElement);
+            document.getElementById("add-category").classList = "";
+            document.body.classList.add('changed');
+        }
+        Object.entries(categoryList).forEach(([key, values]) => {
+            if (key != "page_layout") {
+                let addedCategory = document.createElement("div");
+                addedCategory.innerText = values.name;
+                addedCategory.onclick = (event) => addElement(event, key, values.name);
+                document.getElementById("addable-categories").append(addedCategory);
+            }
         });
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
