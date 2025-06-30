@@ -371,19 +371,23 @@
             cursor: pointer;
             margin-bottom: 0.8rem;
         }
-        #category-editor>input[type='text']:is(:hover, :focus) {
+        body:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus) {
             background-color: var(--color-background);
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
         }
         #category-editor>input[type='text']:focus {
             cursor: text;
         }
-        #category-editor>input[type='text']::placeholder {
+        .mobile #category-editor>input[type='text'] {
+            background-color: var(--color-background);
+            box-shadow: inset 0 0.1rem 0.3rem #00000057;
+        }
+        body:not(.mobile) #category-editor>input[type='text']::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(-1rem);
             transition: transform 0.3s;
         }
-        #category-editor>input[type='text']:is(:hover, :focus)::placeholder {
+        body:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus)::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(0.1rem);
         }
@@ -819,17 +823,6 @@
     </script>
     <script src="../../main.js"></script>
     <script>
-        new Sortable(document.getElementById('category-list'), {
-            animation: 150,
-            ghostClass: 'ghost',
-            onStart: () => {
-                document.body.classList.add('dragging');
-            },
-            onEnd: () => {
-                document.body.classList.add('changed');
-                document.body.classList.remove('dragging');
-            },
-        });
         if (isMobile) {
             document.body.classList.add('mobile');
         }
@@ -1009,6 +1002,25 @@
         teamSnapshot.forEach((doc) => {
             let teamID = doc.id;
             teamList[teamID] = doc.data();
+        });
+
+        new Sortable(document.getElementById('category-list'), {
+            animation: 150,
+            ghostClass: 'ghost',
+            onStart: () => {
+                document.body.classList.add('dragging');
+            },
+            onEnd: () => {
+                const user = auth.currentUser;
+                const elements = document.querySelectorAll("#category-list > div");
+                const ids = Array.from(elements).map(el => el.dataset.id);
+                if (!document.body.classList.contains('changed')) {
+                    if (!arraysEqual(ids, pageLayout.categories)) {
+                        document.body.classList.add('changed');
+                    }
+                }
+                document.body.classList.remove('dragging');
+            },
         });
 
         function editCategory(categoryId, categoryName, categoryUUID) {
