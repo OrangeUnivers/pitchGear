@@ -1,6 +1,8 @@
 body {
     --color-background: #FFFFFF;
+    --color-background-cover: #FFFFFFB0;
     --color-background-highlight: #ececec;
+    --color-background-highlight-cover: #ecececb0;
     --color-background-border: #d6d6d6;
     --color-accent: #30d29f;
     --color-accent-text: #d7fff2;
@@ -37,7 +39,9 @@ body::-webkit-scrollbar-thumb:hover {
 }
 body.dark {
     --color-background: #3b3b3b;
+    --color-background-cover: #3b3b3bb0;
     --color-background-highlight: #333333;
+    --color-background-highlight-cover: #333333b0;
     --color-background-border: #535353;
     --color-accent: #1d956f;
     --color-accent-border: #15694e;

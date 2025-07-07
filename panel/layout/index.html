@@ -616,7 +616,7 @@
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: start;
             gap: 0.4rem;
             box-shadow: inset 0 0.1rem 0.3rem #00000037;
             background-color: var(--color-background);
@@ -630,7 +630,6 @@
             transition: max-width 0.3s, opacity 0.3s;
             overflow-y: auto;
             overflow-X: hidden;
-            padding-top: 1.6rem;
             pointer-events: none;
         }
         .mobile #category-editor-teams-add-select-menu {
@@ -690,7 +689,6 @@
             -ms-user-select: none;
             cursor: pointer;
         }
-        /* Hehhekhggghfghgfgfghhfgfgfgfghfgfghfgfgfggfgfgfgfgfgfffgfgfgfgfgfggfgfgfgffgffffggffg */
         #team-list {
             display: flex;
             flex-wrap: wrap;
@@ -700,10 +698,12 @@
         }
         #team-list>div {
             flex: 0 1 6rem;
-            height: 6rem;
+            min-height: 6rem;
+            height: min-content;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             padding: 0.4rem;
             background: var(--color-background);
             border-radius: 1rem;
@@ -734,10 +734,226 @@
             -moz-user-select: none;
             -ms-user-select: none;
         }
+        #team-list>div>div {
+            position: absolute;
+            font-weight: 600;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            justify-content: center;
+            align-items: center;
+        }
+        #team-list>div>div>span {
+            transition: filter-backdrop 0.3s, color 0.3s, background-color 0.3s, box-shadow 0.3s;
+            width: min-content;
+            text-align: center;
+            backdrop-filter: blur(0rem);
+            color: #0000;
+            background-color: #0000;
+            box-shadow: 0 0 0 #0000;
+            padding: 0.4rem;
+            border-radius: 0.4rem;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        /* #team-list>div:hover>div>span {
+            backdrop-filter: blur(0.2rem);
+            color: var(--color-text-highlight);
+            background-color: var(--color-background-cover);
+            box-shadow: 0 0.2rem 0.4rem #00000037;
+        } */
+        #team-list>div>div>#team-hover-dev {
+            font-family: monospace;
+            padding: 0.2rem !important;
+            border-radius: 0.2rem !important;
+        }
+        #team-list:not(.dev)>div>div>#team-hover-dev {
+            display: none;
+        }
+        #team-editor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #00000000;
+            backdrop-filter: blur(0rem);
+            z-index: 100;
+            transition: background-color 0.3s, backdrop-filter 0.3s;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 0rem;
+        }
+        #team-editor-container.open {
+            background-color: #00000032;
+            backdrop-filter: blur(0.4rem);
+            pointer-events: all;
+        }
+        #team-editor {
+            transition: opacity 0.3s, box-shadow 1s;
+            opacity: 0;
+            background-color: var(--color-background-highlight);
+            border-radius: 1.6rem;
+            box-shadow: 0 0rem 0rem #00000000;
+            padding: 1.6rem;
+            min-width: 20rem;
+            max-height: 20rem;
+            position: relative;
+        }
+        #team-editor-container.open #team-editor {
+            box-shadow: 0 0.2rem 0.4rem #00000077;
+            opacity: 1;
+        }
+        #team-editor-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        #team-editor>label {
+            display: block;
+            margin-bottom: 0.4rem;
+            margin-top: 0.6rem;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        #team-editor>input[type='text'] {
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 0;
+            outline: 0.2rem solid transparent!important;
+            appearance: none!important;
+            background-color: var(--color-background-highlight);
+            box-shadow: inset 0 0 0 0px transparent;
+            border: none;
+            box-sizing: border-box;
+            color: var(--color-text);
+            border-radius: 0.8rem;
+            min-height: 2rem;
+            padding: 0.8rem 1.2rem;
+            width: 16rem;
+            transition: box-shadow 0.3s, background-color 0.3s;
+            cursor: pointer;
+            margin-bottom: 0.8rem;
+        }
+        body:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus) {
+            background-color: var(--color-background);
+            box-shadow: inset 0 0.1rem 0.3rem #00000057;
+        }
+        #team-editor>input[type='text']:focus {
+            cursor: text;
+        }
+        .mobile #team-editor>input[type='text'] {
+            background-color: var(--color-background);
+            box-shadow: inset 0 0.1rem 0.3rem #00000057;
+        }
+        body:not(.mobile) #team-editor>input[type='text']::placeholder {
+            color: var(--color-text-highlight);
+            transform: translateX(-1rem);
+            transition: transform 0.3s;
+        }
+        body:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus)::placeholder {
+            color: var(--color-text-highlight);
+            transform: translateX(0.1rem);
+        }
+        #team-editor.dev #team-editor-id {
+            margin-bottom: 1.2em !important;
+        }
+        #team-editor:not(.dev) #team-editor-id {
+            display: none;
+        }
+        #team-editor:not(.dev) #team-editor-id-label {
+            display: none;
+        }
+        #team-editor-actions {
+            display: flex;
+            justify-content: right;
+            flex-direction: row;
+            gap: 1rem;
+        }
+        #team-editor-actions>div {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        #team-editor-cancel {
+            background-color: var(--color-background);
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            transition: background-color 0.3s;
+            box-shadow: inset 0 0.1rem 0.3rem #00000057;
+            cursor: pointer;
+        }
+        #team-editor-save {
+            background-color: var(--color-accent);
+            color: var(--color-accent-text);
+            padding: 0.8rem;
+            border-radius: 0.6rem;
+            transition: background-color 0.3s, color 0.3s;
+            box-shadow: inset 0 0.1rem 0.3rem #00000057;
+            cursor: pointer;
+        }
+        #team-editor-logo-url {
+            width: 20rem !important;
+        }
+        #team-editor-logo-toggle {
+            position: relative;
+            background-color: var(--color-background);
+            width: min-content;
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            padding-block: 0.6rem;
+            padding-inline: 0.45rem;
+            border-radius: 0.6rem;
+            font-size: 1.2rem;
+            overflow: hidden;
+            box-shadow: 0 0.1rem 0.3rem #00000060;
+            margin-bottom: 0.6rem;
+        }
+        #team-editor-logo-toggle i {
+            color: var(--color-text-highlight);
+            transition: color 0.3s;
+            z-index: 2;
+        }
+        #team-editor-logo-toggle div {
+            top: 0.2rem;
+            left: 0.2rem;
+            z-index: 1;
+            position: absolute;
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--color-background-highlight);
+            transition: transform 0.3s, border-radius 0.3s;
+            box-shadow: inset 0 0.1rem 0.3rem #00000060;
+            border-radius: 0.4rem;
+        }
+        #team-editor-logo-toggle {
+            transform: translateX(0rem);
+        }
+        #team-editor-logo-toggle.selected div {
+            transform: translateX(2rem);
+        }
+        #team-editor-logo-toggle:not(.selected) #team-editor-logo-toggle-url {
+            color: var(--color-text);
+        }
+        #team-editor-logo-toggle.selected #team-editor-logo-toggle-github {
+            color: var(--color-text);
+        }
+        #team-editor-logo-toggle:not(.selected) div {
+            border-radius: 0.4rem 0.15rem 0.15rem 0.4rem;
+        }
+        #team-editor-logo-toggle.selected div {
+            border-radius: 0.15rem 0.4rem 0.4rem 0.15rem;
+        }
     </style>
 </head>
 <body>
-
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
     <h1>Layout Editor</h1>
     <div id="layout-selection"><div id="select-category" class="active">Categories</div><div id="select-team">Teams</div></div>
@@ -758,6 +974,8 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    
+    <!-- This is the Category List -->
     <div id="categories-holder" class="active">
         <div id="category-list">
         </div>
@@ -772,7 +990,8 @@
             <div id="category-save">Save Changes</div>
         </div>
     </div>
-    <!-- This is teams -->
+
+    <!-- This is the Team List -->
     <div id="teams-holder">
         <div id="team-list">
         </div>
@@ -787,6 +1006,8 @@
             <div id="team-save">Save Changes</div>
         </div>
     </div>
+    
+    <!-- This is the Category Editor -->
     <div id="category-editor-container">
         <div id="category-editor-teams">
             <div id="category-editor-teams-title">Category Teams</div>
@@ -811,6 +1032,28 @@
             <div id="category-editor-actions">
                 <div id="category-editor-cancel">Cancel</div>
                 <div id="category-editor-save">Save</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- This is the Team Editor -->
+    <div id="team-editor-container">
+        <div id="team-editor">
+            <div id="team-editor-title">Edit Team</div>
+            <label for="team-editor-name">Team Name:</label>
+            <input type="text" name="Team Name" id="team-editor-name" placeholder="FC Milan">
+            <label for="team-editor-id" id="team-editor-id-label">Team Id:</label>
+            <input type="text" name="Team Id" id="team-editor-id" placeholder="fc_milan">
+            <label for="team-editor-logo-url">Team Logo:</label>
+            <div id="team-editor-logo-toggle">
+                <div id="team-editor-logo-highlight"></div>
+                <i class="fa-fw fa-solid fa-link" id="team-editor-logo-toggle-url"></i>
+                <i class="fa-fw fa-brands fa-github" id="team-editor-logo-toggle-github"></i>
+            </div>
+            <input type="text" name="Team Id" id="team-editor-logo-url" placeholder="https://example.com/fc_milan.png">
+            <div id="team-editor-actions">
+                <div id="team-editor-cancel">Cancel</div>
+                <div id="team-editor-save">Save</div>
             </div>
         </div>
     </div>
@@ -1062,6 +1305,18 @@
                 };
             }
         }
+           
+
+        function editTeam(teamId, teamName, teamUUID) {
+            document.getElementById("team-editor-title").innerText = "Edit Team";
+            document.getElementById("team-editor-name").value = "";
+            document.getElementById("team-editor-id").value = "";
+            document.getElementById("team-editor-logo-url").value = "";
+            document.getElementById("team-editor-name").placeholder = teamId;
+            document.getElementById("team-editor-id").placeholder = teamName;
+            document.getElementById("team-editor-logo-url").placeholder = "https://example.com/" + teamId + ".png";
+            document.getElementById("team-editor-container").classList.add("open");
+        }
 
         function newCategory() {
             document.getElementById("category-editor-title").innerText = "New Category";
@@ -1125,13 +1380,24 @@
             let teamElement = document.createElement("div");
             teamElement.id = "category-" + teamUUID;
             teamElement.dataset.id = teamId;
-            teamElement.innerHTML = `<i class="fa-solid fa-pen" id="team-edit-${teamUUID}"></i><img src="${teamList[teamId].logo}" alt="${teamList[teamId].name} Logo">`;
+            teamElement.innerHTML = `<i class="fa-solid fa-pen" id="team-edit-${teamUUID}"></i><img src="${teamList[teamId].logo}" alt="${teamList[teamId].name} Logo"><div><span id="team-hover">${teamList[teamId].name}</span><span id="team-hover-dev">${teamId}</span></div>`;
             document.getElementById("team-list").appendChild(teamElement);
             document.getElementById(`team-edit-${teamUUID}`).onclick = () => {
-                // editCategory(categoryId, categoryName, categoryUUID);
-                console.log(teamId)
+                console.log(teamList[teamId].name)
+                editTeam(teamId, teamList[teamId].name, teamUUID);
             };
         }
+        
+        document.getElementById("team-editor-logo-toggle").onclick = (event) => {
+            if (document.getElementById("team-editor-logo-toggle").classList.contains("selected")) {
+                document.getElementById("team-editor-logo-toggle").classList.remove("selected");
+                document.getElementById("team-editor-logo-url").style.display = "block";
+            } else {
+                document.getElementById("team-editor-logo-toggle").classList.add("selected");
+                document.getElementById("team-editor-logo-url").style.display = "none";
+                document.getElementById("team-editor-logo-url").blur();
+            }
+        };
 
         pageLayout.categories.forEach((categoriesText) => {
             addCategory(categoriesText, categoryList[categoriesText].name);
@@ -1281,6 +1547,8 @@
                         if (userData.role && userData.role == "dev") {
                             document.getElementById("category-list").classList = "dev";
                             // document.getElementById("category-editor").classList = "dev";
+                            document.getElementById("team-list").classList = "dev";
+                            // document.getElementById("team-editor").classList = "dev";
                         }
                     } else {
                         goBack();
