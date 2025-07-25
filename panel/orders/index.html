@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitchGear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <link href="../../main.css" rel="stylesheet">
+    <script src="../../darkMode.js"></script>
+    <style>
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.6rem;
+            /* font-family: monospace; */
+        }
+    </style>
+</head>
+<body data-transitions="false">
+    <div style="height: 7.2rem;" id="navbar-spacer"></div>
+    <h1>Orders</h1>
+    Page sadly not found (403 Forbidden)
+    <div id="navbar">
+        <div id="navbar-start">
+            <div id="navbar-back" onclick="goToPage('panel')"><i class="fa-solid fa-arrow-left"></i></div>
+            <img src="../../resources/logo.png" alt="" id="navbar-logo">
+        </div>
+        <div id="navbar-account">
+            <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-cart" style="display: none;">Cart</div>
+            <div id="navbar-login" onclick="goToPage('login')">Log In</div>
+            <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navbar-username" style="display: none;"></div>
+            <div id="navbar-logout" style="display: none;">Logout</div>
+        </div>
+    </div>
+    <div id="navbar-gradient"></div>
+    <div id="navbar-block"></div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
+    <script>
+        const subPage = "panel/orders/";
+        const navbarItems = ["login", "signup", "panel", "username", "logout"];
+        const nestingAmount = 1;
+        const permanentlySmall = true;
+        const hasSpacer = true;
+    </script>
+    <script src="../../main.js"></script>
+    <script src="../admin.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // function parseFormattingData(data) {
+        //     return data.replace(/\$(.+?)\;/g, (match, p1) => {
+        //         return p1.replace("-", "/");
+        //     });
+        // }
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAsClvLlMu-ldcCfL02fXSbx1-QH9wJ1I",
+            authDomain: "csongors-shop.firebaseapp.com",
+            databaseURL: "https://csongors-shop-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "csongors-shop",
+            storageBucket: "csongors-shop.firebasestorage.app",
+            messagingSenderId: "216505981379",
+            appId: "1:216505981379:web:570fbaac58a5e564994576"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const permissionsSnapshot = await getDocs(collection(db, "configurations", "roles", "permissions"));
+        let permissionsList = {};
+        permissionsSnapshot.forEach((doc) => {
+            let permissionRole = doc.id;
+            permissionsList[permissionRole] = doc.data();
+        });
+
+        document.getElementById('navbar-logout').addEventListener("click", async (event) => {
+            signOut(auth);
+            goBack();
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                (async () => {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    const userData = userDoc.data();
+                    if (userData) {
+                        if (userData.role && window.parsePermissions(permissionsList[userData.role], "orders:viewable")) {
+                            document.getElementById("navbar-panel").style.display = "block";
+                        } else {
+                            goBack();
+                        }
+                        document.getElementById("navbar-username").style.display = "block";
+                        document.getElementById("navbar-username").textContent = userData.username || user.email;
+                    } else {
+                        goBack();
+                    }
+                    document.getElementById("navbar-cart").style.display = "block";
+                    document.getElementById("navbar-login").style.display = "none";
+                    document.getElementById("navbar-signup").style.display = "none";
+                    document.getElementById("navbar-logout").style.display = "block";
+                })();
+            } else {
+                goBack();
+            }
+        });
+    </script>
+</body>
+</html>

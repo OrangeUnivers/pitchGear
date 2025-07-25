@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexedDB</title>
+</head>
+<body>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
+    <script>
+        const request = indexedDB.open("pitchGear");
+        request.onupgradeneeded = e => {
+            alert("Upgrade");
+        }
+        request.onsuccess = e => {
+            alert("Success");
+        }
+        request.onerror = e => {
+            alert("Error");
+        }
+    </script>
+</body>
+</html>

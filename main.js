@@ -1,9 +1,11 @@
-disableAnimations()
-darkMode = false;
-
 let navbarSmall = false;
 const relativeBacktracking = "../".repeat(nestingAmount);
 const mainPage = window.location.protocol + "//" + window.location.host + window.location.pathname.replace(subPage, "");
+/**
+ * The time it takes for transitions to be enabled after the DOM finished loading.
+ * @type {number}
+ */
+let transitionActivationDelay = 1000;
 // Open (or create) the database
 // const request = indexedDB.open("PitchGearDB", 1);
 
@@ -33,12 +35,6 @@ const mainPage = window.location.protocol + "//" + window.location.host + window
 //     console.error("Database error:", event.target.error);
 // };
 
-// let darkMode = localStorage.getItem("pg-darkMode");
-// if (darkMode == "undefined" || darkMode == null || darkMode == undefined) {
-//     darkMode = false;
-//     localStorage.setItem("pg-darkMode", false);
-// }
-
 const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 function goToPage(page) {
@@ -48,64 +44,6 @@ function goToPage(page) {
 function goBack() {
     const newURL = mainPage;
     window.location.href = newURL;
-}
-function changeColorScheme(mode, forced) {
-    let setModeTo;
-    if (!mode) {
-        setModeTo = !darkMode;
-    } else {
-        switch (mode) {
-            case "dark":
-                console.log("changing to dark")
-                setModeTo = true;
-                break;
-            case "light":
-                console.log("changing to light")
-                setModeTo = false;
-                break;
-            default:
-                setModeTo = !darkMode;
-                break;
-        }
-    }
-    if (darkMode == setModeTo) { return; }
-    if (setModeTo) {
-        document.body.classList.add("dark");
-        document.getElementById("navbar-logo").style.opacity = 0;
-        setTimeout(() => {
-            document.getElementById("navbar-logo").src = relativeBacktracking + "resources/logo-dark.png";
-            document.getElementById("navbar-logo").style.opacity = 1;
-        }, 300)
-    } else {
-        document.body.classList.remove("dark");
-        document.getElementById("navbar-logo").style.opacity = 0;
-        setTimeout(() => {
-            document.getElementById("navbar-logo").src = relativeBacktracking + "resources/logo-light.png";
-            document.getElementById("navbar-logo").style.opacity = 1;
-        }, 300)
-    }
-    if (forced != true || !forced) {
-        darkMode = !darkMode
-        localStorage.setItem("pg-darkMode", darkMode);
-        console.log("DarkMode = " + darkMode);
-    }
-}
-function disableAnimations() {
-    document.getElementById("navbar").style.transition = "none";
-    document.getElementById("navbar-logo").style.transition = "none";
-    if (navbarItems.includes("username")) {
-        document.getElementById("navbar-username").style.transition = "none";
-    }
-    document.getElementById("navbar-account").style.transition = "none";
-}
-function enableAnimations() {
-    document.getElementById("navbar").style.transition = "border-radius 0.3s";
-    document.getElementById("navbar-logo").style.transition = "opacity 0.3s, width 0.3s";
-    if (navbarItems.includes("username")) {
-        console.log("asdadh")
-        document.getElementById("navbar-username").style.transition = "color 0.3s, padding-block 0.3s, padding-inline 0.3s, background-color 0.3s";
-    }
-    document.getElementById("navbar-account").style.transition = "font-size 0.3s";
 }
 function runSizeChange(small, mobile) {
     let sizeNameSize;
@@ -205,9 +143,42 @@ if (hasSpacer && isMobile) {
 if (hasSpacer && !isMobile && permanentlySmall) {
     document.getElementById("navbar-spacer").style.height = "4.6rem";
 }
-
 document.getElementById('navbar-logo').addEventListener("click", (event) => {
     changeColorScheme()
 });
-// changeColorScheme((darkMode ? "dark" : "light"), true);
-addEventListener("DOMContentLoaded", (event) => { setTimeout(() => { enableAnimations(); }, 100); });
+
+function showAlert(textContent, options) {
+    let preText = "";
+    let alertSpeed = 3200;
+    let actuallyShow = options.show == undefined || options.show == true;
+    if (options.type) {
+        switch (options.type) {
+            case "error":
+                preText = `<i class="fa-regular fa-xmark-circle"></i>`;
+                break;
+            case "confirmation":
+                preText = `<i class="fa-regular fa-check-circle"></i>`;
+                break;
+            case "general":
+                preText = `<i class="fa-regular fa-circle"></i>`;
+                break;
+        }
+    }
+    if (options.time) {
+        alertSpeed = options.time + 200;
+    }
+    document.getElementById("alert-system").innerHTML = preText + "<span>" + textContent + "</span>";
+    if (actuallyShow) {
+        document.getElementById("alert-system-container").classList.add("showing");
+        setTimeout(() => {
+            document.getElementById("alert-system-container").classList.remove("showing");
+        }, alertSpeed)
+    }
+}
+
+if (isMobile) {
+    document.body.classList.add('mobile');
+}
+showAlert("Alert! <code>You shouldn't be seeing this</code>", {type: "general", show: false})
+window.showAlert = showAlert;
+addEventListener("DOMContentLoaded", (event) => { setTimeout(() => { document.body.dataset.transitions = "true"; }, transitionActivationDelay); });

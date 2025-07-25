@@ -1,9 +1,14 @@
-body {
+html {
     --color-background: #FFFFFF;
     --color-background-cover: #FFFFFFB0;
     --color-background-highlight: #ececec;
     --color-background-highlight-cover: #ecececb0;
     --color-background-border: #d6d6d6;
+    --color-dev-background: #0b0b0b;
+    --color-dev-background-cover: #0b0b0bb0;
+    --color-dev-background-highlight: #0000ff;
+    --color-dev-background-highlight-cover: #0000ffb0;
+    --color-dev-background-border: #161616;
     --color-accent: #30d29f;
     --color-accent-text: #d7fff2;
     --color-error: #ff5b5b;
@@ -11,14 +16,50 @@ body {
     --color-error-text: #ffe3e3;
     --color-text: #000000;
     --color-text-highlight: #5c5c5c;
+    --color-dev-text: #00ff00;
+    --color-dev-text-highlight: #ffffff;
     --color-input: #ffffff;
-    transition: color 0.3s, background-color 0.3s;
+    --color-red: red;
+    --color-green: green;
+}
+html[data-theme="dev"] {
+    --color-background: var(--color-dev-background);
+    --color-background-cover: var(--color-dev-background-cover);
+    --color-background-highlight: var(--color-dev-background-highlight);
+    --color-background-highlight-cover: var(--color-dev-background-highlight-cover);
+    --color-background-border: var(--color-dev-background-border);
+    --color-text: var(--color-dev-text);
+    --color-text-highlight: var(--color-dev-text-highlight);
+}
+html[data-theme="dark"] {
+    --color-background: #3b3b3b;
+    --color-background-cover: #3b3b3bb0;
+    --color-background-highlight: #333333;
+    --color-background-highlight-cover: #333333b0;
+    --color-background-border: #535353;
+    --color-accent: #1d956f;
+    --color-accent-border: #15694e;
+    --color-accent-text: #c1e5da;
+    --color-error: #e33737;
+    --color-error-border: #c93939;
+    --color-error-text: #ffc9c9;
+    --color-text: #dfdfdf;
+    --color-text-highlight: #979797;
+    --color-input: #ffffff;
+    --color-input-text: #060000;
+    --color-red: red;
+    --color-green: lime;
+}
+body {
     background-color: var(--color-background);
     margin: 0.6rem;
     font-family: Roboto;
     position: absolute;
     color: var(--color-text);
     overflow-x: hidden;
+}
+body[data-transitions="true"] {
+    transition: color 0.3s, background-color 0.3s;
 }
 body::-webkit-scrollbar {
     width: 0.8rem;
@@ -37,23 +78,6 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
     background-color: #aaaaaa;
 }
-body.dark {
-    --color-background: #3b3b3b;
-    --color-background-cover: #3b3b3bb0;
-    --color-background-highlight: #333333;
-    --color-background-highlight-cover: #333333b0;
-    --color-background-border: #535353;
-    --color-accent: #1d956f;
-    --color-accent-border: #15694e;
-    --color-accent-text: #c1e5da;
-    --color-error: #e33737;
-    --color-error-border: #c93939;
-    --color-error-text: #ffc9c9;
-    --color-text: #dfdfdf;
-    --color-text-highlight: #979797;
-    --color-input: #ffffff;
-    --color-input-text: #060000;
-}
 #navbar {
     display: flex;
     top: 0.6rem;
@@ -68,6 +92,8 @@ body.dark {
     box-sizing: border-box;
     backdrop-filter: blur(10px);
     z-index: 99;
+}
+body[data-transitions="true"] #navbar {
     transition: border-radius 0.3s;
 }
 #navbar-account {
@@ -81,31 +107,29 @@ body.dark {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+body[data-transitions="true"] #navbar-account {
     transition: font-size 0.3s;
 }
-#navbar-panel {
-    transition: color 0.3s;
+#navbar-panel,
+#navbar-login,
+#navbar-signup,
+#navbar-logout {
     cursor: pointer;
 }
-#navbar-panel:hover {
-    color: var(--color-text-highlight);
-}
-#navbar-login {
+body[data-transitions="true"] #navbar-panel,
+body[data-transitions="true"] #navbar-login,
+body[data-transitions="true"] #navbar-signup,
+body[data-transitions="true"] #navbar-logout {
     transition: color 0.3s;
-    cursor: pointer;
 }
-#navbar-login:hover {
-    color: var(--color-text-highlight);
-}
-#navbar-signup {
-    transition: color 0.3s;
-    cursor: pointer;
-}
-#navbar-signup:hover {
+#navbar-panel:hover,
+#navbar-login:hover,
+#navbar-signup:hover,
+#navbar-logout:hover {
     color: var(--color-text-highlight);
 }
 #navbar-username {
-    transition: color 0.3s, padding 0.3s;
     cursor: pointer;
     background-color: var(--color-background-highlight);
     padding-block: 0.8rem;
@@ -113,18 +137,29 @@ body.dark {
     border-radius: 0.6rem;
     box-shadow: 0 0.2rem 0.4rem #00000040;
 }
-#navbar-logout {
-    transition: color 0.3s;
-    cursor: pointer;
-}
-#navbar-logout:hover {
-    color: var(--color-text-highlight);
+body[data-transitions="true"] #navbar-username {
+    transition: background-color 0.3s, color 0.3s, padding 0.3s;
 }
 #navbar-logo {
     width: 10rem;
-    transition: opacity 0.3s, width 0.3s;
     opacity: 1;
+    transition: filter 0.3s;
+    filter: brightness(0%);
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+html[data-theme="dark"] #navbar-logo {
     filter: brightness(0.87);
+}
+html[data-theme="light"] #navbar-logo {
+    filter: brightness(0);
+}
+body[data-transitions="true"] #navbar-logo {
+    transition: opacity 0.3s, width 0.3s, filter 0.3s;
 }
 #navbar-block {
     position: fixed;
@@ -135,14 +170,26 @@ body.dark {
     height: 0.2rem;
     z-index: 10;
 }
+body[data-transitions="true"] #navbar-block {
+    transition: background-color 0.3s;
+}
 #navbar-gradient {
     position: fixed;
     top: 0.2rem;
     left: 0;
-    background-image: linear-gradient(to bottom, var(--color-background), #ffffff00);
+    background-image: linear-gradient(to bottom, #FFF, #ffffff00);
     width: 100%;
     height: 2rem;
     z-index: 10;
+}
+body[data-transitions="true"] #navbar-gradient {
+    transition: filter 0.3s;
+}
+html[data-theme="dark"] #navbar-gradient {
+    filter: brightness(0.231372549);
+}
+html[data-theme="light"] #navbar-gradient {
+    filter: brightness(1);
 }
 #navbar-start {
     display: flex;
@@ -165,8 +212,64 @@ body.dark {
     -ms-user-select: none;
     user-select: none;
     cursor: pointer;
+}
+body[data-transitions="true"] #navbar-back {
     transition: color 0.3s, background-color 0.3s;
 }
 #navbar-back:hover {
     color: var(--color-text-highlight);
+}
+#alert-system-container {
+    display: flex;
+    bottom: -5.6rem;
+    left: 0;
+    position: fixed;
+    gap: 0.4rem;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+#alert-system-container.showing {
+    bottom: 0.6rem;
+}
+body[data-transitions="true"] #alert-system-container {
+    transition: bottom 0.2s;
+}
+#alert-system {
+    font-size: 1.2rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 1rem;
+    box-shadow: 0 0.15rem 0.3rem #00000057;
+    border-radius: 4rem;
+    background-color: var(--color-background-highlight);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+body[data-transitions="true"] #alert-system {
+    transition: background-color 0.3s;
+}
+#alert-system>i {
+    font-size: 1.4rem;
+}
+#alert-system>i.fa-xmark-circle {
+    color: var(--color-red);
+}
+#alert-system>i.fa-check-circle {
+    color: var(--color-green);
+}
+body[data-transitions="true"] #alert-system>i {
+    transition: color 0.3s;
+}
+#alert-system>span>code {
+    font-size: 1rem;
+    background-color: var(--color-background);
+    padding-block: 0.2rem;
+    padding-inline: 0.3rem;
+    border-radius: 0.4rem;
+    display: inline;
 }

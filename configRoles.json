@@ -1,0 +1,63 @@
+{
+    "admin": {
+        "layout": "@all"
+    },
+    "co-owner": {
+        "users": {
+            "viewable": true,
+            "levelCap": 1
+        },
+        "layout": "@all",
+        "orders": {
+            "viewable": true,
+            "status": "modify",
+            "order": "view",
+            "address": "view",
+            "email": "view"
+        },
+        "lockdown": {
+            "viewable": true,
+            "status": "view",
+            "initiate": true
+        }
+    },
+    "dev": {
+        "users": {
+            "viewable": true,
+            "levelCap": 1,
+            "customRoles": true
+        },
+        "layout": "@all",
+        "orders": {
+            "viewable": true,
+            "status": "modify",
+            "order": "view",
+            "address": "view#fakeValues",
+            "billing": "view#fakeValues",
+            "email": "view"
+        },
+        "config": "@all",
+        "lockdown": "@all"
+    },
+    "owner": {
+        "users": {
+            "viewable": true,
+            "levelCap": 3
+        },
+        "layout": "@all",
+        "orders": "@all",
+        "config": {
+            "viewable": true,
+            "roles": ["panelLayout"]
+        },
+        "lockdown": "@all"
+    },
+    "shipping": {
+        "orders": {
+            "viewable": true,
+            "status": "view",
+            "order": "view",
+            "address": "view"
+        }
+    }
+}

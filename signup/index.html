@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +10,15 @@
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="../main.css" rel="stylesheet">
     <link href="../account-managment.css" rel="stylesheet">
+    <script src="../darkMode.js"></script>
 </head>
-<body>
+<body data-transitions="false">
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
-            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+            <img src="../resources/logo.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
-            <!-- <div id="navbar-username" style="opacity: 0; display: none;"></div> -->
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup">Sign Up</div>
         </div>
@@ -40,6 +40,7 @@
             </div>
         </div>
     </div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "signup/";
         const navbarItems = ["login", "signup"];

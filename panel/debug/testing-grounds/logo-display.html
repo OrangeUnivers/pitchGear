@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <link href="../../../main.css" rel="stylesheet">
+    <script src="../../../darkMode.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        #logo-holder {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 40rem;
+            padding-bottom: 1rem;
+        }
+        #logo-holder>div {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        #logo-holder h4 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+            padding-block: 0.6rem;
+            padding-inline: 1rem;
+            border-radius: 0.6rem;
+            background-color: var(--color-background-highlight);
+            box-shadow: 0rem 0.2rem 0.4rem #00000046;
+        }
+        #logo-holder>div>div {
+            font-size: 1rem;
+            font-weight: 400;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            gap: 0.4rem;
+            z-index: 1;
+        }
+        .blurred {
+            overflow-y: hidden;
+        }
+        #logo-holder>div>div>p {
+            margin: 0;
+        }
+        #logo-holder>div>div>div {
+            font-size: 0.6rem;
+            padding-block: 0.1rem;
+            padding-inline: 0.2rem;
+            border: solid var(--color-text-highlight) 0.1rem;
+            border-radius: 0.2rem;
+        }
+        #logo-holder>div>div>div#png {
+            color: red;
+        }
+        #logo-holder>div>div>div#svg {
+            color: orange;
+        }
+        #logo-holder>div>div>div#lazy {
+            color: green;
+        }
+        #logo-holder>div>div>img {
+            /* position: absolute; */
+            left: 0;
+            max-width: 1.2rem;
+            max-height: 1.2rem;
+            width: auto;
+            height: auto;
+        }
+        #full-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #00000000;
+            backdrop-filter: blur(0rem);
+            opacity: 0;
+            transition: opacity 0.3s, backdrop-filter 0.3s, background-color 0.3s;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #full-warning.showing {
+            background-color: #00000020;
+            backdrop-filter: blur(0.2rem);
+            opacity: 1;
+        }
+        #resource-warning {
+            background-color: var(--color-background);
+            width: fit-content;
+            border-radius: 1rem;
+            box-shadow: 0rem 0.2rem 0.4rem #00000046;
+            padding: 1.6rem;
+            max-height: 8.6rem;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+        #full-warning:not(.showing) #resource-warning {
+            max-height: 0;
+        }
+        .button-group div {
+            background-color: var(--color-background-highlight);
+            box-shadow: 0rem 0.2rem 0.4rem #00000046;
+            border-radius: 0.4rem;
+            padding: 0.6rem;
+            margin-block: 0.6rem;
+        }
+        .button-group div:last-child {
+            margin-block: 0rem;
+        }
+    </style>
+</head>
+<body class="blurred">
+    <div id="logo-holder">
+        <div id="logo-holder-countries-albania">
+            <h4>Albania</h4>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/apolonia.svg">
+                <p>Apolonia</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/besa-peja.svg">
+                <p>Besa Peja</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/besa.svg">
+                <p>Besa</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/bylis.svg">
+                <p>Bylis</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/dinamo-city.svg">
+                <p>Dinamo City</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/egnatia.svg">
+                <p>Egnatia</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/flamurtari.svg">
+                <p>Flamurtari</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/kastrioti.svg">
+                <p>Kastrioti</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/kukes.svg">
+                <p>Kukes</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/lac.svg">
+                <p>Lac</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/lushnja.svg">
+                <p>Lushnja</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/partizani.svg">
+                <p>Partizani</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/pogradec.svg">
+                <p>Pogradec</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/shkumbini.svg">
+                <p>Shkumbini</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/skenderbeu.svg">
+                <p>Skenderbeu</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/terbuni.svg">
+                <p>Terbuni</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/teuta.svg">
+                <p>Teuta</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/tirana.svg">
+                <p>Tirana</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/tomori.svg">
+                <p>Tomori</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/albania/vllaznia.svg">
+                <p>Vllaznia</p>
+            </div>
+        </div>
+        <div id="logo-holder-countries-andorra">
+            <h4>Andorra</h4>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/256x256/atletic-escaldes.png">
+                <p>Atletic Escaldes</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/ce-carroi.svg">
+                <p>Ce Carroi</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/fc-santa-coloma.svg">
+                <p>FC Santa Coloma</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/inter-escaldes.svg">
+                <p>Inter Escaldes</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/ordino.svg">
+                <p>Ordino</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/256x256/penya-encarnada.png">
+                <p>Penya Encarnada</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/ranger-s.svg">
+                <p>Ranger S</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/andorra/ue-santa-coloma.svg">
+                <p>Ue Santa Coloma</p>
+            </div>
+        </div>
+        <div id="logo-holder-countries-argentina">
+            <h4>Argentina</h4>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/aldosivi.svg">
+                <p>Aldosivi</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/argeninos-juniors.svg">
+                <p>Argeninos Juniors</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/argentina-national-team.svg">
+                <p>Argentina National Team</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/atletico-tucuman.svg">
+                <p>Atletico Tucuman</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/banfield.svg">
+                <p>Banfield</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/barracas-central.svg">
+                <p>Barracas Central</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/belgrano.svg">
+                <p>Belgrano</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/boca-juniors.svg">
+                <p>Boca Juniors</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/ca-huracan.svg">
+                <p>Ca Huracan</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/central-cordoba.svg">
+                <p>Central Cordoba</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/club-atletico-platanense.svg">
+                <p>Club Atletico Platanense</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/defensa-y-justicia.svg">
+                <p>Defensa Y Justicia</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/deportivo-riestra.svg">
+                <p>Deportivo Riestra</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/estudiantes-de-la-plata.svg">
+                <p>Estudiantes De La Plata</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/gimnasia-lp.svg">
+                <p>Gimnasia Lp</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/godoy-cruz.svg">
+                <p>Godoy Cruz</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/independiente-rivadavia.svg">
+                <p>Independiente Rivadavia</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/independiente.svg">
+                <p>Independiente</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/instituto-cordoba.svg">
+                <p>Instituto Cordoba</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/lanus.svg">
+                <p>Lanus</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/newells-old-boys.svg">
+                <p>Newells Old Boys</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/racing-club.svg">
+                <p>Racing Club</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/river-plate.svg">
+                <p>River Plate</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/rosario-central.svg">
+                <p>Rosario Central</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/san-lorenzo-de-almagro.svg">
+                <p>San Lorenzo De Almagro</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/san-martin-san-juan.svg">
+                <p>San Martin San Juan</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/sarmiento.svg">
+                <p>Sarmiento</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/talleres.svg">
+                <p>Talleres</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/tigre.svg">
+                <p>Tigre</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/union.svg">
+                <p>Union</p>
+            </div>
+            <div><img loading="lazy" src="https://github.com/Leo4815162342/football-logos/raw/main/logos/argentina/velez-sarsfield.svg">
+                <p>Velez Sarsfield</p>
+            </div>
+        </div>
+    </div>
+    <div id="full-warning" class="showing">
+        <div id="resource-warning">
+            <div class="text-content">
+                Are you sure you want to load <strong>≈ 1'493 logos at once</strong>?<br>
+                <label class="toggle-lazy">
+                    <input type="checkbox" id="disable-lazy">
+                    <span>Disable Lazy Loading <small>(GitHub <i>will</i> hate you)</small></span>
+                </label>
+            </div>
+            <div class="button-group">
+                <div id="confirmed-tomfoolery" class="button">Yes, i'd like my browser to suffer</div>
+                <div id="denied-tomfoolery" class="button">No thanks, skip the logos</div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        let returnedCountries;
+        let tomfooleryCount = 0;
+        await fetch('../../../resources/availableLogos.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                returnedCountries = data.countries;
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error fetching file:', error);
+            });
+        document.getElementById("confirmed-tomfoolery").onclick = () => {
+            document.getElementById("logo-holder").innerHTML = "";
+            document.getElementById("full-warning").classList = "";
+            document.body.classList.remove("blurred");
+            returnedCountries.forEach(countryData => {
+                let countryElement = document.createElement("div");
+                countryElement.innerHTML = `<h4>${countryData.name}</h4>`;
+                countryElement.id = "logo-holder-countries-" + countryData.id;
+                countryData.contents.forEach(teamData => {
+                    let teamElement = document.createElement("div");
+                    let extraPath = teamData.type == "svg" ? "" : "700x700/";
+                    teamElement.innerHTML = `<img ${document.getElementById("disable-lazy").checked ? ' ' : 'loading="lazy" '}src="https://github.com/Leo4815162342/football-logos/raw/main/logos/${countryData.id}/${extraPath}${teamData.id}.${teamData.type}" onerror="this.src='../../resources/logo-missing.svg'"><p>${teamData.name}</p><div id="${teamData.type}">${teamData.type}</div>${document.getElementById("disable-lazy").checked ? '' : '<div id="lazy">lazy</div>'}`;
+                    countryElement.append(teamElement);
+                    tomfooleryCount += 1;
+                });
+                document.getElementById("logo-holder").append(countryElement);
+            });
+            console.log(tomfooleryCount);
+        };
+        document.getElementById("denied-tomfoolery").onclick = () => {
+            document.getElementById("logo-holder").innerHTML = "";
+            document.getElementById("full-warning").classList = "";
+            document.body.classList.remove("blurred");
+            returnedCountries.forEach(countryData => {
+                let countryElement = document.createElement("div");
+                countryElement.innerHTML = `<h4>${countryData.name}</h4>`;
+                countryElement.id = "logo-holder-countries-" + countryData.id;
+                countryData.contents.forEach(teamData => {
+                    let teamElement = document.createElement("div");
+                    teamElement.innerHTML = `<p>${teamData.name}</p><div id="${teamData.type}">${teamData.type}</div>`;
+                    countryElement.append(teamElement);
+                    tomfooleryCount += 1;
+                });
+                document.getElementById("logo-holder").append(countryElement);
+            });
+            console.log(tomfooleryCount);
+        };
+    </script>
+</body>
+</html>

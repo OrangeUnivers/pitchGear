@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="../../main.css" rel="stylesheet">
+    <script src="../../darkMode.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -58,12 +59,14 @@
             width: 100%;
             font-size: 2rem;
             font-weight: 600;
-            transition: background-color 0.3s, border 0.3s;
             border: 0.3rem solid #0000;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+        body[data-transitions="true"] #category-list>div {
+            transition: background-color 0.3s, border 0.3s;
         }
         .mobile #category-list>div {
             font-size: 1.4rem;
@@ -87,8 +90,10 @@
             border-radius: 0.6rem;
             margin-inline: 1rem;
             opacity: 0;
-            transition: opacity 0.3s;
             cursor: pointer;
+        }
+        body[data-transitions="true"] #category-list>div .edit {
+            transition: opacity 0.3s;
         }
         .mobile #category-list>div .edit {
             font-size: 0.8rem;
@@ -135,7 +140,6 @@
             border-radius: 1rem;
             font-size: 2rem;
             font-weight: 600;
-            transition: background-color 0.3s, border 0.3s;
             border: 0.3rem dashed var(--color-background-highlight);
             color: var(--color-text-highlight);
             user-select: none;
@@ -143,10 +147,15 @@
             -moz-user-select: none;
             -ms-user-select: none;
         }
+        body[data-transitions="true"] #add-category {
+            transition: background-color 0.3s, border 0.3s;
+        }
         #add-category i {
             color: var(--color-text-highlight);
-            transition: transform 0.3s, opacity 0.5s, color 0.3s;
             opacity: 1;
+        }
+        body[data-transitions="true"] #add-category i {
+            transition: transform 0.3s, opacity 0.5s, color 0.3s;
         }
         .mobile #add-category {
             font-size: 1.6rem;
@@ -183,6 +192,8 @@
             padding-inline: 1rem;
             color: var(--color-text);
             box-shadow: 0rem 0.2rem 0.4rem #00000000;
+        }
+        body[data-transitions="true"] #addable-categories>div {
             transition: box-shadow 0.3s, backdrop-filter 0.3s, color 0.3s;
         }
         #addable-categories>div:hover {
@@ -211,28 +222,23 @@
             font-weight: 600;
             margin-block: 1rem;
         }
-        #category-save {
+        #category-actions>div {
             background-color: var(--color-background-highlight);
             padding: 0.8rem;
             border-radius: 0.6rem;
-            transition: background-color 0.3s, color 0.3s;
             cursor: not-allowed;
         }
-        #category-cancel {
-            background-color: var(--color-background-highlight);
-            padding: 0.8rem;
-            border-radius: 0.6rem;
+        body[data-transitions="true"] #category-actions>div {
             transition: background-color 0.3s, color 0.3s;
-            cursor: not-allowed;
         }
-        .changed #category-save {
+        .changed #category-actions>#category-save {
             background-color: var(--color-accent);
             color: var(--color-accent-text);
             padding: 0.8rem;
             border-radius: 0.6rem;
             cursor: pointer;
         }
-        .changed #category-cancel {
+        .changed #category-actions>#category-cancel {
             background-color: var(--color-error);
             color: var(--color-error-text);
             padding: 0.8rem;
@@ -259,6 +265,8 @@
             -moz-user-select: none;
             -ms-user-select: none;
             cursor: pointer;
+        }
+        body[data-transitions="true"] #layout-selection>div {
             transition: background-color 0.3s, box-shadow 0.3s;
         }
         #layout-selection>div:hover {
@@ -292,7 +300,6 @@
             background-color: #00000000;
             backdrop-filter: blur(0rem);
             z-index: 100;
-            transition: background-color 0.3s, backdrop-filter 0.3s;
             pointer-events: none;
             display: flex;
             justify-content: center;
@@ -300,13 +307,15 @@
             flex-direction: column;
             gap: 0rem;
         }
+        body[data-transitions="true"] #category-editor-container {
+            transition: background-color 0.3s, backdrop-filter 0.3s;
+        }
         #category-editor-container.open {
             background-color: #00000032;
             backdrop-filter: blur(0.4rem);
             pointer-events: all;
         }
         #category-editor {
-            transition: opacity 0.3s, box-shadow 1s;
             opacity: 0;
             background-color: var(--color-background-highlight);
             border-radius: 1.6rem;
@@ -315,6 +324,9 @@
             min-width: 20rem;
             max-height: 20rem;
             position: relative;
+        }
+        body[data-transitions="true"] #category-editor {
+            transition: opacity 0.3s, box-shadow 1s;
         }
         #category-editor-container.open #category-editor {
             box-shadow: 0 0.2rem 0.4rem #00000077;
@@ -334,13 +346,15 @@
             padding: 0.6rem;
             width: min-content;
             border-radius: 0.6rem;
-            transition: background-color 0.3s, box-shadow 0.3s;
             box-shadow: inset 0 0.1rem 0.3rem #00000057, 0 0 0 #0000;
             cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+        }
+        body[data-transitions="true"] #category-editor-teams-show {
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
         #category-editor-teams-show.showing {
             box-shadow: inset 0 0 0 #0000, 0 0.1rem 0.3rem #00000057;
@@ -367,9 +381,11 @@
             min-height: 2rem;
             padding: 0.8rem 1.2rem;
             width: 16rem;
-            transition: box-shadow 0.3s, background-color 0.3s;
             cursor: pointer;
             margin-bottom: 0.8rem;
+        }
+        body[data-transitions="true"] #category-editor>input[type='text'] {
+            transition: box-shadow 0.3s, background-color 0.3s;
         }
         body:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus) {
             background-color: var(--color-background);
@@ -385,6 +401,8 @@
         body:not(.mobile) #category-editor>input[type='text']::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(-1rem);
+        }
+        body[data-transitions="true"]:not(.mobile) #category-editor>input[type='text']::placeholder {
             transition: transform 0.3s;
         }
         body:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus)::placeholder {
@@ -419,21 +437,24 @@
             background-color: var(--color-background);
             padding: 0.8rem;
             border-radius: 0.6rem;
-            transition: background-color 0.3s;
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
             cursor: pointer;
+        }
+        body[data-transitions="true"] #category-editor-cancel {
+            transition: background-color 0.3s;
         }
         #category-editor-save {
             background-color: var(--color-accent);
             color: var(--color-accent-text);
             padding: 0.8rem;
             border-radius: 0.6rem;
-            transition: background-color 0.3s, color 0.3s;
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
             cursor: pointer;
         }
+        body[data-transitions="true"] #category-editor-save {
+            transition: background-color 0.3s, color 0.3s;
+        }
         #category-editor-teams {
-            transition: opacity 0.3s, box-shadow 1s, max-height 0.3s, padding 0.3s, margin-bottom 0.3s;
             opacity: 0;
             background-color: var(--color-background-highlight);
             border-radius: 1.6rem;
@@ -446,6 +467,9 @@
             overflow-x: hidden;
             pointer-events: none;
             margin: 0;
+        }
+        body[data-transitions="true"] #category-editor-teams {
+            transition: opacity 0.3s, box-shadow 1s, max-height 0.3s, padding 0.3s, margin-bottom 0.3s;
         }
         .mobile #category-editor-teams {
             width: 20rem;
@@ -470,8 +494,10 @@
         #category-editor-teams::-webkit-scrollbar-thumb {
             background-color: #888888;
             border-radius: 0.4rem;
-            transition: background-color 0.3s;
             border: 0.2rem var(--color-background-border) solid;
+        }
+        body[data-transitions="true"] #category-editor-teams::-webkit-scrollbar-thumb {
+            transition: background-color 0.3s;
         }
         #category-editor-teams::-webkit-scrollbar-thumb:hover {
             background-color: #aaaaaa;
@@ -493,14 +519,15 @@
             padding: 0.6rem;
             width: min-content;
             border-radius: 0.6rem;
-            transition: background-color 0.3s;
-            transition: box-shadow 0.15s;
             box-shadow: 0 0 0 #0000, inset 0 0.1rem 0.3rem #00000057;
             cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+        }
+        body[data-transitions="true"] #category-editor-teams-edit {
+            transition: box-shadow 0.15s;
         }
         #category-editor-teams-edit.editing {
             box-shadow: 0 0.1rem 0.3rem #00000057, inset 0 0 0 #0000;
@@ -553,7 +580,6 @@
         #category-editor-teams-holder>div>i {
             position: absolute;
             background-color: var(--color-background-highlight);
-            transition: opacity 0.3s;
             opacity: 0;
             top: 0.4rem;
             right: 0.4rem;
@@ -562,6 +588,9 @@
             padding-block: 0.3rem;
             border-radius: 1rem;
             box-shadow: 0 0.1rem 0.3rem #00000077;
+        }
+        body[data-transitions="true"] #category-editor-teams-holder>div>i {
+            transition: opacity 0.3s;
         }
         #category-editor-teams-holder.editing>div>i {
             opacity: 0.8;
@@ -627,10 +656,12 @@
             max-width: 0rem;
             max-height: 5rem;
             opacity: 0;
-            transition: max-width 0.3s, opacity 0.3s;
             overflow-y: auto;
             overflow-X: hidden;
             pointer-events: none;
+        }
+        body[data-transitions="true"] #category-editor-teams-add-select-menu {
+            transition: max-width 0.3s, opacity 0.3s;
         }
         .mobile #category-editor-teams-add-select-menu {
             padding-right: 0.6rem;
@@ -647,8 +678,10 @@
         #category-editor-teams-add-select-menu::-webkit-scrollbar-thumb {
             background-color: #888888;
             border-radius: 0.4rem;
-            transition: background-color 0.3s;
             border: 0.2rem var(--color-background-border) solid;
+        }
+        body[data-transitions="true"] #category-editor-teams-add-select-menu::-webkit-scrollbar-thumb {
+            transition: background-color 0.3s;
         }
         #category-editor-teams-add-select-menu::-webkit-scrollbar-thumb:hover {
             background-color: #aaaaaa;
@@ -663,12 +696,14 @@
             padding: 0.6rem;
             border-radius: 0.8rem 0.4rem 0.4rem 0.8rem;
             box-shadow: 0 0 0 #0000;
-            transition: box-shadow 0.3s;
             white-space: nowrap;
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+        }
+        body[data-transitions="true"] #category-editor-teams-add-select-menu>div {
+            transition: box-shadow 0.3s;
         }
         .mobile #category-editor-teams-add-select-menu>div {
             box-shadow: 0 0.1rem 0.3rem #00000037;
@@ -711,6 +746,9 @@
             position: relative;
             background-color: var(--color-background-highlight);
         }
+        body[data-transitions="true"] #team-list>div {
+            transition: background-color 0.3s;
+        }
         #team-list>div>i {
             position: absolute;
             background-color: var(--color-background);
@@ -721,6 +759,9 @@
             border-radius: 1rem;
             box-shadow: inset 0 0.1rem 0.2rem #00000037;
             font-size: 0.8rem;
+        }
+        body[data-transitions="true"] #team-list>div>i {
+            transition: background-color 0.3s;
         }
         #team-list>div>img {
             max-width: 5rem;
@@ -745,7 +786,6 @@
             align-items: center;
         }
         #team-list>div>div>span {
-            transition: filter-backdrop 0.3s, color 0.3s, background-color 0.3s, box-shadow 0.3s;
             width: min-content;
             text-align: center;
             backdrop-filter: blur(0rem);
@@ -758,6 +798,9 @@
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+        }
+        body[data-transitions="true"] #team-list>div>div>span {
+            transition: filter-backdrop 0.3s, color 0.3s, background-color 0.3s, box-shadow 0.3s;
         }
         /* #team-list>div:hover>div>span {
             backdrop-filter: blur(0.2rem);
@@ -773,6 +816,25 @@
         #team-list:not(.dev)>div>div>#team-hover-dev {
             display: none;
         }
+        #new-team {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.2rem;
+        }
+        #new-team>i {
+            background-color: var(--color-background-highlight);
+            padding-block: 1rem;
+            padding-inline: 1.1rem;
+            font-size: 1.4rem;
+            border-radius: 3rem;
+            box-shadow: 0 0.2rem 0.4rem #00000057;
+            cursor: pointer;
+        }
+        body[data-transitions="true"] #new-team>i {
+            transition: background-color 0.3s;
+        }
         #team-editor-container {
             position: fixed;
             top: 0;
@@ -782,7 +844,6 @@
             background-color: #00000000;
             backdrop-filter: blur(0rem);
             z-index: 100;
-            transition: background-color 0.3s, backdrop-filter 0.3s;
             pointer-events: none;
             display: flex;
             justify-content: center;
@@ -790,21 +851,26 @@
             flex-direction: column;
             gap: 0rem;
         }
+        body[data-transitions="true"] #team-editor-container {
+            transition: background-color 0.3s, backdrop-filter 0.3s;
+        }
         #team-editor-container.open {
             background-color: #00000032;
             backdrop-filter: blur(0.4rem);
             pointer-events: all;
         }
         #team-editor {
-            transition: opacity 0.3s, box-shadow 1s;
             opacity: 0;
             background-color: var(--color-background-highlight);
             border-radius: 1.6rem;
             box-shadow: 0 0rem 0rem #00000000;
             padding: 1.6rem;
             min-width: 20rem;
-            max-height: 20rem;
+            max-height: 28rem;
             position: relative;
+        }
+        body[data-transitions="true"] #team-editor {
+            transition: opacity 0.3s, box-shadow 1s;
         }
         #team-editor-container.open #team-editor {
             box-shadow: 0 0.2rem 0.4rem #00000077;
@@ -836,9 +902,11 @@
             min-height: 2rem;
             padding: 0.8rem 1.2rem;
             width: 16rem;
-            transition: box-shadow 0.3s, background-color 0.3s;
             cursor: pointer;
             margin-bottom: 0.8rem;
+        }
+        body[data-transitions="true"] #team-editor>input[type='text'] {
+            transition: box-shadow 0.3s, background-color 0.3s;
         }
         body:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus) {
             background-color: var(--color-background);
@@ -854,6 +922,8 @@
         body:not(.mobile) #team-editor>input[type='text']::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(-1rem);
+        }
+        body[data-transitions="true"]:not(.mobile) #team-editor>input[type='text']::placeholder {
             transition: transform 0.3s;
         }
         body:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus)::placeholder {
@@ -885,18 +955,22 @@
             background-color: var(--color-background);
             padding: 0.8rem;
             border-radius: 0.6rem;
-            transition: background-color 0.3s;
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
             cursor: pointer;
+        }
+        body[data-transitions="true"] #team-editor-cancel {
+            transition: background-color 0.3s;
         }
         #team-editor-save {
             background-color: var(--color-accent);
             color: var(--color-accent-text);
             padding: 0.8rem;
             border-radius: 0.6rem;
-            transition: background-color 0.3s, color 0.3s;
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
             cursor: pointer;
+        }
+        body[data-transitions="true"] #team-editor-save {
+            transition: background-color 0.3s, color 0.3s;
         }
         #team-editor-logo-url {
             width: 20rem !important;
@@ -918,8 +992,10 @@
         }
         #team-editor-logo-toggle i {
             color: var(--color-text-highlight);
-            transition: color 0.3s;
             z-index: 2;
+        }
+        body[data-transitions="true"] #team-editor-logo-toggle i {
+            transition: color 0.3s;
         }
         #team-editor-logo-toggle div {
             top: 0.2rem;
@@ -929,9 +1005,11 @@
             width: 2rem;
             height: 2rem;
             background-color: var(--color-background-highlight);
-            transition: transform 0.3s, border-radius 0.3s;
             box-shadow: inset 0 0.1rem 0.3rem #00000060;
             border-radius: 0.4rem;
+        }
+        body[data-transitions="true"] #team-editor-logo-toggle div {
+            transition: transform 0.3s, border-radius 0.3s;
         }
         #team-editor-logo-toggle {
             transform: translateX(0rem);
@@ -951,9 +1029,174 @@
         #team-editor-logo-toggle.selected div {
             border-radius: 0.15rem 0.4rem 0.4rem 0.15rem;
         }
+        #team-editor-logo-github {
+            position: relative;
+            background-color: var(--color-background);
+            width: 100%;
+            height: 10rem;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 0.15rem 0.3rem #00000060;
+            border-radius: 1rem 0.2rem 0.2rem 1rem;
+            overflow: hidden;
+        }
+        body[data-transitions] #team-editor-logo-github>div {
+            transition: left 0.3s;
+        }
+        #team-editor-logo-github-countries {
+            position: absolute;
+            /* background-color: #00ffffaa; */
+            width: 100%;
+            height: 10rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            font-weight: 600;
+        }
+        #team-editor-logo-github-countries::-webkit-scrollbar {
+            width: 0.6rem;
+            transform: translateY(10rem);
+        }
+        #team-editor-logo-github-countries::-webkit-scrollbar-track {
+            background-color: #0000;
+            margin: 0.8rem;
+        }
+        #team-editor-logo-github-countries::-webkit-scrollbar-thumb {
+            background-color: var(--color-background-border);
+            border-radius: 0.2rem 0 0 0.2rem;
+            transition: background-color 0.3s;
+        }
+        #team-editor-logo-github[data-page="countries"] #team-editor-logo-github-countries {
+            left: 0;
+        }
+        #team-editor-logo-github[data-page="teams"] #team-editor-logo-github-countries {
+            left: -100%;
+        }
+        #team-editor-logo-github-countries>div {
+            width: calc(100% - 2.6rem);
+            padding: 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            cursor: pointer;
+            border-radius: 0 0.6rem 0.6rem 0;
+        }
+        #team-editor-logo-github-countries>div:first-child {
+            border-radius: 0 0 0.6rem 0;
+        }
+        #team-editor-logo-github-countries>div:last-child {
+            border-radius: 0 0.6rem 0 0;
+        }
+        #team-editor-logo-github-countries>div:first-child:last-child {
+            border-radius: 0 0 0 0;
+        }
+        body:not(.mobile) #team-editor-logo-github-countries>div:hover {
+            background-color: var(--color-background-highlight);
+            box-shadow: 0 0.15rem 0.3rem #00000060;
+        }
+        body:not(.mobile) #team-editor-logo-github-countries>div:hover>span>i {
+            color: gray;
+        }
+        body[data-transitions="true"] #team-editor-logo-github-countries>div>span>i {
+            transition: color 0.3s;
+        }
+        #team-editor-logo-github-countries>div>span {
+            display: flex;
+            flex-direction: row;
+            gap: 1.2rem;
+        }
+        #team-editor-logo-github-countries>div:not(.selected)>span>.selection {
+            color: #0000;
+        }
+        body:not(.mobile) #team-editor-logo-github-countries>div:not(.selected):hover>span>.selection {
+            color: #0000;
+        }
+        #team-editor-logo-github-teams {
+            position: absolute;
+            /* background-color: #ff00ffaa; */
+            width: 100%;
+            height: 10rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            font-weight: 400;
+        }
+        #team-editor-logo-github-teams::-webkit-scrollbar {
+            width: 0.6rem;
+            transform: translateY(10rem);
+        }
+        #team-editor-logo-github-teams::-webkit-scrollbar-track {
+            background-color: #0000;
+            margin: 0.8rem;
+        }
+        #team-editor-logo-github-teams::-webkit-scrollbar-thumb {
+            background-color: var(--color-background-border);
+            border-radius: 0.2rem 0 0 0.2rem;
+            transition: background-color 0.3s;
+        }
+        #team-editor-logo-github[data-page="countries"] #team-editor-logo-github-teams {
+            left: 100%;
+        }
+        #team-editor-logo-github[data-page="teams"] #team-editor-logo-github-teams {
+            left: 0;
+        }
+        #team-editor-logo-github-teams>div {
+            width: calc(100% - 2.6rem);
+            padding: 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            cursor: pointer;
+            border-radius: 0 0.6rem 0.6rem 0;
+        }
+        #team-editor-logo-github-teams>div:last-child {
+            border-radius: 0 0.6rem 0 0;
+        }
+        #team-editor-logo-github-teams>div:first-child:last-child {
+            border-radius: 0 0 0 0;
+        }
+        body:not(.mobile) #team-editor-logo-github-teams>div:hover {
+            background-color: var(--color-background-highlight);
+            box-shadow: 0 0.15rem 0.3rem #00000060;
+        }
+        #team-editor-logo-github-teams>div>i {
+            color: #0000;
+        }
+        body:not(.mobile) #team-editor-logo-github-teams>div:hover>i {
+            color: gray;
+        }
+        #team-editor-logo-github-teams>div.selected>i {
+            color: var(--color-text);
+        }
+        body[data-transitions="true"] #team-editor-logo-github-teams>div>i {
+            transition: color 0.3s;
+        }
+        #team-editor-logo-github-teams>h4 {
+            font-size: 1rem;
+            width: calc(100% - 2.6rem);
+            padding: 1rem;
+            padding-bottom: 0.6rem;
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+            border-radius: 0 0.6rem 0.6rem 0;
+            margin: 0;
+            border-radius: 0 0 0.6rem 0;
+        }
+        #team-editor-logo-github-teams>h4>i {
+            margin-right: 0.6rem;
+        }
+        #team-editor-logo-github-teams>h4>span {
+            transform: translateY(-0.06rem);
+        }
+        body:not(.mobile) #team-editor-logo-github-teams>h4:hover {
+            background-color: var(--color-background-highlight);
+            box-shadow: 0 0.15rem 0.3rem #00000060;
+        }
     </style>
 </head>
-<body>
+<body data-transitions="false">
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
     <h1>Layout Editor</h1>
     <div id="layout-selection"><div id="select-category" class="active">Categories</div><div id="select-team">Teams</div></div>
@@ -961,7 +1204,7 @@
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back" onclick="goToPage('panel')"><i class="fa-solid fa-arrow-left"></i></div>
-            <img src="../../resources/logo-light.png" alt="" id="navbar-logo">
+            <img src="../../resources/logo.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;">Panel</div>
@@ -995,16 +1238,7 @@
     <div id="teams-holder">
         <div id="team-list">
         </div>
-        <div id="add-team">
-            <span id="add-team-button">Add Category</span>
-            <i class="fa-solid fa-circle-plus" id="add-team-plus"></i>
-            <div id="addable-teams">
-            </div>
-        </div>
-        <div id="team-actions">
-            <div id="team-cancel">Reset</div>
-            <div id="team-save">Save Changes</div>
-        </div>
+        <div id="new-team"><i class="fa-solid fa-plus" id="new-team-button"></i></div>
     </div>
     
     <!-- This is the Category Editor -->
@@ -1026,9 +1260,9 @@
             <div id="category-editor-title">Edit Category</div>
             <div id="category-editor-teams-show">Teams</div>
             <label for="category-editor-name">Category Name:</label>
-            <input type="text" name="Category Name" id="category-editor-name" placeholder="European Favorites">
+            <input autocomplete="off" type="text" name="Category Name" id="category-editor-name" placeholder="European Favorites">
             <label for="category-editor-id" id="category-editor-id-label">Category Id:</label>
-            <input type="text" name="Category Id" id="category-editor-id" placeholder="european_favorites">
+            <input autocomplete="off" type="text" name="Category Id" id="category-editor-id" placeholder="european_favorites">
             <div id="category-editor-actions">
                 <div id="category-editor-cancel">Cancel</div>
                 <div id="category-editor-save">Save</div>
@@ -1041,41 +1275,61 @@
         <div id="team-editor">
             <div id="team-editor-title">Edit Team</div>
             <label for="team-editor-name">Team Name:</label>
-            <input type="text" name="Team Name" id="team-editor-name" placeholder="FC Milan">
+            <input autocomplete="off" type="text" name="Team Name" id="team-editor-name" placeholder="FC Milan">
             <label for="team-editor-id" id="team-editor-id-label">Team Id:</label>
-            <input type="text" name="Team Id" id="team-editor-id" placeholder="fc_milan">
+            <input autocomplete="off" type="text" name="Team Id" id="team-editor-id" placeholder="fc_milan">
             <label for="team-editor-logo-url">Team Logo:</label>
             <div id="team-editor-logo-toggle">
                 <div id="team-editor-logo-highlight"></div>
                 <i class="fa-fw fa-solid fa-link" id="team-editor-logo-toggle-url"></i>
                 <i class="fa-fw fa-brands fa-github" id="team-editor-logo-toggle-github"></i>
             </div>
-            <input type="text" name="Team Id" id="team-editor-logo-url" placeholder="https://example.com/fc_milan.png">
+            <input autocomplete="off" type="text" name="Team Id" id="team-editor-logo-url" placeholder="https://example.com/fc_milan.png">
+            <div style="display: none;" id="team-editor-logo-github" data-page="countries" data-selected="">
+                <div id="team-editor-logo-github-countries">
+                </div>
+                <div id="team-editor-logo-github-teams"></div>
+            </div>
             <div id="team-editor-actions">
                 <div id="team-editor-cancel">Cancel</div>
                 <div id="team-editor-save">Save</div>
             </div>
         </div>
     </div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "panel/layout/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
         const nestingAmount = 2;
-        const permanentlySmall = false;
+        const permanentlySmall = true;
         const hasSpacer = true;
     </script>
     <script src="../../main.js"></script>
     <script>
-        if (isMobile) {
-            document.body.classList.add('mobile');
-        }
-
         function deleteCategory(elementId) {
             document.body.classList.add('changed');
             document.getElementById(elementId).remove();
         }
     </script>
+    <script src="../admin.js"></script>
     <script type="module">
+        let logoSize = 256;
+
+        function sortObjectKeysInPlace(obj) {
+            const sortedKeys = Object.keys(obj).sort();
+            for (const key of sortedKeys) {
+                const value = obj[key];
+                delete obj[key];
+                obj[key] = value;
+            }
+        }
+        
+        /**
+         * Checks if two arrays are equal to each other.
+         * @param {Array} arr1 The first array to compare.
+         * @param {Array} arr2 The second array to compare.
+         * @returns {boolean} Returns if the two arrays are equal to each other.
+         */
         function arraysEqual(arr1, arr2) {
             if (arr1.length !== arr2.length) return false;
             for (let i = 0; i < arr1.length; i++) {
@@ -1083,6 +1337,7 @@
             }
             return true;
         }
+
         window.arraysEqual = arraysEqual;
         let categoryEditorTeamScrollable = new Sortable(document.getElementById('category-editor-teams-holder'), {
             animation: 150,
@@ -1159,6 +1414,7 @@
                 addCategory.classList.add("adding");
             }
         };
+
 
         document.getElementById("category-editor-teams-show").onclick = (event) => {
             if (document.getElementById("category-editor-teams").classList.contains("open")) {
@@ -1246,6 +1502,12 @@
             let teamID = doc.id;
             teamList[teamID] = doc.data();
         });
+        const permissionsSnapshot = await getDocs(collection(db, "configurations", "roles", "permissions"));
+        let permissionsList = {};
+        permissionsSnapshot.forEach((doc) => {
+            let permissionRole = doc.id;
+            permissionsList[permissionRole] = doc.data();
+        });
 
         new Sortable(document.getElementById('category-list'), {
             animation: 150,
@@ -1266,6 +1528,12 @@
             },
         });
 
+        /**
+         * Sets everything up for enabling the category editor.
+         * @param {String} categoryId The id of the category to be edited.
+         * @param {String} categoryName The name of the category to be edited.
+         * @param {String} categoryUUID The UUID of the category to be edited.
+         */
         function editCategory(categoryId, categoryName, categoryUUID) {
             document.getElementById("category-editor-title").innerText = "Edit Category";
             document.getElementById("category-editor-name").value = "";
@@ -1273,7 +1541,7 @@
             document.getElementById("category-editor-name").placeholder = categoryName;
             document.getElementById("category-editor-id").placeholder = categoryId;
             document.getElementById("category-editor-container").classList.add("open");
-            document.getElementById("category-editor").classList.remove("editing");
+            document.getElementById("category-editor").classList.add("editing");
             document.getElementById("category-editor-teams").classList.remove("open");
             toggleCategoryEditorTeamsEditing(false);
             let editorTeamList = document.getElementById("category-editor-teams-holder");
@@ -1283,7 +1551,7 @@
                 let editorTeamListElement = document.createElement("div");
                 editorTeamListElement.dataset.id = teamId;
                 editorTeamListElement.id = "category-editor-team-" + teamUUID;
-                editorTeamListElement.innerHTML = `<i class="fa-solid fa-xmark" id="category-editor-team-delete-${teamUUID}"></i><img src="${teamList[teamId].logo}" alt="${teamList[teamId].name} Logo">`;
+                editorTeamListElement.innerHTML = `<i class="fa-solid fa-xmark" id="category-editor-team-delete-${teamUUID}"></i><img src="${parseLogo(teamList[teamId].logo)}" alt="${teamList[teamId].name} Logo">`;
                 editorTeamList.append(editorTeamListElement);
                 document.getElementById(`category-editor-team-delete-${teamUUID}`).onclick = () => {
                     editorTeamListElement.remove();
@@ -1305,19 +1573,51 @@
                 };
             }
         }
-           
 
-        function editTeam(teamId, teamName, teamUUID) {
+        /**
+         * Sets everything up for enabling the team editor.
+         * @param {String} teamId The id of the team to be edited.
+         * @param {String} teamName The name of the team to be edited.
+         */
+        function editTeam(teamId, teamName) {
             document.getElementById("team-editor-title").innerText = "Edit Team";
             document.getElementById("team-editor-name").value = "";
             document.getElementById("team-editor-id").value = "";
             document.getElementById("team-editor-logo-url").value = "";
-            document.getElementById("team-editor-name").placeholder = teamId;
-            document.getElementById("team-editor-id").placeholder = teamName;
-            document.getElementById("team-editor-logo-url").placeholder = "https://example.com/" + teamId + ".png";
+            document.getElementById("team-editor-name").placeholder = teamName;
+            document.getElementById("team-editor-id").placeholder = teamId;
+            document.getElementById("team-editor-logo-github").dataset.selected = "";
+            document.getElementById("team-editor-logo-github").dataset.page = "countries";
+            document.getElementById("team-editor-logo-github-countries").scrollTo({
+                top: 0
+            });
+            document.getElementById("team-editor-logo-github-teams").scrollTo({
+                top: 0
+            });
+            if (teamList[teamId].logo.startsWith("http")) {
+                document.getElementById("team-editor-logo-toggle").classList.remove("selected");
+                document.getElementById("team-editor-logo-url").style.display = "block";
+                document.getElementById("team-editor-logo-github").style.display = "none";
+                document.getElementById("team-editor-logo-url").placeholder = teamList[teamId].logo;
+            } else if (teamList[teamId].logo.startsWith("github")) {
+                document.getElementById("team-editor-logo-toggle").classList.add("selected");
+                document.getElementById("team-editor-logo-url").style.display = "none";
+                document.getElementById("team-editor-logo-github").style.display = "block";
+                document.getElementById("team-editor-logo-github").dataset.selected = teamList[teamId].logo.slice(22, -1);
+                document.getElementById("team-editor-logo-github-country-" + teamList[teamId].logo.slice(22, -1).split("/")[0]).classList.add("selected");
+            } else {
+                document.getElementById("team-editor-logo-toggle").classList.remove("selected");
+                document.getElementById("team-editor-logo-url").style.display = "block";
+                document.getElementById("team-editor-logo-github").style.display = "none";
+                document.getElementById("team-editor-logo-url").placeholder = "https://example.com/" + teamId + ".png";
+            }
             document.getElementById("team-editor-container").classList.add("open");
+            document.getElementById("team-editor").classList.add("editing");
         }
 
+        /**
+         * Sets everything up for enabling the category creator.
+         */
         function newCategory() {
             document.getElementById("category-editor-title").innerText = "New Category";
             document.getElementById("category-editor-name").value = "";
@@ -1325,7 +1625,7 @@
             document.getElementById("category-editor-name").placeholder = "Example: Bestsellers";
             document.getElementById("category-editor-id").placeholder = "";
             document.getElementById("category-editor-container").classList.add("open");
-            document.getElementById("category-editor").classList.add("editing");
+            document.getElementById("category-editor").classList.remove("editing");
             document.getElementById("category-editor-teams").classList.remove("open");
             toggleCategoryEditorTeamsEditing(false);
             let editorTeamList = document.getElementById("category-editor-teams-holder");
@@ -1347,6 +1647,130 @@
             }
         }
 
+        /**
+         * Sets everything up for enabling the team creator.
+         */
+        function newTeam() {
+            document.getElementById("team-editor-title").innerText = "New Team";
+            document.getElementById("team-editor-name").value = "";
+            document.getElementById("team-editor-id").value = "";
+            document.getElementById("team-editor-logo-url").value = "";
+            document.getElementById("team-editor-name").placeholder = "Example: FC Bayern";
+            document.getElementById("team-editor-id").placeholder = "";
+            document.getElementById("team-editor-logo-url").placeholder = "https://example.com/fc_bayern.png";
+            document.getElementById("team-editor-logo-github").dataset.selected = "";
+            document.getElementById("team-editor-logo-github").dataset.page = "countries";
+            document.getElementById("team-editor-logo-github-countries").scrollTo({
+                top: 0
+            });
+            document.getElementById("team-editor-logo-github-teams").scrollTo({
+                top: 0
+            });
+            document.getElementById("team-editor-container").classList.add("open");
+            document.getElementById("team-editor").classList.remove("editing");
+        }
+
+        document.getElementById("new-team-button").onclick = (event) => {
+            newTeam();
+        };
+
+        let returnedCountries;
+        let returnedCountriesDict = {};
+        await fetch('../../resources/availableLogos.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                returnedCountries = data.countries;
+            })
+            .catch(error => {
+                console.error('Error fetching file:', error);
+            });
+        
+        returnedCountries.forEach(countryData => {
+            returnedCountriesDict[countryData.id] = {};
+            for (let key in countryData) {
+                if (key == "contents") {
+                    returnedCountriesDict[countryData.id]["contents"] = {};
+                    countryData.contents.forEach(teamData => {
+                        returnedCountriesDict[countryData.id]["contents"][teamData.id] = {};
+                        for (let key in teamData) {
+                            if (key != "id") {
+                                returnedCountriesDict[countryData.id]["contents"][teamData.id][key] = teamData[key];
+                            }
+                        }
+                    });
+                } else if (key != "id") {
+                    returnedCountriesDict[countryData.id][key] = countryData[key];
+                }
+            }
+        })
+        console.log(returnedCountriesDict);
+
+        function parseLogo(logoURL) {
+            let logoImage;
+            if (logoURL.startsWith("http")) {
+                logoImage = logoURL;
+            } else if (logoURL.startsWith("github")) {
+                let logoCountryId = logoURL.slice(22, -1).split("/")[0];
+                let logoTeamId = logoURL.slice(22, -1).split("/")[1];
+                if (returnedCountriesDict[logoCountryId] && returnedCountriesDict[logoCountryId]["contents"][logoTeamId]) {
+                    if (returnedCountriesDict[logoCountryId]["contents"][logoTeamId].type == "svg") {
+                        logoImage = `https://github.com/Leo4815162342/football-logos/raw/main/logos/${logoCountryId}/${logoTeamId}.svg`;
+                    } else if (returnedCountriesDict[logoCountryId]["contents"][logoTeamId].type == "png") {
+                        logoImage = `https://github.com/Leo4815162342/football-logos/raw/main/logos/${logoCountryId}/${logoSize}x${logoSize}/${logoTeamId}.png`;
+                    }
+                }
+            }
+            return logoImage;
+        }
+
+        returnedCountries.forEach(countryData => {
+            let countryElement = document.createElement("div");
+            countryElement.id = `team-editor-logo-github-country-${countryData.id}`;
+            countryElement.innerHTML = `${countryData.name}<span><i class="fa-solid fa-check selection"></i><i class="fa-solid fa-chevron-right"></i></span>`;
+            countryElement.onclick = () => {
+                document.getElementById("team-editor-logo-github-teams").scrollTo({
+                    top: 0
+                });
+                document.getElementById("team-editor-logo-github-teams").innerHTML = "";
+                document.getElementById("team-editor-logo-github").dataset.page = "teams";
+                let titleElement = document.createElement("h4");
+                titleElement.innerHTML = `<i class="fa-solid fa-chevron-left"></i><span>${countryData.name}</span>`;
+                titleElement.onclick = () => {
+                    document.getElementById("team-editor-logo-github").dataset.page = "countries";
+                };
+                document.getElementById("team-editor-logo-github-teams").append(titleElement);
+                countryData.contents.forEach(teamData => {
+                    let teamElement = document.createElement("div");
+                    teamElement.id = `team-editor-logo-github-team-${countryData.id}-${teamData.id}`;
+                    teamElement.innerHTML = `${teamData.name}<i class="fa-solid fa-check"></i>`;
+                    if (`${countryData.id}/${teamData.id}` == document.getElementById("team-editor-logo-github").dataset.selected) {
+                        teamElement.classList.add("selected");
+                    }
+                    teamElement.onclick = () => {
+                        let currentSelected = document.getElementById("team-editor-logo-github").dataset.selected;
+                        teamElement.classList.add("selected");
+                        countryElement.classList.add("selected");
+                        if (currentSelected != "") {
+                            if (currentSelected.split("/")[0] == countryData.id && currentSelected.split("/")[1] != teamData.id) {
+                                document.getElementById(`team-editor-logo-github-team-${countryData.id}-${currentSelected.split("/")[1]}`).classList.remove("selected");
+                            }
+                            if (currentSelected.split("/")[0] != countryData.id) {
+                                document.getElementById(`team-editor-logo-github-country-${currentSelected.split("/")[0]}`).classList.remove("selected");
+                            }
+                        }
+                        document.getElementById("team-editor-logo-github").dataset.selected = `${countryData.id}/${teamData.id}`;
+                    };
+                    document.getElementById("team-editor-logo-github-teams").append(teamElement);
+                });
+            };
+            document.getElementById("team-editor-logo-github-countries").append(countryElement);
+        });
+
         document.getElementById("category-editor-teams-add-button").onclick = (event) => {
             if (document.getElementById("category-editor-teams-add-selected").dataset.id) {
                 let teamId = document.getElementById("category-editor-teams-add-selected").dataset.id;
@@ -1354,7 +1778,7 @@
                 let editorTeamListElement = document.createElement("div");
                 editorTeamListElement.dataset.id = teamId;
                 editorTeamListElement.id = "category-editor-team-" + teamUUID;
-                editorTeamListElement.innerHTML = `<i class="fa-solid fa-xmark" id="category-editor-team-delete-${teamUUID}"></i><img src="${teamList[teamId].logo}" alt="${teamList[teamId].name} Logo">`;
+                editorTeamListElement.innerHTML = `<i class="fa-solid fa-xmark" id="category-editor-team-delete-${teamUUID}"></i><img src="${parseLogo(teamList[teamId].logo)}" alt="${teamList[teamId].name} Logo">`;
                 document.getElementById(`category-editor-teams-holder`).append(editorTeamListElement);
                 document.getElementById(`category-editor-team-delete-${teamUUID}`).onclick = () => {
                     console.log(teamId)
@@ -1363,6 +1787,11 @@
             }
         };
 
+        /**
+         * Adds a category to the categoryList.
+         * @param {String} categoryId The id of the category to be added.
+         * @param {String} categoryName The name of the category to be added.
+         */
         function addCategory(categoryId, categoryName) {
             let categoryUUID = crypto.randomUUID();
             let categoryElement = document.createElement("div");
@@ -1375,16 +1804,22 @@
             };
         }
 
+        /**
+         * Adds a team to the teamList.
+         * @param {String} teamId The id of the team to be added.
+         * @param {String} teamName The name of the team to be added.
+         */
         function addTeam(teamId) {
             let teamUUID = crypto.randomUUID();
             let teamElement = document.createElement("div");
-            teamElement.id = "category-" + teamUUID;
+            teamElement.id = "team-" + teamId;
             teamElement.dataset.id = teamId;
-            teamElement.innerHTML = `<i class="fa-solid fa-pen" id="team-edit-${teamUUID}"></i><img src="${teamList[teamId].logo}" alt="${teamList[teamId].name} Logo"><div><span id="team-hover">${teamList[teamId].name}</span><span id="team-hover-dev">${teamId}</span></div>`;
+            let teamImage = parseLogo(teamList[teamId].logo);
+            teamElement.innerHTML = `<i class="fa-solid fa-pen" id="team-edit-${teamId}"></i><img src="${teamImage}" alt="${teamList[teamId].name} Logo" onerror="this.src='../../resources/logo-missing-large.svg'"><div><span id="team-hover">${teamList[teamId].name}</span><span id="team-hover-dev">${teamId}</span></div>`;
             document.getElementById("team-list").appendChild(teamElement);
-            document.getElementById(`team-edit-${teamUUID}`).onclick = () => {
+            document.getElementById(`team-edit-${teamId}`).onclick = () => {
                 console.log(teamList[teamId].name)
-                editTeam(teamId, teamList[teamId].name, teamUUID);
+                editTeam(teamId, teamList[teamId].name);
             };
         }
         
@@ -1392,9 +1827,17 @@
             if (document.getElementById("team-editor-logo-toggle").classList.contains("selected")) {
                 document.getElementById("team-editor-logo-toggle").classList.remove("selected");
                 document.getElementById("team-editor-logo-url").style.display = "block";
+                document.getElementById("team-editor-logo-github").style.display = "none";
+                // let currentSelected = document.getElementById("team-editor-logo-github").dataset.selected;
+                // if (currentSelected != "") {
+                //     document.getElementById("team-editor-logo-github-country-" + currentSelected.split("/")[0]).classList.remove("selected");
+                // }
+                // document.getElementById("team-editor-logo-github").dataset.selected = "";
+                document.getElementById("team-editor-logo-github").dataset.page = "countries";
             } else {
                 document.getElementById("team-editor-logo-toggle").classList.add("selected");
                 document.getElementById("team-editor-logo-url").style.display = "none";
+                document.getElementById("team-editor-logo-github").style.display = "block";
                 document.getElementById("team-editor-logo-url").blur();
             }
         };
@@ -1407,6 +1850,10 @@
             addTeam(teamId);
         }
 
+        /**
+         * Resets all categories in categoryList.
+         * @param {Boolean} [forced=false] - If true, forces a reset even if no changes were detected.
+         */
         function resetCategories(forced) {
             if (document.body.classList.contains('changed') || forced) {
                 document.getElementById("category-list").innerHTML = "";
@@ -1417,8 +1864,24 @@
             }
         }
 
+        /**
+         * Resets all teams in teamList.
+         */
+        function resetTeams() {
+            document.getElementById("team-list").innerHTML = "";
+            for (const teamId in teamList) {
+                addTeam(teamId);
+            }
+        }
+
         document.getElementById("category-cancel").onclick = resetCategories;
 
+        /**
+         * Adds a category to the categoryList via the addCategoryList.
+         * @param {object} event The event of the click of the button.
+         * @param {String} categoryId The id of the team to be added.
+         * @param {String} categoryName The name of the team to be added.
+         */
         function addElement(event, categoryId, categoryName) {
             event.stopPropagation();
             addCategory(categoryId, categoryName);
@@ -1426,6 +1889,9 @@
             document.body.classList.add('changed');
         }
 
+        /**
+         * Resets all the addCategoryList.
+         */
         function resetAddableCategories() {
             document.getElementById("addable-categories").innerHTML = "";
             let addNewCategory = document.createElement("div");
@@ -1455,48 +1921,21 @@
             let categoryName = document.getElementById("category-editor-name").value;
             let previousCategoryName = document.getElementById("category-editor-name").placeholder;
             let previousCategoryId = document.getElementById("category-editor-id").placeholder;
-            const elements = document.querySelectorAll("#category-editor-teams-holder > div");
-            const ids = Array.from(elements).map(el => el.dataset.id);
-            if (document.getElementById("category-editor").classList.contains("editing")){
-                if (categoryName != "" && ids != []) {
-                    let newCategoryContent = {name: categoryName, teams: ids};
-                    const user = auth.currentUser;
-                    (async () => {
-                        const token = await user.getIdToken();
-                        const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/addCategory", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer ${token}`
-                            },
-                            body: JSON.stringify({ categoryToAdd: categoryName.toLowerCase().replaceAll(" ", "_"), categoryToValue: newCategoryContent })
-                        });
-
-                        const data = await res.json();
-                        if (data.message) {
-                            console.log(data.message);
-                            document.getElementById("category-editor-container").classList.remove("open");
-                            categoryList[categoryName.toLowerCase().replaceAll(" ", "_")] = newCategoryContent;
-                            resetAddableCategories();
-                            resetCategories(true)
-                        } else {
-                            if (data.error) {
-                                alert(`[${res.status}]: ${data.error}, with error code: ${data.errorCode}`);
-                            }
-                            alert(data.error || "Something went wrong.");
-                        }
-                    })();
-                } else {
-                    document.getElementById("category-editor-container").classList.remove("open");
+            (async () => {
+                const user = auth.currentUser;
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const userData = userDoc.data();
+                const token = await user.getIdToken();
+                const elements = document.querySelectorAll("#category-editor-teams-holder > div");
+                const ids = Array.from(elements).map(el => el.dataset.id);
+                if (!(userData.role && window.parsePermissions(permissionsList[userData.role], "layout:categories", "str(modify)"))) {
+                    window.showAlert(`You arent allowed to do this! Missing: <code>layout:categories</code>`, {type: "error"});
                 }
-            } else {
-                let newCategoryContent = structuredClone(categoryList[previousCategoryId]);
-                if ((categoryName != previousCategoryName && categoryName != "") || !arraysEqual(ids, categoryList[previousCategoryId].teams)) {
-                    if (categoryName != previousCategoryName && categoryName != "") newCategoryContent.name = categoryName;
-                    if (!arraysEqual(ids, categoryList[previousCategoryId].teams)) newCategoryContent.teams = ids;
-                    const user = auth.currentUser;
-                    (async () => {
-                        const token = await user.getIdToken();
+                if (document.getElementById("category-editor").classList.contains("editing")){
+                    let newCategoryContent = structuredClone(categoryList[previousCategoryId]);
+                    if ((categoryName != previousCategoryName && categoryName != "") || !arraysEqual(ids, categoryList[previousCategoryId].teams)) {
+                        if (categoryName != previousCategoryName && categoryName != "") newCategoryContent.name = categoryName;
+                        if (!arraysEqual(ids, categoryList[previousCategoryId].teams)) newCategoryContent.teams = ids;
                         const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/editCategory", {
                             method: "POST",
                             headers: {
@@ -1512,18 +1951,176 @@
                             document.getElementById("category-editor-container").classList.remove("open");
                             categoryList[previousCategoryId] = newCategoryContent;
                             resetAddableCategories();
-                            resetCategories(true)
+                            resetCategories(true);
+                            window.showAlert("Category edited successfully!", {type: "confirmation"});
                         } else {
                             if (data.error) {
-                                alert(`[${res.status}]: ${data.error}, with error code: ${data.errorCode}`);
+                                window.showAlert(`Error while editing category with error! <code>[${res.status}]: ${data.errorCode}</code>`, {type: "error"});
+                            } else {
+                                window.showAlert(`Error while editing category!`, {type: "error"});
                             }
-                            alert(data.error || "Something went wrong.");
                         }
-                    })();
+                    } else {
+                        document.getElementById("category-editor-container").classList.remove("open");
+                        window.showAlert(`Nothing to add!`, {type: "general"});
+                    }
                 } else {
-                    document.getElementById("category-editor-container").classList.remove("open");
+                    if (categoryName != "" && ids != []) {
+                        let newCategoryContent = {name: categoryName, teams: ids};
+                        const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/addCategory", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ categoryToAdd: categoryName.toLowerCase().replaceAll(" ", "_"), categoryToValue: newCategoryContent })
+                        });
+
+                        const data = await res.json();
+                        if (data.message) {
+                            console.log(data.message);
+                            document.getElementById("category-editor-container").classList.remove("open");
+                            categoryList[categoryName.toLowerCase().replaceAll(" ", "_")] = newCategoryContent;
+                            resetAddableCategories();
+                            resetCategories(true);
+                            window.showAlert("Category added successfully!", {type: "confirmation"});
+                        } else {
+                            if (data.error) {
+                                window.showAlert(`Error while adding category with error! <code>[${res.status}]: ${data.errorCode}</code>`, {type: "error"});
+                            } else {
+                                window.showAlert(`Error while adding category!`, {type: "error"});
+                            }
+                        }
+                    } else {
+                        document.getElementById("category-editor-container").classList.remove("open");
+                        window.showAlert(`Nothing to add!`, {type: "general"});
+                    }
                 }
+            })();
+        };
+
+        document.getElementById("team-editor-cancel").onclick = (event) => {
+            document.getElementById("team-editor-container").classList.remove("open");
+            if (document.getElementById("team-editor-logo-github").dataset.selected != "") {
+                document.getElementById("team-editor-logo-github-country-" + document.getElementById("team-editor-logo-github").dataset.selected.split("/")[0]).classList.remove("selected");
             }
+        };
+
+        document.getElementById("team-editor-save").onclick = (event) => {
+            let teamName = document.getElementById("team-editor-name").value;
+            let previousTeamName = document.getElementById("team-editor-name").placeholder;
+            let previousTeamId = document.getElementById("team-editor-id").placeholder;
+            (async () => {
+                const user = auth.currentUser;
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const userData = userDoc.data();
+                const token = await user.getIdToken();
+                if (!(userData.role && window.parsePermissions(permissionsList[userData.role], "layout:teams", "str(modify)"))) {
+                    window.showAlert(`You arent allowed to do this! Missing permission: <code>layout:teams</code>`, {type: "error"});
+                }
+                if (document.getElementById("team-editor").classList.contains("editing")){
+                    let teamLogo;
+                    if (document.getElementById("team-editor-logo-toggle").classList.contains("selected")) {
+                        // Github repo selected as logo source.
+                        if (document.getElementById("team-editor-logo-github").dataset.selected != "") {
+                            teamLogo = "github://leo.football/" + document.getElementById("team-editor-logo-github").dataset.selected + "/";
+                        } else {
+                            teamLogo = "";
+                        }
+                    } else {
+                        // Custom URL selected as logo source.
+                        if (document.getElementById("team-editor-logo-url").value != "") {
+                            teamLogo = document.getElementById("team-editor-logo-url").value;
+                        } else {
+                            teamLogo = "";
+                        }
+                    }
+                    let newTeamContent = structuredClone(teamList[previousTeamId]);
+                    if ((teamName != previousTeamName && teamName != "") || teamLogo != "") {
+                        if (teamName != "") newTeamContent.name = teamName;
+                        if (teamLogo != "") newTeamContent.logo = teamLogo;
+                        const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/editTeam", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ teamToEdit: previousTeamId, teamToValue: newTeamContent })
+                        });
+
+                        const data = await res.json();
+                        if (data.message) {
+                            console.log(data.message);
+                            document.getElementById("team-editor-container").classList.remove("open");
+                            teamList[previousTeamId] = newTeamContent;
+                            // TO-DO: reset the "category-editor-team-add" list.
+                            sortObjectKeysInPlace(teamList);
+                            resetTeams();
+                            window.showAlert("Team edited successfully!", {type: "confirmation"});
+                            // document.getElementById("team-" + previousTeamId).querySelector("img").src = parseLogo(newTeamContent.logo);
+                            // document.getElementById("team-" + previousTeamId).querySelector("img").alt = newTeamContent.name + " Logo";
+                            // document.getElementById("team-" + previousTeamId).querySelector("div>span#team-hover").innerText = newTeamContent.name;
+                        } else {
+                            if (data.error) {
+                                window.showAlert(`Error while editing team with error! <code>[${res.status}]: ${data.errorCode}</code>`, {type: "error"});
+                            } else {
+                                window.showAlert(`Error while editing team!`, {type: "error"});
+                            }
+                        }
+                    } else {
+                        document.getElementById("team-editor-container").classList.remove("open");
+                        window.showAlert(`Nothing to add!`, {type: "general"});
+                    }
+                } else {
+                    let teamLogo;
+                    if (document.getElementById("team-editor-logo-toggle").classList.contains("selected")) {
+                        // Github repo selected as logo source.
+                        if (document.getElementById("team-editor-logo-github").dataset.selected != "") {
+                            teamLogo = "github://leo.football/" + document.getElementById("team-editor-logo-github").dataset.selected + "/";
+                        } else {
+                            teamLogo = "";
+                        }
+                    } else {
+                        // Custom URL selected as logo source.
+                        if (document.getElementById("team-editor-logo-url").value != "") {
+                            teamLogo = document.getElementById("team-editor-logo-url").value;
+                        } else {
+                            teamLogo = "";
+                        }
+                    }
+                    if (teamName != "" || teamLogo != "") {
+                        let newTeamContent = { name: teamName, logo: teamLogo };
+                        const res = await fetch("https://pitchgear.netlify.app/.netlify/functions/addTeam", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ teamToAdd: teamName.toLowerCase().replaceAll(" ", "_"), teamToValue: newTeamContent })
+                        });
+
+                        const data = await res.json();
+                        if (data.message) {
+                            console.log(data.message);
+                            document.getElementById("team-editor-container").classList.remove("open");
+                            teamList[teamName.toLowerCase().replaceAll(" ", "_")] = newTeamContent;
+                            // TO-DO: reset the "category-editor-team-add" list.
+                            sortObjectKeysInPlace(teamList);
+                            resetTeams();
+                            window.showAlert("Team added successfully!", {type: "confirmation"});
+                        } else {
+                            if (data.error) {
+                                window.showAlert(`Error while adding team with error! <code>[${res.status}]: ${data.errorCode}</code>`, {type: "error"});
+                            } else {
+                                window.showAlert(`Error while adding team!`, {type: "error"});
+                            }
+                        }
+                    } else {
+                        document.getElementById("team-editor-container").classList.remove("open");
+                        window.showAlert(`Nothing to add!`, {type: "general"});
+                    }
+                }
+            })();
         };
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
@@ -1537,7 +2134,7 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
+                        if (userData.role && window.parsePermissions(permissionsList[userData.role], "layout:viewable")) {
                             document.getElementById("navbar-panel").style.display = "block";
                         } else {
                             goBack();

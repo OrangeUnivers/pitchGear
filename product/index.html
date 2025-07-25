@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="../main.css" rel="stylesheet">
+    <script src="../darkMode.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -29,7 +30,7 @@
             flex-direction: row;
             justify-content: stretch;
             /* gap: 0.4rem; */
-            box-shadow: 0 0.2rem 0.4rem #00000030;
+            box-shadow: 0 0.2rem 0.4rem #00000050;
             border-radius: 1rem;
             margin: 1rem;
             background-color: var(--color-background-highlight);
@@ -102,6 +103,8 @@
             background-color: var(--color-background);
             color: var(--color-text);
             user-select: none;
+        }
+        body[data-transitions="true"] .toggle-option {
             transition: background-color 0.2s, color 0.2s;
         }
         .toggle-option:not(:last-child) {
@@ -140,18 +143,17 @@
         }
     </style>
 </head>
-<body>
-
+<body data-transitions="false">
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
     <h1 id="product-title">Product</h1>
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back"><i class="fa-solid fa-arrow-left"></i></div>
-            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+            <img src="../resources/logo.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
-            <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
             <div id="navbar-cart" style="display: none;">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
@@ -179,9 +181,10 @@
                 <div id="player-selection-text">Select a Player</div>
                 <div id="player-selection-dropdown"></div>
             </div>
-            <div id="product-buy" class="unavailable">Login / Signin</div>
+            <div id="product-buy" class="unavailable">Please Login first</div>
         </div>
     </div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "product/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -219,6 +222,37 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const queryString = window.location.search;
+        // let iDB;
+        // const request = indexedDB.open('pitchGear', 1);
+
+        // request.onupgradeneeded = function(event) {
+        //     iDB = event.target.result;
+
+        //     const cart = iDB.createObjectStore('cart', {keyPath: "id"});
+
+        //     cart.createIndex('productName', 'name', { unique: false });
+        //     cart.createIndex('productType', 'type', { unique: false });
+        //     cart.createIndex('productModifications', 'modifiers', { unique: false, multiEntry: true });
+        //     cart.createIndex('productPlayer', 'player', { unique: false });
+        //     cart.createIndex('productTeam', 'team', { unique: false });
+        //     cart.createIndex('productEdition', 'edition', { unique: false });
+        //     cart.createIndex('productAmount', 'amount', { unique: false });
+        // };
+        // request.onsuccess = function(event) {
+        //     iDB = event.target.result;
+        //     console.log("Successfully connected to iDB!")
+        // };
+
+        // request.onerror = event => {
+        //     console.error('Failed to open DB', event.target.error);
+        // };
+            // const tx = db.transaction('store', 'readwrite');
+            // const store = tx.objectStore('store');
+            // const putRequest = store.put('value', 'key');
+        
+            // putRequest.onsuccess = () => {
+            //     console.log('Data saved!');
+            // };
 
         const urlParams = new URLSearchParams(queryString);
         let teamIdParam;
@@ -318,7 +352,15 @@
         productImageElement.id = "product-image";
         document.getElementById("product-show").append(productImageElement);
 
-        function addToCart() {
+        async function addToCart() {
+            // const transaction = iDB.transaction('cart', 'readwrite');
+            // const store = transaction.objectStore('cart');
+            // const index = store.index('productName');
+
+            // const request = index.getAll('Helmet');
+            // request.onsuccess = () => {
+            //     console.log(request.result);
+            // };
         }
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
@@ -331,7 +373,7 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "co-owner" || userData.role == "owner" || userData.role == "dev" || userData.role == "shipping")) {
                             document.getElementById("navbar-panel").style.display = "block";
                         } else {
                             document.getElementById("navbar-panel").style.display = "none";

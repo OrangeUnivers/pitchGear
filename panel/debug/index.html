@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dev">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GearDebug</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <link href="../../main.css" rel="stylesheet">
+    <link href="debug.css" rel="stylesheet">
+    <style>
+        div.button {
+            margin-block: 0.4rem;
+        }
+        div.section {
+            border: solid var(--color-text) 0.1rem;
+            width: fit-content;
+            padding: 1rem;
+        }
+        div.section>div.button {
+            margin-bottom: 0rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the PitchGearDebug Menu!</h1>
+    <div class="section">
+        View logo-debug page.
+        <div class="button" onclick="redirectTo('logos')">[ View ]</div>
+    </div>
+    <div class="section">
+        View testing-grounds page.
+        <div class="button" onclick="redirectTo('testing')">[ View ]</div>
+    </div>
+    <div class="button" onclick="redirectTo('home')">[ Return to normal Panel ]</div>
+    <script>
+        function redirectTo(id) {
+            switch (id) {
+                case "home":
+                    window.location.href =  window.location.protocol + "//" + window.location.host + window.location.pathname.replace("debug/", "");
+                    break;
+                case "logos":
+                    window.location.href =  window.location.protocol + "//" + window.location.host + window.location.pathname + "logos/";
+                    break;
+                case "testing":
+                    window.location.href =  window.location.protocol + "//" + window.location.host + window.location.pathname + "testing-grounds/";
+                    break;
+            }
+        }
+    </script>
+    <script src="debug.js"></script>
+</body>
+</html>

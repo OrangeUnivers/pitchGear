@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="main.css" rel="stylesheet">
+    <script src="darkMode.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -36,15 +37,19 @@
             background-color: var(--color-background-highlight);
             border-radius: 1rem;
             box-shadow: 0rem 0.4rem 0.6rem #00000060;
-            height: 16rem;
-            transition: background-color 0.3s;
+            height: 15rem;
             cursor: pointer;
             overflow-x: hidden;
             overflow-y: hidden;
         }
+        body[data-transitions="true"] .team-list div {
+            transition: background-color 0.3s;
+        }
         .team-list div img {
-            height: 10rem;
-            /* height: auto; */
+            max-height: 10rem;
+            max-width: 10rem;
+            height: auto;
+            width: auto;
             text-align: center;
         }
         .team-list div p {
@@ -67,8 +72,10 @@
             border-radius: none;
             box-shadow: none;
             height: min-content;
-            transition: background-color 0.3s;
             cursor: pointer;
+        }
+        body[data-transitions="true"] .mobile .team-list div {
+            transition: background-color 0.3s;
         }
         .mobile .team-list div img {
             height: 6rem;
@@ -79,7 +86,7 @@
         }
     </style>
 </head>
-<body>
+<body data-transitions="false">
 
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
@@ -88,7 +95,7 @@
     <div id="teams-view">
     </div>
     <div id="navbar">
-        <img src="resources/logo-light.png" alt="" id="navbar-logo">
+        <img src="resources/logo.png" alt="" id="navbar-logo">
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
             <div id="navbar-cart" style="display: none;">Cart</div>
@@ -100,6 +107,7 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -184,6 +192,63 @@
         window.updateWidthGrid = updateWidthGrid;
     </script>
     <script type="module">
+        let logoSize = 256;
+        let returnedCountries;
+        let returnedCountriesDict = {};
+        await fetch('resources/availableLogos.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                returnedCountries = data.countries;
+                console.log(returnedCountries)
+            })
+            .catch(error => {
+                console.error('Error fetching file:', error);
+            });
+        
+        returnedCountries.forEach(countryData => {
+            returnedCountriesDict[countryData.id] = {};
+            for (let key in countryData) {
+                if (key == "contents") {
+                    returnedCountriesDict[countryData.id]["contents"] = {};
+                    countryData.contents.forEach(teamData => {
+                        returnedCountriesDict[countryData.id]["contents"][teamData.id] = {};
+                        for (let key in teamData) {
+                            if (key != "id") {
+                                returnedCountriesDict[countryData.id]["contents"][teamData.id][key] = teamData[key];
+                            }
+                        }
+                    });
+                } else if (key != "id") {
+                    returnedCountriesDict[countryData.id][key] = countryData[key];
+                }
+            }
+        })
+        console.log(returnedCountriesDict);
+
+        function parseLogo(logoURL) {
+            let logoImage;
+            if (logoURL.startsWith("http")) {
+                logoImage = logoURL;
+            } else if (logoURL.startsWith("github")) {
+                let logoCountryId = logoURL.slice(22, -1).split("/")[0];
+                let logoTeamId = logoURL.slice(22, -1).split("/")[1];
+                console.log(returnedCountriesDict[logoCountryId])
+                if (returnedCountriesDict[logoCountryId] && returnedCountriesDict[logoCountryId]["contents"][logoTeamId]) {
+                    if (returnedCountriesDict[logoCountryId]["contents"][logoTeamId].type == "svg") {
+                        logoImage = `https://github.com/Leo4815162342/football-logos/raw/main/logos/${logoCountryId}/${logoTeamId}.svg`;
+                    } else if (returnedCountriesDict[logoCountryId]["contents"][logoTeamId].type == "png") {
+                        logoImage = `https://github.com/Leo4815162342/football-logos/raw/main/logos/${logoCountryId}/${logoSize}x${logoSize}/${logoTeamId}.png`;
+                    }
+                }
+            }
+            return logoImage;
+        }
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
         import { getFirestore, collection, doc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -219,7 +284,7 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "co-owner" || userData.role == "owner" || userData.role == "dev" || userData.role == "shipping")) {
                             document.getElementById("navbar-panel").style.display = "block";
                         } else {
                             document.getElementById("navbar-panel").style.display = "none";
@@ -273,7 +338,7 @@
             categoryList.forEach((team, i) => {
                 const div = document.createElement("div");
                 div.innerHTML = `
-                    <img src="${teamList[team].logo}" alt="${teamList[team].name+" Logo"}" height="160rem">
+                    <img src="${parseLogo(teamList[team].logo)}" alt="${teamList[team].name+" Logo"}" height="160rem" onerror="this.src='resources/logo-missing-large.svg'">
                     <p>${teamList[team].name}</p>
                 `;
                 div.onclick = () => {

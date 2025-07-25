@@ -24,6 +24,8 @@ h1 {
     max-width: calc(100vw - 1.2rem);
     max-height: calc(100vh - 11.6rem);
     border-radius: 1rem;
+}
+body[data-transitions="true"] #account-panel {
     transition: color 0.3s, background-color 0.3s;
 }
 #account-content {
@@ -42,6 +44,9 @@ h1 {
     font-weight: 590;
     transition: border-color 0.3s;
     outline: none;
+}
+body[data-transitions="true"] #account-content input {
+    transition: background-color 0.3s;
 }
 #account-content input:focus {
     border: 2px solid var(--color-accent);

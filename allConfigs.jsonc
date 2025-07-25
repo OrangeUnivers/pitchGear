@@ -1,0 +1,30 @@
+{
+    "config": {
+        "roles": ["panelLayout", "permissions"], // ["panelLayout", "permissions"] || "@all"
+        "security": ["lockdown"], // ["lockdown"] || "@all"
+        "viewable": true // true
+    }, // this || "@all"
+    "layout": {
+        "categories": "modify", // "view" || "modify"
+        "teams": "modify", // "view" || "modify"
+        "viewable": true // true
+    }, // this || "@all"
+    "lockdown": {
+        "initiate": true, // true
+        "levelCap": 7, // 0..7
+        "status": "modify", // "view" || "modify"
+        "viewable": true // true
+    }, // this || "@all"
+    "orders": {
+        "address": "modify", // "view" || "modify"
+        "email": "modify", // "view" || "modify"
+        "order": "modify", // "view" || "modify"
+        "status": "modify", // "view" || "modify"
+        "viewable": true // true
+    }, // this || "@all"
+    "users": {
+        "customRoles": true, // true
+        "levelCap": 3, // 0..3
+        "viewable": true // true
+    } // this || "@all"
+}

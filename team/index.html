@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="../main.css" rel="stylesheet">
+    <script src="../darkMode.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -32,10 +33,12 @@
             width: 100%;
             border: none;
             outline: none;
-            transition: background-color 0.3s, color 0.3s;
             font-family: monospace;
             border-radius: 0.6rem;
             box-shadow: 0 0.2rem 0.4rem #00000030;
+        }
+        body[data-transitions="true"] .accordion {
+            transition: background-color 0.3s, color 0.3s;
         }
         .accordion h2 {
             margin: 0;
@@ -43,8 +46,10 @@
             font-size: 1rem;
         }
         .accordion i {
-            transition: transform 0.3s;
             font-size: 1rem;
+        }
+        body[data-transitions="true"] .accordion i {
+            transition: transform 0.3s;
         }
         .accordion.active i {
             transform: rotate(45deg) scale(1.2);
@@ -57,6 +62,8 @@
             padding-bottom: 0.6rem;
             max-height: 0;
             overflow: hidden;
+        }
+        body[data-transitions="true"] .panel {
             transition: max-height 0.2s ease-out;
         }
         .panel-elements {
@@ -92,6 +99,8 @@
             box-shadow: 0 0.2rem 0.4rem #00000030;
             border-radius: 1rem;
             color: var(--color-text);
+        }
+        body[data-transitions="true"] .panel-elements div {
             transition: background-color 0.3s, color 0.3s;
         }
         .panel-elements div img {
@@ -101,6 +110,8 @@
             margin-bottom: 0.4rem;
             border-radius: 0.6rem;
             /* padding: 0.6rem; */
+        }
+        body[data-transitions="true"] .panel-elements div img {
             transition: background-color 0.3s;
         }
         .panel-elements div h3 {
@@ -119,11 +130,13 @@
             font-size: 1rem;
             margin-top: 0.4rem;
             background-color: var(--color-accent);
+        }
+        body[data-transitions="true"] .panel-elements div button {
             transition: background-color 0.3s, color 0.3s;
         }
     </style>
 </head>
-<body>
+<body data-transitions="false">
 
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
@@ -133,10 +146,10 @@
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
-            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+            <img src="../resources/logo.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
-            <div id="navbar-panel" style="display: none;">Panel</div>
+            <div id="navbar-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
             <div id="navbar-cart" style="display: none;">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
@@ -146,6 +159,7 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "team/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -270,7 +284,7 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
+                        if (userData.role && (userData.role == "admin" || userData.role == "co-owner" || userData.role == "owner" || userData.role == "dev" || userData.role == "shipping")) {
                             document.getElementById("navbar-panel").style.display = "block";
                         } else {
                             document.getElementById("navbar-panel").style.display = "none";

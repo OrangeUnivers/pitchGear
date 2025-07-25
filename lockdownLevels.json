@@ -1,0 +1,12 @@
+{
+    "descriptions": {
+        "0": "No lockdown measures",
+        "1": "Block layout changes (e.g. due to spam attempts)",
+        "2": "Block user and order changes",
+        "3": "Disable sign-ups",
+        "4": "Block admin panel rendering",
+        "5": "Disable all database writes (including purchases)",
+        "6": "Disable all database reads",
+        "7": "Total lockdown — all operations and access disabled"
+    }
+}

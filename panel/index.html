@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Fira+Code:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="../main.css" rel="stylesheet">
+    <script src="../darkMode.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -23,14 +24,52 @@
         h3 {
             margin: 0;
         }
-        #action-holder div {
+        #action-holder {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            width: calc(100vw - 1.2rem);
+        }
+        #action-holder>div {
             background-color: var(--color-background-highlight);
             padding: 1rem;
-            margin-block: 2rem;
-            margin-inline: 1rem;
             border-radius: 1rem;
-            width: calc(100vw - 5.2rem);
-            max-width: 40rem;
+            width: 10rem;
+            height: 8rem;
+            box-shadow: 0 0.15rem 0.3rem #00000050;
+            cursor: pointer;
+        }
+        body[data-transitions="true"] #action-holder>div {
+            transition: background-color 0.3s;
+        }
+        #action-holder>div>span {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.2rem;
+        }
+        #action-holder>div>span>h3 {
+            font-weight: 600;
+            line-height: 1rem;
+            font-size: 1.2rem;
+        }
+        #action-holder>div>span>span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 2.2rem;
+            height: 2.2rem;
+        }
+        #action-holder>div>span>span>i {
+            font-size: 1.6rem;
+        }
+        #action-holder>div>span>span>i:is(.fa-gear,.fa-wrench) {
+            font-size: 1.8rem;
+        }
+        #action-holder>div>span>span>i.fa-border-all {
+            font-size: 2rem;
         }
         #access-type-container {
             display: flex;
@@ -41,6 +80,8 @@
             width: 100%;
             height: 4rem;
             margin: 0;
+        }
+        body[data-transitions="true"] #access-type-container {
             transition: transform 0.3s;
         }
         #access-type-container:hover {
@@ -55,7 +96,7 @@
         }
     </style>
 </head>
-<body>
+<body data-transitions="false">
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
     <h1>Panel</h1>
     <h2 id="welcome-text">Welcome to the Panel!</h2>
@@ -66,7 +107,7 @@
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
-            <img src="../resources/logo-light.png" alt="" id="navbar-logo">
+            <img src="../resources/logo.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;">Panel</div>
@@ -81,6 +122,7 @@
     <div id="navbar-block"></div>
     <div id="action-holder">
     </div>
+    <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "panel/";
         const navbarItems = ["login", "signup", "panel", "username", "logout"];
@@ -113,6 +155,10 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        const configDocSnap = await getDoc(doc(db, "configurations", "roles"));
+        const config = configDocSnap.data();
+        const panelLayout = config.panelLayout;
+
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
             signOut(auth);
             goBack();
@@ -124,7 +170,8 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     const userData = userDoc.data();
                     if (userData) {
-                        if (userData.role && (userData.role == "admin" || userData.role == "owner" || userData.role == "dev")) {
+                        
+                        if (userData.role && Object.keys(panelLayout).includes(userData.role)) {
                             document.getElementById("navbar-panel").style.display = "block";
                             document.getElementById("access-type").textContent = "Access Type: " + userData.role.replace(/\b\w/g, c => c.toUpperCase());
                         } else {
@@ -134,47 +181,63 @@
                         document.getElementById("navbar-username").textContent = userData.username || user.email;
                         document.getElementById("welcome-text").textContent = "Welcome to the Panel " + (userData.username || user.email) + "!";
                         let actionHolder = document.getElementById("action-holder");
+                        let configElement = document.createElement("div");
+                        configElement.innerHTML = `
+                            <span>
+                                <span><i class="fa-solid fa-gear"></i></span>
+                                <h3>Config</h3>
+                            </span>
+                            Configuration of the backend variables of the website.
+                        `;
+                        configElement.onclick = () => goToPage("panel/config");
+                        let debugElement = document.createElement("div");
+                        debugElement.innerHTML = `
+                            <span>
+                                <span><i class="fa-solid fa-wrench"></i></span>
+                                <h3>Debug</h3>
+                            </span>
+                            An collection of pages that for debugging the website.
+                        `;
+                        debugElement.onclick = () => goToPage("panel/debug");
+                        let editLayoutElement = document.createElement("div");
+                        editLayoutElement.innerHTML = `
+                            <span>
+                                <span><i class="fa-solid fa-border-all"></i></span>
+                                <h3>Edit Layout</h3>
+                            </span>
+                            Changes the layout of the page and allows for adding more teams.
+                        `;
+                        editLayoutElement.onclick = () => goToPage("panel/layout");
                         let viewOrdersElement = document.createElement("div");
+                        //      <span><i class="fa-solid fa-folder-open"></i></span>
                         viewOrdersElement.innerHTML = `
-                            <h3>View Orders</h3>
+                            <span>
+                                <span><i class="fa-solid fa-truck"></i></span>
+                                <h3>View Orders</h3>
+                            </span>
                             View all shipments and orders and change order statuses.
                         `;
                         viewOrdersElement.onclick = () => goToPage("panel/orders");
                         let viewUsersElement = document.createElement("div");
                         viewUsersElement.innerHTML = `
-                            <h3>View Users</h3>
-                            Only for changing permissions.
+                            <span>
+                                <span><i class="fa-solid fa-users"></i></span>
+                                <h3>View Users</h3>
+                            </span>
+                            Displays user email and name and the allows for role changes.
                         `;
                         viewUsersElement.onclick = () => goToPage("panel/users");
-                        let editLayoutElement = document.createElement("div");
-                        editLayoutElement.innerHTML = `
-                            <h3>Add/Edit Teams and Categories</h3>
-                            Change the layout of the homepage. And add Teams.
-                        `;
-                        editLayoutElement.onclick = () => goToPage("panel/layout");
-                        let debugElement = document.createElement("div");
-                        debugElement.innerHTML = `
-                            <h3>Debug</h3>
-                            Alot of information.
-                        `;
-                        debugElement.onclick = () => goToPage("panel/debug");
+                        let availableElements = {
+                            "config": configElement,
+                            "debug": debugElement,
+                            "layout": editLayoutElement,
+                            "orders": viewOrdersElement,
+                            "users": viewUsersElement
+                        }
                         if (userData.role) {
-                            switch (userData.role) {
-                                case "admin":
-                                    actionHolder.append(editLayoutElement);
-                                    break;
-                                case "owner":
-                                    actionHolder.append(viewOrdersElement);
-                                    actionHolder.append(viewUsersElement);
-                                    actionHolder.append(editLayoutElement);
-                                    break;
-                                case "dev":
-                                    actionHolder.append(debugElement);
-                                    actionHolder.append(editLayoutElement);
-                                    actionHolder.append(viewUsersElement);
-                                    actionHolder.append(viewOrdersElement);
-                                    break;
-                            }
+                            panelLayout[userData.role].forEach((panelLayoutElement)=>{
+                                actionHolder.append(availableElements[panelLayoutElement]);
+                            });
                         }
                     } else {
                         goBack();
