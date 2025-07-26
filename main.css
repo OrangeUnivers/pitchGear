@@ -173,7 +173,7 @@ html:not(.mobile) #navbar-menu {
 .mobile #navbar-menu {
     font-size: 1.6rem;
     cursor: pointer;
-    text-shadow: 0 0.1rem 0.2rem #00000080;
+    text-shadow: 0 0.1rem 0.2rem #00000067;
     margin-top: 0.2rem;
 }
 .mobile #navbar-panel,
