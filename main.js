@@ -35,8 +35,6 @@ let transitionActivationDelay = 1000;
 //     console.error("Database error:", event.target.error);
 // };
 
-const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
 function goToPage(page) {
     const newURL = mainPage + page;
     window.location.href = newURL;
@@ -135,16 +133,33 @@ if (!permanentlySmall) {
 }
 if (hasSpacer && isMobile) {
     if (!permanentlySmall) {
-        document.getElementById("navbar-spacer").style.height = "5.2rem";
+        document.getElementById("navbar-spacer").style.height = "5.4rem";
     } else {
-        document.getElementById("navbar-spacer").style.height = "4rem";
+        document.getElementById("navbar-spacer").style.height = "4.8rem";
     }
 }
-if (hasSpacer && !isMobile && permanentlySmall) {
-    document.getElementById("navbar-spacer").style.height = "4.6rem";
+if (hasSpacer && !isMobile) {
+    if (!permanentlySmall) {
+        document.getElementById("navbar-spacer").style.height = "7.2rem";
+    } else {
+        document.getElementById("navbar-spacer").style.height = "5.2rem";
+    }
 }
 document.getElementById('navbar-logo').addEventListener("click", (event) => {
-    changeColorScheme()
+    if (!isMobile) {
+        changeColorScheme();
+    }
+});
+
+document.getElementById('navpanel-theme').addEventListener("click", (event) => {
+    if (darkMode) {
+        document.querySelector("#navpanel-theme>i").classList.remove("fa-moon");
+        document.querySelector("#navpanel-theme>i").classList.add("fa-sun");
+    } else {
+        document.querySelector("#navpanel-theme>i").classList.add("fa-moon");
+        document.querySelector("#navpanel-theme>i").classList.remove("fa-sun");
+    }
+    changeColorScheme();
 });
 
 function showAlert(textContent, options) {
@@ -154,31 +169,45 @@ function showAlert(textContent, options) {
     if (options.type) {
         switch (options.type) {
             case "error":
-                preText = `<i class="fa-regular fa-xmark-circle"></i>`;
+                preText = `<i class="fa-regular fa-xmark-circle" aria-hidden="true"></i>`;
                 break;
             case "confirmation":
-                preText = `<i class="fa-regular fa-check-circle"></i>`;
+                preText = `<i class="fa-regular fa-check-circle" aria-hidden="true"></i>`;
                 break;
             case "general":
-                preText = `<i class="fa-regular fa-circle"></i>`;
+                preText = `<i class="fa-regular fa-circle" aria-hidden="true"></i>`;
                 break;
         }
     }
     if (options.time) {
         alertSpeed = options.time + 200;
     }
-    document.getElementById("alert-system").innerHTML = preText + "<span>" + textContent + "</span>";
+    let parsedText = preText + "<span>" + textContent + "</span>";
+    document.getElementById("alert-system").innerHTML = parsedText;
     if (actuallyShow) {
         document.getElementById("alert-system-container").classList.add("showing");
         setTimeout(() => {
-            document.getElementById("alert-system-container").classList.remove("showing");
+            console.log(parsedText);
+            console.log(document.getElementById("alert-system").innerHTML);
+            console.log(document.getElementById("alert-system").innerHTML == parsedText);
+            if (document.getElementById("alert-system").innerHTML == parsedText) {
+                document.getElementById("alert-system-container").classList.remove("showing");
+            }
         }, alertSpeed)
     }
 }
-
 if (isMobile) {
-    document.body.classList.add('mobile');
+    document.getElementById("navbar-menu").addEventListener("click", () => {
+        document.getElementById("navpanel-container").classList.add("showing")
+    })
+    document.getElementById("navpanel-close").addEventListener("click", () => {
+        document.getElementById("navpanel-container").classList.remove("showing")
+    })
 }
 showAlert("Alert! <code>You shouldn't be seeing this</code>", {type: "general", show: false})
 window.showAlert = showAlert;
+if (darkMode) {
+    document.querySelector("#navpanel-theme>i").classList.add("fa-moon");
+    document.querySelector("#navpanel-theme>i").classList.remove("fa-sun");
+}
 addEventListener("DOMContentLoaded", (event) => { setTimeout(() => { document.body.dataset.transitions = "true"; }, transitionActivationDelay); });

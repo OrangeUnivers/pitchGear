@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="../../main.css" rel="stylesheet">
     <script src="../../darkMode.js"></script>
+    <script src="../../mobile.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -387,7 +388,7 @@
         body[data-transitions="true"] #category-editor>input[type='text'] {
             transition: box-shadow 0.3s, background-color 0.3s;
         }
-        body:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus) {
+        html:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus) {
             background-color: var(--color-background);
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
         }
@@ -398,14 +399,14 @@
             background-color: var(--color-background);
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
         }
-        body:not(.mobile) #category-editor>input[type='text']::placeholder {
+        html:not(.mobile) #category-editor>input[type='text']::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(-1rem);
         }
         body[data-transitions="true"]:not(.mobile) #category-editor>input[type='text']::placeholder {
             transition: transform 0.3s;
         }
-        body:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus)::placeholder {
+        html:not(.mobile) #category-editor>input[type='text']:is(:hover, :focus)::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(0.1rem);
         }
@@ -708,7 +709,7 @@
         .mobile #category-editor-teams-add-select-menu>div {
             box-shadow: 0 0.1rem 0.3rem #00000037;
         }
-        body:not(.mobile) #category-editor-teams-add-select-menu>div:hover {
+        html:not(.mobile) #category-editor-teams-add-select-menu>div:hover {
             box-shadow: 0 0.1rem 0.3rem #00000037;
         }
         #category-editor-teams-add-button {
@@ -908,7 +909,7 @@
         body[data-transitions="true"] #team-editor>input[type='text'] {
             transition: box-shadow 0.3s, background-color 0.3s;
         }
-        body:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus) {
+        html:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus) {
             background-color: var(--color-background);
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
         }
@@ -919,14 +920,14 @@
             background-color: var(--color-background);
             box-shadow: inset 0 0.1rem 0.3rem #00000057;
         }
-        body:not(.mobile) #team-editor>input[type='text']::placeholder {
+        html:not(.mobile) #team-editor>input[type='text']::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(-1rem);
         }
         body[data-transitions="true"]:not(.mobile) #team-editor>input[type='text']::placeholder {
             transition: transform 0.3s;
         }
-        body:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus)::placeholder {
+        html:not(.mobile) #team-editor>input[type='text']:is(:hover, :focus)::placeholder {
             color: var(--color-text-highlight);
             transform: translateX(0.1rem);
         }
@@ -1090,11 +1091,11 @@
         #team-editor-logo-github-countries>div:first-child:last-child {
             border-radius: 0 0 0 0;
         }
-        body:not(.mobile) #team-editor-logo-github-countries>div:hover {
+        html:not(.mobile) #team-editor-logo-github-countries>div:hover {
             background-color: var(--color-background-highlight);
             box-shadow: 0 0.15rem 0.3rem #00000060;
         }
-        body:not(.mobile) #team-editor-logo-github-countries>div:hover>span>i {
+        html:not(.mobile) #team-editor-logo-github-countries>div:hover>span>i {
             color: gray;
         }
         body[data-transitions="true"] #team-editor-logo-github-countries>div>span>i {
@@ -1108,7 +1109,7 @@
         #team-editor-logo-github-countries>div:not(.selected)>span>.selection {
             color: #0000;
         }
-        body:not(.mobile) #team-editor-logo-github-countries>div:not(.selected):hover>span>.selection {
+        html:not(.mobile) #team-editor-logo-github-countries>div:not(.selected):hover>span>.selection {
             color: #0000;
         }
         #team-editor-logo-github-teams {
@@ -1156,14 +1157,14 @@
         #team-editor-logo-github-teams>div:first-child:last-child {
             border-radius: 0 0 0 0;
         }
-        body:not(.mobile) #team-editor-logo-github-teams>div:hover {
+        html:not(.mobile) #team-editor-logo-github-teams>div:hover {
             background-color: var(--color-background-highlight);
             box-shadow: 0 0.15rem 0.3rem #00000060;
         }
         #team-editor-logo-github-teams>div>i {
             color: #0000;
         }
-        body:not(.mobile) #team-editor-logo-github-teams>div:hover>i {
+        html:not(.mobile) #team-editor-logo-github-teams>div:hover>i {
             color: gray;
         }
         #team-editor-logo-github-teams>div.selected>i {
@@ -1190,13 +1191,23 @@
         #team-editor-logo-github-teams>h4>span {
             transform: translateY(-0.06rem);
         }
-        body:not(.mobile) #team-editor-logo-github-teams>h4:hover {
+        html:not(.mobile) #team-editor-logo-github-teams>h4:hover {
             background-color: var(--color-background-highlight);
             box-shadow: 0 0.15rem 0.3rem #00000060;
         }
     </style>
 </head>
 <body data-transitions="false">
+    <div style="position: fixed;"><svg width="0" height="0">
+        <defs><clipPath id="top-left-circle" clipPathUnits="objectBoundingBox">
+            <path d="M0,0 H1 A1,1,0,0,0,0,1 Z"></path></clipPath>
+            <clipPath id="top-right-circle" clipPathUnits="objectBoundingBox">
+            <path d="M1,0 V1 A1,1,0,0,0,0,0 Z"></path></clipPath>
+            <clipPath id="bottom-left-circle" clipPathUnits="objectBoundingBox">
+            <path d="M0,1 V0 A1,1,0,0,0,1,1 Z"></path></clipPath>
+            <clipPath id="bottom-right-circle" clipPathUnits="objectBoundingBox">
+            <path d="M1,1 H0 A1,1,0,0,0,1,0 Z"></path></clipPath></defs>
+    </svg></div>
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
     <h1>Layout Editor</h1>
     <div id="layout-selection"><div id="select-category" class="active">Categories</div><div id="select-team">Teams</div></div>
@@ -1207,12 +1218,13 @@
             <img src="../../resources/logo.png" alt="" id="navbar-logo">
         </div>
         <div id="navbar-account">
-            <div id="navbar-panel" style="display: none;">Panel</div>
-            <div id="navbar-cart" style="display: none;">Cart</div>
+            <div id="navbar-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
+            <div id="navbar-cart" style="display: none;" onclick="goToPage('cart')">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
             <div id="navbar-username" style="display: none;"></div>
             <div id="navbar-logout" style="display: none;">Logout</div>
+            <div id="navbar-menu"><i class="fa-solid fa-bars"></i></div>
         </div>
     </div>
     <div id="navbar-gradient"></div>
@@ -1295,6 +1307,22 @@
                 <div id="team-editor-save">Save</div>
             </div>
         </div>
+    </div>
+    <div id="navpanel-container">
+        <div class="corner"></div>
+        <div id="navpanel">
+            <div id="navpanel-title">PitchGear<i class="fa-solid fa-xmark" id="navpanel-close"></i></div>
+            <div id="navpanel-home" onclick="goBack()">Home</div>
+            <div id="navpanel-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
+            <div id="navpanel-cart" style="display: none;" onclick="goToPage('cart')">Cart</div>
+            <div id="navpanel-login" onclick="goToPage('login')">Log In</div>
+            <div id="navpanel-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navpanel-bottom">
+                <div id="navpanel-theme"><i class="fa-solid fa-sun"></i>Theme</div>
+                <div id="navpanel-logout" style="display: none;"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</div>
+            </div>
+        </div>
+        <div class="corner"></div>
     </div>
     <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
@@ -2128,6 +2156,11 @@
             goBack();
         });
 
+        document.getElementById('navpanel-logout').addEventListener("click", async (event) => {
+            signOut(auth);
+            goBack();
+        });
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 (async () => {
@@ -2136,6 +2169,7 @@
                     if (userData) {
                         if (userData.role && window.parsePermissions(permissionsList[userData.role], "layout:viewable")) {
                             document.getElementById("navbar-panel").style.display = "block";
+                            document.getElementById("navpanel-panel").style.display = "block";
                         } else {
                             goBack();
                         }
@@ -2154,6 +2188,10 @@
                     document.getElementById("navbar-login").style.display = "none";
                     document.getElementById("navbar-signup").style.display = "none";
                     document.getElementById("navbar-logout").style.display = "block";
+                    document.getElementById("navpanel-cart").style.display = "block";
+                    document.getElementById("navpanel-login").style.display = "none";
+                    document.getElementById("navpanel-signup").style.display = "none";
+                    document.getElementById("navpanel-logout").style.display = "flex";
                 })();
             } else {
                 goBack();

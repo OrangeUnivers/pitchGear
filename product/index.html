@@ -10,6 +10,7 @@
     <script src="https://kit.fontawesome.com/87b26c3ff4.js" crossorigin="anonymous"></script>
     <link href="../main.css" rel="stylesheet">
     <script src="../darkMode.js"></script>
+    <script src="../mobile.js"></script>
     <style>
         h1 {
             font-size: 2.2rem;
@@ -35,19 +36,20 @@
             margin: 1rem;
             background-color: var(--color-background-highlight);
         }
-        #product-container.mobile {
+        .mobile #product-container {
             flex-direction: column;
         }
         #product-container>div {
             width: 100%;
             padding: 1rem;
         }
-        #product-container.mobile>div {
+        .mobile #product-container>div {
             width: calc(100% - 2rem);
             padding: 1rem;
         }
         #product-container #product-show {
             width: min-content;
+            height: min-content;
         }
         #product-details {
             margin: 1.6rem;
@@ -144,6 +146,16 @@
     </style>
 </head>
 <body data-transitions="false">
+    <div style="position: fixed;"><svg width="0" height="0">
+        <defs><clipPath id="top-left-circle" clipPathUnits="objectBoundingBox">
+            <path d="M0,0 H1 A1,1,0,0,0,0,1 Z"></path></clipPath>
+            <clipPath id="top-right-circle" clipPathUnits="objectBoundingBox">
+            <path d="M1,0 V1 A1,1,0,0,0,0,0 Z"></path></clipPath>
+            <clipPath id="bottom-left-circle" clipPathUnits="objectBoundingBox">
+            <path d="M0,1 V0 A1,1,0,0,0,1,1 Z"></path></clipPath>
+            <clipPath id="bottom-right-circle" clipPathUnits="objectBoundingBox">
+            <path d="M1,1 H0 A1,1,0,0,0,1,0 Z"></path></clipPath></defs>
+    </svg></div>
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
     <h1 id="product-title">Product</h1>
@@ -154,11 +166,12 @@
         </div>
         <div id="navbar-account">
             <div id="navbar-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
-            <div id="navbar-cart" style="display: none;">Cart</div>
+            <div id="navbar-cart" style="display: none;" onclick="goToPage('cart')">Cart</div>
             <div id="navbar-login" onclick="goToPage('login')">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
             <div id="navbar-username" style="display: none;"></div>
             <div id="navbar-logout" style="display: none;">Logout</div>
+            <div id="navbar-menu"><i class="fa-solid fa-bars"></i></div>
         </div>
     </div>
     <div id="navbar-gradient"></div>
@@ -184,6 +197,22 @@
             <div id="product-buy" class="unavailable">Please Login first</div>
         </div>
     </div>
+    <div id="navpanel-container">
+        <div class="corner"></div>
+        <div id="navpanel">
+            <div id="navpanel-title">PitchGear<i class="fa-solid fa-xmark" id="navpanel-close"></i></div>
+            <div id="navpanel-home" onclick="goBack()">Home</div>
+            <div id="navpanel-panel" style="display: none;" onclick="goToPage('panel')">Panel</div>
+            <div id="navpanel-cart" style="display: none;" onclick="goToPage('cart')">Cart</div>
+            <div id="navpanel-login" onclick="goToPage('login')">Log In</div>
+            <div id="navpanel-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navpanel-bottom">
+                <div id="navpanel-theme"><i class="fa-solid fa-sun"></i>Theme</div>
+                <div id="navpanel-logout" style="display: none;"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</div>
+            </div>
+        </div>
+        <div class="corner"></div>
+    </div>
     <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "product/";
@@ -193,11 +222,6 @@
         const hasSpacer = true;
     </script>
     <script src="../main.js"></script>
-    <script>
-        if (isMobile) {
-            document.getElementById("product-container").classList = "mobile";
-        }
-    </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -222,37 +246,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const queryString = window.location.search;
-        // let iDB;
-        // const request = indexedDB.open('pitchGear', 1);
-
-        // request.onupgradeneeded = function(event) {
-        //     iDB = event.target.result;
-
-        //     const cart = iDB.createObjectStore('cart', {keyPath: "id"});
-
-        //     cart.createIndex('productName', 'name', { unique: false });
-        //     cart.createIndex('productType', 'type', { unique: false });
-        //     cart.createIndex('productModifications', 'modifiers', { unique: false, multiEntry: true });
-        //     cart.createIndex('productPlayer', 'player', { unique: false });
-        //     cart.createIndex('productTeam', 'team', { unique: false });
-        //     cart.createIndex('productEdition', 'edition', { unique: false });
-        //     cart.createIndex('productAmount', 'amount', { unique: false });
-        // };
-        // request.onsuccess = function(event) {
-        //     iDB = event.target.result;
-        //     console.log("Successfully connected to iDB!")
-        // };
-
-        // request.onerror = event => {
-        //     console.error('Failed to open DB', event.target.error);
-        // };
-            // const tx = db.transaction('store', 'readwrite');
-            // const store = tx.objectStore('store');
-            // const putRequest = store.put('value', 'key');
-        
-            // putRequest.onsuccess = () => {
-            //     console.log('Data saved!');
-            // };
 
         const urlParams = new URLSearchParams(queryString);
         let teamIdParam;
@@ -270,9 +263,57 @@
         document.getElementById("navbar-back").onclick = () => {
             goToPage(`team?team=${teamIdParam}`)
         }
+        let productName;
+        let productTitleElement = document.getElementById("product-title");
+        switch (productIdParam) {
+            case "player_shirt":
+                productName = "Player Shirt";
+                break;
+            case "goalie_shirt":
+                productName = "Goalie Shirt";
+                break;
+            case "player_shorts":
+                productName = "Player Shorts";
+                break;
+            case "goalie_shorts":
+                productName = "Goalie Shorts";
+                break;
+        }
         const teamDocSnap = await getDoc(doc(db, "teams", teamIdParam));
         const teamData = teamDocSnap.data();
         const teamName = teamData.name;
+        let iDB;
+        const request = indexedDB.open('pitchGear', 1);
+
+        request.onupgradeneeded = function(event) {
+            iDB = event.target.result;
+
+            const cart = iDB.createObjectStore('cart', {keyPath: "id"});
+
+            cart.createIndex('productName', 'name', { unique: false });
+            cart.createIndex('productType', 'type', { unique: false });
+            cart.createIndex('productPlayer', 'player', { unique: false });
+            cart.createIndex('productTeam', 'team', { unique: false });
+            cart.createIndex('productEdition', 'edition', { unique: false });
+            cart.createIndex('productAmount', 'amount', { unique: false });
+            cart.createIndex("productInformation", ["name", "type", "player", "team", "edition"], { unique: false });
+        };
+        request.onsuccess = function(event) {
+            iDB = event.target.result;
+            console.log("Successfully connected to iDB!")
+        };
+
+        request.onerror = event => {
+            console.error('Failed to open DB', event.target.error);
+        };
+            // const tx = db.transaction('store', 'readwrite');
+            // const store = tx.objectStore('store');
+            // const putRequest = store.put('value', 'key');
+        
+            // putRequest.onsuccess = () => {
+            //     console.log('Data saved!');
+            // };
+
         const productsDocSnap = await getDocs(collection(db, "products"));
         let selectedProduct = productIdParam.split("_")[1] + "_default";
         let productList = {};
@@ -299,32 +340,19 @@
         document.getElementById("toggle-blank").addEventListener("click", async (event) => {
             selectedProduct = productIdParam.split("_")[1] + "_blank";
             updatePrice();
+            document.getElementById("player-selection-container").style.display = "none";
         });
         document.getElementById("toggle-default").addEventListener("click", async (event) => {
             selectedProduct = productIdParam.split("_")[1] + "_default";
             updatePrice();
+            document.getElementById("player-selection-container").style.display = "flex";
         });
         document.getElementById("toggle-modify").addEventListener("click", async (event) => {
             selectedProduct = productIdParam.split("_")[1] + "_modify";
             updatePrice();
+            document.getElementById("player-selection-container").style.display = "none";
         });
 
-        let productName;
-        let productTitleElement = document.getElementById("product-title");
-        switch (productIdParam) {
-            case "player_shirt":
-                productName = "Player Shirt";
-                break;
-            case "goalie_shirt":
-                productName = "Goalie Shirt";
-                break;
-            case "player_shorts":
-                productName = "Player Shorts";
-                break;
-            case "goalie_shorts":
-                productName = "Goalie Shorts";
-                break;
-        }
         productTitleElement.innerText = productName + " Info";
         let productNameElement = document.getElementById("product-name");
         productNameElement.innerText = teamName + " " + productName;
@@ -353,17 +381,50 @@
         document.getElementById("product-show").append(productImageElement);
 
         async function addToCart() {
-            // const transaction = iDB.transaction('cart', 'readwrite');
-            // const store = transaction.objectStore('cart');
-            // const index = store.index('productName');
+            let productType = document.querySelector(".toggle-option.active").dataset.value;
+            const transaction = iDB.transaction('cart', 'readwrite');
+            const store = transaction.objectStore('cart');
+            const index = store.index('productInformation');
+            let productPlayer = "23"
+            if (productType == "blank") {
+                productPlayer = "";
+            }
 
-            // const request = index.getAll('Helmet');
-            // request.onsuccess = () => {
-            //     console.log(request.result);
-            // };
+            const request = index.get([productName, productType, productPlayer, teamName, parseFormattingData(editionIdParam)]);
+            request.onsuccess = () => {
+                if (request.result) {
+                    let productAmount = request.result.amount + 1;
+                    let replacementProduct = request.result;
+                    replacementProduct.amount = productAmount
+                    const productPutRequest = store.put(replacementProduct);
+                    productPutRequest.onsuccess = () => {
+                        window.showAlert(`Added additional shirt! New amount: <code>${productAmount.toString()}</code>`, {type: "confirmation"})
+                    }
+                } else {
+                    let productUUID = crypto.randomUUID();
+                    let productRecord = {
+                        "id": productUUID,
+                        "name": productName,
+                        "type": productType,
+                        "modifiers": {},
+                        "player": productPlayer,
+                        "team": teamName,
+                        "edition": parseFormattingData(editionIdParam),
+                        "amount": 1
+                    }
+                    const productAddRequest = store.add(productRecord);
+                    productAddRequest.onsuccess = () => {
+                        window.showAlert("Added Shirt to Cart!", {type: "confirmation"})
+                    }
+                }
+            };
         }
 
         document.getElementById('navbar-logout').addEventListener("click", async (event) => {
+            signOut(auth);
+        });
+
+        document.getElementById('navpanel-logout').addEventListener("click", async (event) => {
             signOut(auth);
         });
 
@@ -375,13 +436,16 @@
                     if (userData) {
                         if (userData.role && (userData.role == "admin" || userData.role == "co-owner" || userData.role == "owner" || userData.role == "dev" || userData.role == "shipping")) {
                             document.getElementById("navbar-panel").style.display = "block";
+                            document.getElementById("navpanel-panel").style.display = "block";
                         } else {
                             document.getElementById("navbar-panel").style.display = "none";
+                            document.getElementById("navpanel-panel").style.display = "none";
                         }
                         document.getElementById("navbar-username").style.display = "block";
                         document.getElementById("navbar-username").textContent = userData.username || user.email;
                     } else {
                         document.getElementById("navbar-panel").style.display = "none";
+                        document.getElementById("navpanel-panel").style.display = "none";
                         document.getElementById("navbar-username").style.display = "block";
                         document.getElementById("navbar-username").textContent = user.email;
                     }
@@ -389,6 +453,10 @@
                     document.getElementById("navbar-login").style.display = "none";
                     document.getElementById("navbar-signup").style.display = "none";
                     document.getElementById("navbar-logout").style.display = "block";
+                    document.getElementById("navpanel-cart").style.display = "block";
+                    document.getElementById("navpanel-login").style.display = "none";
+                    document.getElementById("navpanel-signup").style.display = "none";
+                    document.getElementById("navpanel-logout").style.display = "flex";
                     document.getElementById("product-buy").innerText = "Add to Cart";
                     document.getElementById("product-buy").removeAttribute("class");
                     document.getElementById("product-buy").onclick = addToCart;
@@ -399,6 +467,11 @@
                 document.getElementById("navbar-login").style.display = "block";
                 document.getElementById("navbar-signup").style.display = "block";
                 document.getElementById("navbar-logout").style.display = "none";
+                document.getElementById("navpanel-panel").style.display = "none";
+                document.getElementById("navpanel-cart").style.display = "none";
+                document.getElementById("navpanel-login").style.display = "block";
+                document.getElementById("navpanel-signup").style.display = "block";
+                document.getElementById("navpanel-logout").style.display = "none";
                 document.getElementById("navbar-username").style.display = "none";
                 document.getElementById("product-buy").innerText = "Login / Signin";
                 document.getElementById("product-buy").classList = "unavailable";

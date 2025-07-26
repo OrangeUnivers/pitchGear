@@ -11,8 +11,19 @@
     <link href="../main.css" rel="stylesheet">
     <link href="../account-managment.css" rel="stylesheet">
     <script src="../darkMode.js"></script>
+    <script src="../mobile.js"></script>
 </head>
 <body data-transitions="false">
+    <div style="position: fixed;"><svg width="0" height="0">
+        <defs><clipPath id="top-left-circle" clipPathUnits="objectBoundingBox">
+            <path d="M0,0 H1 A1,1,0,0,0,0,1 Z"></path></clipPath>
+            <clipPath id="top-right-circle" clipPathUnits="objectBoundingBox">
+            <path d="M1,0 V1 A1,1,0,0,0,0,0 Z"></path></clipPath>
+            <clipPath id="bottom-left-circle" clipPathUnits="objectBoundingBox">
+            <path d="M0,1 V0 A1,1,0,0,0,1,1 Z"></path></clipPath>
+            <clipPath id="bottom-right-circle" clipPathUnits="objectBoundingBox">
+            <path d="M1,1 H0 A1,1,0,0,0,1,0 Z"></path></clipPath></defs>
+    </svg></div>
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
@@ -21,6 +32,7 @@
         <div id="navbar-account">
             <div id="navbar-login">Log In</div>
             <div id="navbar-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navbar-menu"><i class="fa-solid fa-bars"></i></div>
         </div>
     </div>
     <div id="account-container">
@@ -35,6 +47,19 @@
                 <div class="account-error" id="error">​</div>
             </div>
         </div>
+    </div>
+    <div id="navpanel-container">
+        <div class="corner"></div>
+        <div id="navpanel">
+            <div id="navpanel-title">PitchGear<i class="fa-solid fa-xmark" id="navpanel-close"></i></div>
+            <div id="navpanel-home" onclick="goBack()">Home</div>
+            <div id="navpanel-login" style="color: var(--color-text-highlight);" onclick="document.getElementById('navpanel-container').classList.remove('showing')">Log In</div>
+            <div id="navpanel-signup" onclick="goToPage('signup')">Sign Up</div>
+            <div id="navpanel-bottom">
+                <div id="navpanel-theme"><i class="fa-solid fa-sun"></i>Theme</div>
+            </div>
+        </div>
+        <div class="corner"></div>
     </div>
     <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
