@@ -59,6 +59,9 @@ body {
     overflow-x: hidden;
     padding-bottom: 3.2rem;
 }
+body.noscrolling {
+    overflow-y: hidden!important;
+}
 body[data-transitions="true"] {
     transition: color 0.3s, background-color 0.3s;
 }
@@ -276,7 +279,11 @@ html:not(.mobile) #navbar-back:hover {
     pointer-events: none;
 }
 #navpanel-container.showing {
-    backdrop-filter: blur(0.3rem);
+    backdrop-filter: blur(0.3rem) brightness(0.87);
+    pointer-events: all;
+}
+html[data-theme="dark"] #navpanel-container.showing {
+    backdrop-filter: blur(0.3rem) brightness(0.77);
     pointer-events: all;
 }
 #navpanel-container .corner {
@@ -296,6 +303,9 @@ html:not(.mobile) #navbar-back:hover {
     clip-path: url(#top-right-circle);
     background-color: var(--color-background);
 }
+.arc #navpanel-container .corner:last-child {
+    margin-bottom: 6.72rem;
+}
 #navpanel-container.showing .corner {
     transform: none;
 }
@@ -313,6 +323,11 @@ html:not(.mobile) #navbar-back:hover {
     flex-direction: column;
     gap: 0.4rem;
     position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.arc #navpanel {
+    height: calc(100vh - 11.12rem);
 }
 #navpanel-container.showing #navpanel {
     transform: none;
@@ -428,4 +443,13 @@ body[data-transitions="true"] #alert-system>i {
     padding-inline: 0.3rem;
     border-radius: 0.4rem;
     display: inline;
+}
+.placeholderarcnav {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 4.72rem;
+    background-color: #0000ff80;
+    z-index: 10000;
 }

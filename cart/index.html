@@ -39,9 +39,7 @@
     </svg></div>
     <div style="height: 7.2rem;" id="navbar-spacer"></div>
 
-    <h1 id="product-title">Product</h1>
-    <div style="background-color: magenta; width: calc(100vw - 0.6rem); height: 1000rem;">
-    </div>
+    <h1 id="product-title">My Cart</h1>
     <div id="navbar">
         <div id="navbar-start">
             <div id="navbar-back"><i class="fa-solid fa-arrow-left"></i></div>
@@ -71,11 +69,11 @@
             <div id="navpanel-bottom">
                 <div id="navpanel-theme"><i class="fa-solid fa-sun"></i>Theme</div>
                 <div id="navpanel-logout" style="display: none;"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</div>
-                <!-- <i class="fa-solid fa-moon"></i> -->
             </div>
         </div>
         <div class="corner"></div>
     </div>
+    <!-- <div class="placeholderarcnav"></div> -->
     <div id="alert-system-container"><div id="alert-system"></div></div>
     <script>
         const subPage = "cart/";
@@ -135,7 +133,6 @@
             allProductsRequest.onsuccess = () => {
                 console.log(allProductsRequest.result)
             }
-            
         };
 
         request.onerror = event => {

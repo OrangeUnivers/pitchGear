@@ -198,10 +198,12 @@ function showAlert(textContent, options) {
 }
 if (isMobile) {
     document.getElementById("navbar-menu").addEventListener("click", () => {
-        document.getElementById("navpanel-container").classList.add("showing")
+        document.getElementById("navpanel-container").classList.add("showing");
+        document.body.classList.add("noscrolling");
     })
     document.getElementById("navpanel-close").addEventListener("click", () => {
-        document.getElementById("navpanel-container").classList.remove("showing")
+        document.getElementById("navpanel-container").classList.remove("showing");
+        document.body.classList.remove("noscrolling");
     })
 }
 showAlert("Alert! <code>You shouldn't be seeing this</code>", {type: "general", show: false})
