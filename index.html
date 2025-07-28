@@ -82,6 +82,15 @@
             height: 6rem;
             /* height: auto; */
         }
+        .team-list div img.missing {
+            filter: brightness(0);
+        }
+        html[data-theme="dark"] .team-list div img.missing {
+            filter: brightness(0.87);
+        }
+        body[data-transitions="true"] .team-list div img.missing {
+            transition: filter 0.3s;
+        }
         .mobile .team-list div p {
             display: none;
         }
@@ -378,7 +387,7 @@
             categoryList.forEach((team, i) => {
                 const div = document.createElement("div");
                 div.innerHTML = `
-                    <img src="${parseLogo(teamList[team].logo)}" alt="${teamList[team].name+" Logo"}" height="160rem" onerror="this.src='resources/logo-missing-large.svg'">
+                    <img src="${parseLogo(teamList[team].logo)}" alt="${teamList[team].name+" Logo"}" height="160rem" onerror="this.src='resources/logo-missing-large.svg'; this.className='missing';">
                     <p>${teamList[team].name}</p>
                 `;
                 div.onclick = () => {

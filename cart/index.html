@@ -24,6 +24,54 @@
             margin-bottom: 1.4rem;
             font-weight: 500;
         }
+        #page-layout {
+            display: flex;
+            flex-direction: row;
+            width: calc(100vw - 1.2rem);
+            justify-content: center;
+            gap: 0.6rem;
+        }
+        #cart {
+            flex: 1;
+            min-width: 0;
+            max-width: 50rem;
+            display: flex;
+            flex-direction: column;
+        }
+        #cart-element {
+            background-color: var(--color-background-highlight);
+            box-shadow: 0 0.25rem 0.5rem #00000047;
+            border-radius: 2.2rem;
+            display: flex;
+            flex-direction: row;
+        }
+        body[data-transitions="true"] #cart-element {
+            transition: background-color 0.3s;
+        }
+        #cart-element>img {
+            width: 10.4rem;
+            height: 10.4rem;
+            box-shadow: inset 0 0.25rem 0.5rem #00000047;
+            margin: 1.2rem;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        #cart-element>img.missing {
+            width: 8rem;
+            height: 8rem;
+            padding: 1.2rem;
+            filter: brightness(0);
+        }
+        html[data-theme="dark"] #cart-element>img.missing {
+            filter: brightness(0.87);
+        }
+        body[data-transitions="true"] #cart-element>img.missing {
+            transition: filter 0.3s;
+        }
+        #checkout {
+            width: 24rem;
+            background-color:blue;
+        }
     </style>
 </head>
 <body data-transitions="false">
@@ -57,6 +105,16 @@
     </div>
     <div id="navbar-gradient"></div>
     <div id="navbar-block"></div>
+    <div id="page-layout">
+        <div id="cart">
+            <div id="cart-element">
+                <img src="../resources/shirt-default.png" alt="" class="missing">
+            </div>
+        </div>
+        <div id="checkout">
+            hehe
+        </div>
+    </div>
     <div id="navpanel-container">
         <div class="corner"></div>
         <div id="navpanel">
@@ -180,17 +238,7 @@
                     document.getElementById("navpanel-logout").style.display = "flex";
                 })();
             } else {
-                document.getElementById("navbar-panel").style.display = "none";
-                document.getElementById("navbar-cart").style.display = "none";
-                document.getElementById("navbar-login").style.display = "block";
-                document.getElementById("navbar-signup").style.display = "block";
-                document.getElementById("navbar-logout").style.display = "none";
-                document.getElementById("navpanel-panel").style.display = "none";
-                document.getElementById("navpanel-cart").style.display = "none";
-                document.getElementById("navpanel-login").style.display = "block";
-                document.getElementById("navpanel-signup").style.display = "block";
-                document.getElementById("navpanel-logout").style.display = "none";
-                document.getElementById("navbar-username").style.display = "none";
+                goBack();
             }
         });
     </script>

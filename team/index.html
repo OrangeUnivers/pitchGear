@@ -104,16 +104,37 @@
         body[data-transitions="true"] .panel-elements div {
             transition: background-color 0.3s, color 0.3s;
         }
-        .panel-elements div img {
-            width: 6.8rem;
-            /* width: 5.6rem; */
+        .panel-elements div>span {
             background-color: var(--color-background-highlight);
             margin-bottom: 0.4rem;
             border-radius: 0.6rem;
-            /* padding: 0.6rem; */
+            width: 6.8rem;
+            height: 6.8rem;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        body[data-transitions="true"] .panel-elements div img {
+        body[data-transitions="true"] .panel-elements div>span {
             transition: background-color 0.3s;
+        }
+        .panel-elements div>span>img {
+            width: auto;
+            height: auto;
+            max-width: 6.8rem;
+            max-height: 6.8rem;
+        }
+        .panel-elements div img.missing {
+            filter: brightness(0);
+            max-width: 5.6rem;
+            max-height: 5.6rem;
+            padding: 0.6rem;
+        }
+        html[data-theme="dark"] .panel-elements div>span>img.missing {
+            filter: brightness(0.87);
+        }
+        body[data-transitions="true"] .panel-elements div>span>img.missing {
+            transition: filter 0.3s;
         }
         .panel-elements div h3 {
             font-size: 1.1rem;
@@ -266,7 +287,7 @@
                     if (productImageLink in teamResources) {
                         productImageURL = teamResources[productImageLink];
                     } else {
-                        productImageURL = "../resources/shirt-default-light.png";
+                        productImageURL = "../resources/shirt-default.png";
                     }
                     let productShowname;
                     switch (product) {
@@ -285,7 +306,7 @@
                     }
                     let productElement = document.createElement("div")
                     productElement.innerHTML = `
-                        <img src="${productImageURL}" alt="${product.replace("_", " ")}">
+                        <span><img src="${productImageURL}" alt="${product.replace("_", " ")}" ${productImageURL == "../resources/shirt-default.png" ? 'class="missing"' : ""}></span>
                         <h3>${productShowname}</h3>
                         <button onclick="goToPage('product?team=${teamIdParam}&edition=${edition.replace(" ", "%20")}&product=${product}')">View</button>
                     `;

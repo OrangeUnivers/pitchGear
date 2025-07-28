@@ -65,6 +65,15 @@
             box-shadow: 0 0.2rem 0.6rem #00000030;
             border-radius: 0.6rem;
         }
+        #product-image.missing {
+            filter: brightness(0);
+        }
+        html[data-theme="dark"] #product-image.missing {
+            filter: brightness(0.87);
+        }
+        body[data-transitions="true"] #product-image.missing {
+            transition: filter 0.3s;
+        }
         #product-price {
             font-family: monospace;
             font-size: 1.2rem;
@@ -254,7 +263,7 @@
         if ([...urlParams].length === 0) {
             teamIdParam = "fc_bayern_muenchen";
             editionIdParam = "Away $25-26;";
-            productIdParam = "player_shirt";
+            productIdParam = "goalie_shirt";
         } else {
             teamIdParam = urlParams.get('team');
             editionIdParam = urlParams.get('edition').replace("%20", " ");
@@ -366,15 +375,16 @@
         } else {
             teamResources = {};
         }
+        const productImageElement = document.createElement("img");
         let productImageURL;
         let productImageLink = [editionIdParam, productIdParam].join("-");
         if (productImageLink in teamResources) {
             productImageURL = teamResources[productImageLink];
         } else {
-            productImageURL = "../resources/shirt-default-light.png";
+            productImageURL = "../resources/shirt-default.png";
+            productImageElement.classList.add("missing");
         }
 
-        const productImageElement = document.createElement("img");
         productImageElement.src = productImageURL;
         productImageElement.alt = productName;
         productImageElement.id = "product-image";
